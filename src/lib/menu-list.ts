@@ -1,9 +1,7 @@
 import {
-  Tag,
   Users,
   Settings,
   Bookmark,
-  SquarePen,
   LayoutGrid
 } from "lucide-react";
 
@@ -32,9 +30,9 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "",
       menus: [
         {
-          href: "/dashboard",
-          label: "Dashboard",
-          active: pathname.includes("/dashboard"),
+          href: "/orders",
+          label: "Orders",
+          active: pathname.includes("/orders"),
           icon: LayoutGrid,
           submenus: []
         }

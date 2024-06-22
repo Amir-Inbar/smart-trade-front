@@ -1,4 +1,4 @@
-import AdminPanelLayout from "@/components/admin-panel/admin-panel-layout";
+import {AppLayout} from "@/components/Layout/AppLayout";
 
 import {GeistSans} from "geist/font/sans";
 
@@ -15,7 +15,7 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
         <body className={GeistSans.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <AdminPanelLayout>{children}</AdminPanelLayout>
+            <AppLayout>{children}</AppLayout>
         </ThemeProvider>
         </body>
         </html>
