@@ -8,34 +8,31 @@ const CustomDialog = React.forwardRef<
     HTMLDivElement,
     React.ComponentPropsWithoutRef<'div'>
 >(({className, ...props}, ref) => {
-        const theme = useTheme();
+    return (
+        <div
+            ref={ref}
+            className={cn(
+                'fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center border rounded',
+                className
+            )}
+            {...props}
+        />
+    );
+});
 
-        return (
-            <div
-                ref={ref}
-                className={cn(
-                    'fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center',
-                    className
-                )}
-                {...props}
-            />
-        );
-    }
-);
 CustomDialog.displayName = 'CustomDialog';
-
 const CustomDialogContent = React.forwardRef<
     HTMLDivElement,
     React.ComponentPropsWithoutRef<'div'>
 >(({className, ...props}, ref) => {
-    const {theme} = useTheme();
+    const theme = useTheme();
 
     return (
         <div
             ref={ref}
             className={cn(
-                'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 shadow-lg rounded-md p-4',
-                theme === 'dark' ? 'bg-dark' : 'bg-white',
+                'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4',
+                'border rounded-2xl shadow-lg',
                 className
             )}
             {...props}
