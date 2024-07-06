@@ -5,6 +5,8 @@ import {useStore} from "@/hooks/use-store";
 import {AppFooter} from "@/components/Layout/AppFooter";
 import {AppSideBar} from "@/components/Layout/AppSideBar";
 import {useSidebarToggle} from "@/hooks/use-sidebar-toggle";
+import {store} from "@/store/store";
+import {Provider} from "react-redux";
 
 export const AppLayout = ({
                               children
@@ -15,7 +17,7 @@ export const AppLayout = ({
 
     if (!sidebar) return null;
     return (
-        <>
+        <Provider store={store}>
             <AppSideBar/>
             <main
                 className={cn(
@@ -33,6 +35,6 @@ export const AppLayout = ({
             >
                 <AppFooter/>
             </footer>
-        </>
+        </Provider>
     );
 }

@@ -5,36 +5,15 @@ import {
     MRT_TableOptions,
     useMantineReactTable,
 } from "mantine-react-table";
+import {MantineProvider} from "@mantine/core";
+import {useTheme} from "next-themes";
+import type {ColorScheme} from "@mantine/styles/lib/theme/types/ColorScheme";
 
 export interface TableToolbarActionsProps<T> {
     data: T[];
     table: MRT_TableInstance;
     fileNameOnExport?: string;
 }
-
-export const dataInitialState = {
-    enableStickyHeader: true,
-    enableTopToolbar: true,
-    enableStickyFooter: true,
-    enableColumnResizing: true,
-    enableRowSelection: true,
-    enableGrouping: true,
-    enableFullScreenToggle: true,
-    enableHiding: true,
-    paginationDisplayMode: "pages",
-    initialState: {
-        grouping: ["billing_entity"],
-        density: "xs",
-        expanded: true,
-        pagination: {pageIndex: 0, pageSize: 20},
-        sorting: [{id: "timestamp", asc: true}],
-        columnVisibility: {
-            usage_category: false,
-            usage: false,
-            usage_units: false,
-        },
-    },
-};
 
 interface OwnProps<T> extends MRT_TableOptions<any> {
     className?: string;
@@ -59,6 +38,7 @@ export const SmartTable = <T extends Record<string, any>>(
         isError,
         fileNameOnExport,
     } = props;
+    const {theme} = useTheme();
 
     const [hasFullScreen, setHasFullScreen] = useState<boolean>(false);
     const table = useMantineReactTable({
@@ -71,14 +51,14 @@ export const SmartTable = <T extends Record<string, any>>(
             sx: {marginTop: hasFullScreen ? "0" : `${NAVBAR_HEIGHT}px`},
         },
         mantineTableContainerProps: {
-            sx: {height: hasFullScreen ? "600px" : "auto"},
+            sx: {height: hasFullScreen ? "300px" : "auto"},
         },
         mantineToolbarAlertBannerProps: isError
             ? {
-                  color: "red",
-                  children:
-                      "Error loading data, please try again later or contact support",
-              }
+                color: "red",
+                children:
+                    "Error loading data, please try again later or contact support",
+            }
             : undefined,
         showAlertBanner: true,
         state: {
@@ -117,7 +97,9 @@ export const SmartTable = <T extends Record<string, any>>(
 
     return (
         <div className={className}>
-            <MantineReactTable table={table} />
+            <MantineProvider theme={{colorScheme: theme as ColorScheme}}>
+                <MantineReactTable table={table}/>
+            </MantineProvider>
         </div>
-    );
+    )
 };

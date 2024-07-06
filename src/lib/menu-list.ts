@@ -42,9 +42,9 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: "Contents",
       menus: [
         {
-          href: "/categories",
-          label: "Categories",
-          active: pathname.includes("/categories"),
+          href: "/scenarios",
+          label: "Scenarios",
+          active: pathname.includes("/scenarios"),
           icon: Bookmark,
           submenus: []
         },

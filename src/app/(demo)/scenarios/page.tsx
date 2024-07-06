@@ -1,6 +1,8 @@
-'use client'
+'use client';
 
 import Link from "next/link";
+
+import {ContentLayout} from "@/components/Layout/ContentLayout";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -9,9 +11,7 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import {SmartTable} from "@/components/SmartTable/SmartTable";
-import {ContentLayout} from "@/components/Layout/ContentLayout";
-import OrderOverview from "@/components/OrderOverview/OrderOverview";
+import Scenarios from "@/components/Scenarios/Scenarios";
 
 const Breadcrumbs = () => (
     <Breadcrumb>
@@ -23,19 +23,19 @@ const Breadcrumbs = () => (
             </BreadcrumbItem>
             <BreadcrumbSeparator/>
             <BreadcrumbItem>
-                <BreadcrumbPage>Orders</BreadcrumbPage>
+                <BreadcrumbPage>Scenarios</BreadcrumbPage>
             </BreadcrumbItem>
         </BreadcrumbList>
     </Breadcrumb>
 );
 
-const OrdersPage = () => {
+const ScenariosPage = () => {
     return (
-        <ContentLayout title="Orders">
+        <ContentLayout title="Scenarios">
             <Breadcrumbs/>
-            <OrderOverview/>
+            <Scenarios/>
         </ContentLayout>
     );
-};
+}
 
-export default OrdersPage;
+export default ScenariosPage;

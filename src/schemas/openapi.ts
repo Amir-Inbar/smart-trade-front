@@ -38,7 +38,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/account/account/": {
+    "/account/number": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Account Number */
+        get: operations["read_account_number_account_number_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/account/summary": {
         parameters: {
             query?: never;
             header?: never;
@@ -46,7 +63,7 @@ export interface paths {
             cookie?: never;
         };
         /** Read Account Summary */
-        get: operations["read_account_summary_account_account__get"];
+        get: operations["read_account_summary_account_summary_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -55,34 +72,20 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/orders/orders/": {
+    "/trades/": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Read Orders */
-        get: operations["read_orders_orders_orders__get"];
+        /**
+         * Get all trades
+         * @description Get all trades
+         */
+        get: operations["read_trades_trades__get"];
         put?: never;
         post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/orders/orders/bracket_order": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Create Bracket Order */
-        post: operations["create_bracket_order_orders_orders_bracket_order_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -93,910 +96,99 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** BracketOrder */
-        BracketOrder: {
-            parent: components["schemas"]["Order"];
-            takeProfit: components["schemas"]["Order"];
-            stopLoss: components["schemas"]["Order"];
-        };
-        /** BracketOrderSchema */
-        BracketOrderSchema: {
+        /** OrderSchema */
+        OrderSchema: {
+            /** Id */
+            id: number;
+            /** Trade Id */
+            trade_id: number;
+            /** Client Id */
+            client_id: number;
             /** Action */
             action: string;
-            contract: components["schemas"]["Contract"];
-            /** Quantity */
-            quantity: number;
-            /** Limit Price */
-            limit_price: number;
-            /** Take Profit Price */
-            take_profit_price: number;
-            /** Stop Loss Price */
-            stop_loss_price: number;
-        };
-        /** ComboLeg */
-        ComboLeg: {
-            /**
-             * Conid
-             * @default 0
-             */
-            conId: number;
-            /**
-             * Ratio
-             * @default 0
-             */
-            ratio: number;
-            /**
-             * Action
-             * @default
-             */
-            action: string;
-            /**
-             * Exchange
-             * @default
-             */
-            exchange: string;
-            /**
-             * Openclose
-             * @default 0
-             */
-            openClose: number;
-            /**
-             * Shortsaleslot
-             * @default 0
-             */
-            shortSaleSlot: number;
-            /**
-             * Designatedlocation
-             * @default
-             */
-            designatedLocation: string;
-            /**
-             * Exemptcode
-             * @default -1
-             */
-            exemptCode: number;
-        };
-        /** Contract */
-        Contract: {
-            /**
-             * Sectype
-             * @default
-             */
-            secType: string;
-            /**
-             * Conid
-             * @default 0
-             */
-            conId: number;
-            /**
-             * Symbol
-             * @default
-             */
-            symbol: string;
-            /**
-             * Lasttradedateorcontractmonth
-             * @default
-             */
-            lastTradeDateOrContractMonth: string;
-            /**
-             * Strike
-             * @default 0
-             */
-            strike: number;
-            /**
-             * Right
-             * @default
-             */
-            right: string;
-            /**
-             * Multiplier
-             * @default
-             */
-            multiplier: string;
-            /**
-             * Exchange
-             * @default
-             */
-            exchange: string;
-            /**
-             * Primaryexchange
-             * @default
-             */
-            primaryExchange: string;
-            /**
-             * Currency
-             * @default
-             */
-            currency: string;
-            /**
-             * Localsymbol
-             * @default
-             */
-            localSymbol: string;
-            /**
-             * Tradingclass
-             * @default
-             */
-            tradingClass: string;
-            /**
-             * Includeexpired
-             * @default false
-             */
-            includeExpired: boolean;
-            /**
-             * Secidtype
-             * @default
-             */
-            secIdType: string;
-            /**
-             * Secid
-             * @default
-             */
-            secId: string;
-            /**
-             * Description
-             * @default
-             */
-            description: string;
-            /**
-             * Issuerid
-             * @default
-             */
-            issuerId: string;
-            /**
-             * Combolegsdescrip
-             * @default
-             */
-            comboLegsDescrip: string;
-            /** Combolegs */
-            comboLegs?: components["schemas"]["ComboLeg"][];
-            deltaNeutralContract?: components["schemas"]["DeltaNeutralContract"];
-        };
-        /** DeltaNeutralContract */
-        DeltaNeutralContract: {
-            /**
-             * Conid
-             * @default 0
-             */
-            conId: number;
-            /**
-             * Delta
-             * @default 0
-             */
-            delta: number;
-            /**
-             * Price
-             * @default 0
-             */
-            price: number;
-        };
-        /** HTTPValidationError */
-        HTTPValidationError: {
-            /** Detail */
-            detail?: components["schemas"]["ValidationError"][];
-        };
-        /** Order */
-        Order: {
-            /**
-             * Orderid
-             * @default 0
-             */
-            orderId: number;
-            /**
-             * Clientid
-             * @default 0
-             */
-            clientId: number;
-            /**
-             * Permid
-             * @default 0
-             */
-            permId: number;
-            /**
-             * Action
-             * @default
-             */
-            action: string;
-            /**
-             * Totalquantity
-             * @default 0
-             */
-            totalQuantity: number;
-            /**
-             * Ordertype
-             * @default
-             */
-            orderType: string;
-            /**
-             * Lmtprice
-             * @default 1.7976931348623157e+308
-             */
-            lmtPrice: number;
-            /**
-             * Auxprice
-             * @default 1.7976931348623157e+308
-             */
-            auxPrice: number;
-            /**
-             * Tif
-             * @default
-             */
+            /** Total Quantity */
+            total_quantity: number;
+            /** Order Type */
+            order_type: string;
+            /** Lmt Price */
+            lmt_price: number;
+            /** Tif */
             tif: string;
-            /**
-             * Activestarttime
-             * @default
-             */
-            activeStartTime: string;
-            /**
-             * Activestoptime
-             * @default
-             */
-            activeStopTime: string;
-            /**
-             * Ocagroup
-             * @default
-             */
-            ocaGroup: string;
-            /**
-             * Ocatype
-             * @default 0
-             */
-            ocaType: number;
-            /**
-             * Orderref
-             * @default
-             */
-            orderRef: string;
-            /**
-             * Transmit
-             * @default true
-             */
+            /** Oca Group */
+            oca_group: string;
+            /** Order Ref */
+            order_ref: string;
+            /** Transmit */
             transmit: boolean;
-            /**
-             * Parentid
-             * @default 0
-             */
-            parentId: number;
-            /**
-             * Blockorder
-             * @default false
-             */
-            blockOrder: boolean;
-            /**
-             * Sweeptofill
-             * @default false
-             */
-            sweepToFill: boolean;
-            /**
-             * Displaysize
-             * @default 0
-             */
-            displaySize: number;
-            /**
-             * Triggermethod
-             * @default 0
-             */
-            triggerMethod: number;
-            /**
-             * Outsiderth
-             * @default false
-             */
-            outsideRth: boolean;
-            /**
-             * Hidden
-             * @default false
-             */
-            hidden: boolean;
-            /**
-             * Goodaftertime
-             * @default
-             */
-            goodAfterTime: string;
-            /**
-             * Goodtilldate
-             * @default
-             */
-            goodTillDate: string;
-            /**
-             * Rule80A
-             * @default
-             */
-            rule80A: string;
-            /**
-             * Allornone
-             * @default false
-             */
-            allOrNone: boolean;
-            /**
-             * Minqty
-             * @default 2147483647
-             */
-            minQty: number;
-            /**
-             * Percentoffset
-             * @default 1.7976931348623157e+308
-             */
-            percentOffset: number;
-            /**
-             * Overridepercentageconstraints
-             * @default false
-             */
-            overridePercentageConstraints: boolean;
-            /**
-             * Trailstopprice
-             * @default 1.7976931348623157e+308
-             */
-            trailStopPrice: number;
-            /**
-             * Trailingpercent
-             * @default 1.7976931348623157e+308
-             */
-            trailingPercent: number;
-            /**
-             * Fagroup
-             * @default
-             */
-            faGroup: string;
-            /**
-             * Faprofile
-             * @default
-             */
-            faProfile: string;
-            /**
-             * Famethod
-             * @default
-             */
-            faMethod: string;
-            /**
-             * Fapercentage
-             * @default
-             */
-            faPercentage: string;
-            /**
-             * Designatedlocation
-             * @default
-             */
-            designatedLocation: string;
-            /**
-             * Openclose
-             * @default O
-             */
-            openClose: string;
-            /**
-             * Origin
-             * @default 0
-             */
-            origin: number;
-            /**
-             * Shortsaleslot
-             * @default 0
-             */
-            shortSaleSlot: number;
-            /**
-             * Exemptcode
-             * @default -1
-             */
-            exemptCode: number;
-            /**
-             * Discretionaryamt
-             * @default 0
-             */
-            discretionaryAmt: number;
-            /**
-             * Etradeonly
-             * @default false
-             */
-            eTradeOnly: boolean;
-            /**
-             * Firmquoteonly
-             * @default false
-             */
-            firmQuoteOnly: boolean;
-            /**
-             * Nbbopricecap
-             * @default 1.7976931348623157e+308
-             */
-            nbboPriceCap: number;
-            /**
-             * Optoutsmartrouting
-             * @default false
-             */
-            optOutSmartRouting: boolean;
-            /**
-             * Auctionstrategy
-             * @default 0
-             */
-            auctionStrategy: number;
-            /**
-             * Startingprice
-             * @default 1.7976931348623157e+308
-             */
-            startingPrice: number;
-            /**
-             * Stockrefprice
-             * @default 1.7976931348623157e+308
-             */
-            stockRefPrice: number;
-            /**
-             * Delta
-             * @default 1.7976931348623157e+308
-             */
-            delta: number;
-            /**
-             * Stockrangelower
-             * @default 1.7976931348623157e+308
-             */
-            stockRangeLower: number;
-            /**
-             * Stockrangeupper
-             * @default 1.7976931348623157e+308
-             */
-            stockRangeUpper: number;
-            /**
-             * Randomizeprice
-             * @default false
-             */
-            randomizePrice: boolean;
-            /**
-             * Randomizesize
-             * @default false
-             */
-            randomizeSize: boolean;
-            /**
-             * Volatility
-             * @default 1.7976931348623157e+308
-             */
-            volatility: number;
-            /**
-             * Volatilitytype
-             * @default 2147483647
-             */
-            volatilityType: number;
-            /**
-             * Deltaneutralordertype
-             * @default
-             */
-            deltaNeutralOrderType: string;
-            /**
-             * Deltaneutralauxprice
-             * @default 1.7976931348623157e+308
-             */
-            deltaNeutralAuxPrice: number;
-            /**
-             * Deltaneutralconid
-             * @default 0
-             */
-            deltaNeutralConId: number;
-            /**
-             * Deltaneutralsettlingfirm
-             * @default
-             */
-            deltaNeutralSettlingFirm: string;
-            /**
-             * Deltaneutralclearingaccount
-             * @default
-             */
-            deltaNeutralClearingAccount: string;
-            /**
-             * Deltaneutralclearingintent
-             * @default
-             */
-            deltaNeutralClearingIntent: string;
-            /**
-             * Deltaneutralopenclose
-             * @default
-             */
-            deltaNeutralOpenClose: string;
-            /**
-             * Deltaneutralshortsale
-             * @default false
-             */
-            deltaNeutralShortSale: boolean;
-            /**
-             * Deltaneutralshortsaleslot
-             * @default 0
-             */
-            deltaNeutralShortSaleSlot: number;
-            /**
-             * Deltaneutraldesignatedlocation
-             * @default
-             */
-            deltaNeutralDesignatedLocation: string;
-            /**
-             * Continuousupdate
-             * @default false
-             */
-            continuousUpdate: boolean;
-            /**
-             * Referencepricetype
-             * @default 2147483647
-             */
-            referencePriceType: number;
-            /**
-             * Basispoints
-             * @default 1.7976931348623157e+308
-             */
-            basisPoints: number;
-            /**
-             * Basispointstype
-             * @default 2147483647
-             */
-            basisPointsType: number;
-            /**
-             * Scaleinitlevelsize
-             * @default 2147483647
-             */
-            scaleInitLevelSize: number;
-            /**
-             * Scalesubslevelsize
-             * @default 2147483647
-             */
-            scaleSubsLevelSize: number;
-            /**
-             * Scalepriceincrement
-             * @default 1.7976931348623157e+308
-             */
-            scalePriceIncrement: number;
-            /**
-             * Scalepriceadjustvalue
-             * @default 1.7976931348623157e+308
-             */
-            scalePriceAdjustValue: number;
-            /**
-             * Scalepriceadjustinterval
-             * @default 2147483647
-             */
-            scalePriceAdjustInterval: number;
-            /**
-             * Scaleprofitoffset
-             * @default 1.7976931348623157e+308
-             */
-            scaleProfitOffset: number;
-            /**
-             * Scaleautoreset
-             * @default false
-             */
-            scaleAutoReset: boolean;
-            /**
-             * Scaleinitposition
-             * @default 2147483647
-             */
-            scaleInitPosition: number;
-            /**
-             * Scaleinitfillqty
-             * @default 2147483647
-             */
-            scaleInitFillQty: number;
-            /**
-             * Scalerandompercent
-             * @default false
-             */
-            scaleRandomPercent: boolean;
-            /**
-             * Scaletable
-             * @default
-             */
-            scaleTable: string;
-            /**
-             * Hedgetype
-             * @default
-             */
-            hedgeType: string;
-            /**
-             * Hedgeparam
-             * @default
-             */
-            hedgeParam: string;
-            /**
-             * Account
-             * @default
-             */
+            /** Account */
             account: string;
-            /**
-             * Settlingfirm
-             * @default
-             */
-            settlingFirm: string;
-            /**
-             * Clearingaccount
-             * @default
-             */
-            clearingAccount: string;
-            /**
-             * Clearingintent
-             * @default
-             */
-            clearingIntent: string;
-            /**
-             * Algostrategy
-             * @default
-             */
-            algoStrategy: string;
-            /** Algoparams */
-            algoParams?: unknown[][];
-            /** Smartcomboroutingparams */
-            smartComboRoutingParams?: unknown[][];
-            /**
-             * Algoid
-             * @default
-             */
-            algoId: string;
-            /**
-             * Whatif
-             * @default false
-             */
-            whatIf: boolean;
-            /**
-             * Notheld
-             * @default false
-             */
-            notHeld: boolean;
-            /**
-             * Solicited
-             * @default false
-             */
-            solicited: boolean;
-            /**
-             * Modelcode
-             * @default
-             */
-            modelCode: string;
-            /** Ordercombolegs */
-            orderComboLegs?: components["schemas"]["OrderComboLeg"][];
-            /** Ordermiscoptions */
-            orderMiscOptions?: unknown[][];
-            /**
-             * Referencecontractid
-             * @default 0
-             */
-            referenceContractId: number;
-            /**
-             * Peggedchangeamount
-             * @default 0
-             */
-            peggedChangeAmount: number;
-            /**
-             * Ispeggedchangeamountdecrease
-             * @default false
-             */
-            isPeggedChangeAmountDecrease: boolean;
-            /**
-             * Referencechangeamount
-             * @default 0
-             */
-            referenceChangeAmount: number;
-            /**
-             * Referenceexchangeid
-             * @default
-             */
-            referenceExchangeId: string;
-            /**
-             * Adjustedordertype
-             * @default
-             */
-            adjustedOrderType: string;
-            /**
-             * Triggerprice
-             * @default 1.7976931348623157e+308
-             */
-            triggerPrice: number;
-            /**
-             * Adjustedstopprice
-             * @default 1.7976931348623157e+308
-             */
-            adjustedStopPrice: number;
-            /**
-             * Adjustedstoplimitprice
-             * @default 1.7976931348623157e+308
-             */
-            adjustedStopLimitPrice: number;
-            /**
-             * Adjustedtrailingamount
-             * @default 1.7976931348623157e+308
-             */
-            adjustedTrailingAmount: number;
-            /**
-             * Adjustabletrailingunit
-             * @default 0
-             */
-            adjustableTrailingUnit: number;
-            /**
-             * Lmtpriceoffset
-             * @default 1.7976931348623157e+308
-             */
-            lmtPriceOffset: number;
-            /** Conditions */
-            conditions?: components["schemas"]["OrderCondition"][];
-            /**
-             * Conditionscancelorder
-             * @default false
-             */
-            conditionsCancelOrder: boolean;
-            /**
-             * Conditionsignorerth
-             * @default false
-             */
-            conditionsIgnoreRth: boolean;
-            /**
-             * Extoperator
-             * @default
-             */
-            extOperator: string;
-            softDollarTier?: components["schemas"]["SoftDollarTier"];
-            /**
-             * Cashqty
-             * @default 1.7976931348623157e+308
-             */
-            cashQty: number;
-            /**
-             * Mifid2Decisionmaker
-             * @default
-             */
-            mifid2DecisionMaker: string;
-            /**
-             * Mifid2Decisionalgo
-             * @default
-             */
-            mifid2DecisionAlgo: string;
-            /**
-             * Mifid2Executiontrader
-             * @default
-             */
-            mifid2ExecutionTrader: string;
-            /**
-             * Mifid2Executionalgo
-             * @default
-             */
-            mifid2ExecutionAlgo: string;
-            /**
-             * Dontuseautopriceforhedge
-             * @default false
-             */
-            dontUseAutoPriceForHedge: boolean;
-            /**
-             * Isomscontainer
-             * @default false
-             */
-            isOmsContainer: boolean;
-            /**
-             * Discretionaryuptolimitprice
-             * @default false
-             */
-            discretionaryUpToLimitPrice: boolean;
-            /**
-             * Autocanceldate
-             * @default
-             */
-            autoCancelDate: string;
-            /**
-             * Filledquantity
-             * @default 1.7976931348623157e+308
-             */
-            filledQuantity: number;
-            /**
-             * Reffuturesconid
-             * @default 0
-             */
-            refFuturesConId: number;
-            /**
-             * Autocancelparent
-             * @default false
-             */
-            autoCancelParent: boolean;
-            /**
-             * Shareholder
-             * @default
-             */
-            shareholder: string;
-            /**
-             * Imbalanceonly
-             * @default false
-             */
-            imbalanceOnly: boolean;
-            /**
-             * Routemarketabletobbo
-             * @default false
-             */
-            routeMarketableToBbo: boolean;
-            /**
-             * Parentpermid
-             * @default 0
-             */
-            parentPermId: number;
-            /**
-             * Usepricemgmtalgo
-             * @default false
-             */
-            usePriceMgmtAlgo: boolean;
-            /**
-             * Duration
-             * @default 2147483647
-             */
-            duration: number;
-            /**
-             * Posttoats
-             * @default 2147483647
-             */
-            postToAts: number;
-            /**
-             * Advancederroroverride
-             * @default
-             */
-            advancedErrorOverride: string;
-            /**
-             * Manualordertime
-             * @default
-             */
-            manualOrderTime: string;
-            /**
-             * Mintradeqty
-             * @default 2147483647
-             */
-            minTradeQty: number;
-            /**
-             * Mincompetesize
-             * @default 2147483647
-             */
-            minCompeteSize: number;
-            /**
-             * Competeagainstbestoffset
-             * @default 1.7976931348623157e+308
-             */
-            competeAgainstBestOffset: number;
-            /**
-             * Midoffsetatwhole
-             * @default 1.7976931348623157e+308
-             */
-            midOffsetAtWhole: number;
-            /**
-             * Midoffsetathalf
-             * @default 1.7976931348623157e+308
-             */
-            midOffsetAtHalf: number;
+            /** Clearing Intent */
+            clearing_intent: string;
+            /** Algo Strategy */
+            algo_strategy: string;
+            /** What If */
+            what_if: boolean;
         };
-        /** OrderComboLeg */
-        OrderComboLeg: {
-            /**
-             * Price
-             * @default 1.7976931348623157e+308
-             */
-            price: number;
+        /** OrderStatusSchema */
+        OrderStatusSchema: {
+            /** Status */
+            status: string;
+            /** Filled */
+            filled: number;
+            /** Remaining */
+            remaining: number;
+            /** Avgfillprice */
+            avgFillPrice: number;
+            /** Permid */
+            permId: number;
+            /** Parentid */
+            parentId: number;
+            /** Lastfillprice */
+            lastFillPrice: number;
+            /** Clientid */
+            clientId: number;
+            /** Whyheld */
+            whyHeld: string;
+            /** Mktcapprice */
+            mktCapPrice: number;
+            /** Id */
+            id: number;
         };
-        /** OrderCondition */
-        OrderCondition: Record<string, never>;
-        /** SoftDollarTier */
-        SoftDollarTier: {
+        /** TradeLogEntrySchema */
+        TradeLogEntrySchema: {
             /**
-             * Name
-             * @default
+             * Time
+             * Format: date-time
              */
-            name: string;
-            /**
-             * Val
-             * @default
-             */
-            val: string;
-            /**
-             * Displayname
-             * @default
-             */
-            displayName: string;
-        };
-        /** TagValue */
-        TagValue: {
-            /** Tag */
-            tag: string;
-            /** Value */
-            value: string;
-        };
-        /** ValidationError */
-        ValidationError: {
-            /** Location */
-            loc: (string | number)[];
+            time: string;
+            /** Status */
+            status: string;
             /** Message */
-            msg: string;
-            /** Error Type */
-            type: string;
+            message: string;
+            /** Errorcode */
+            errorCode: number;
+            /** Id */
+            id: number;
+        };
+        /** TradeSchema */
+        TradeSchema: {
+            /** Id */
+            id: number;
+            /**
+             * Orders
+             * @default []
+             */
+            orders: components["schemas"]["OrderSchema"][];
+            /**
+             * Order Statuses
+             * @default []
+             */
+            order_statuses: components["schemas"]["OrderStatusSchema"][];
+            /**
+             * Logs
+             * @default []
+             */
+            logs: components["schemas"]["TradeLogEntrySchema"][];
         };
     };
     responses: never;
@@ -1047,7 +239,7 @@ export interface operations {
             };
         };
     };
-    read_account_summary_account_account__get: {
+    read_account_number_account_number_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -1062,7 +254,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": string;
                 };
             };
             /** @description Not found */
@@ -1074,7 +266,7 @@ export interface operations {
             };
         };
     };
-    read_orders_orders_orders__get: {
+    read_account_summary_account_summary_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -1089,7 +281,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": string[][];
                 };
             };
             /** @description Not found */
@@ -1101,18 +293,14 @@ export interface operations {
             };
         };
     };
-    create_bracket_order_orders_orders_bracket_order_post: {
+    read_trades_trades__get: {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["BracketOrderSchema"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description Successful Response */
             200: {
@@ -1120,11 +308,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": [
-                        components["schemas"]["Order"],
-                        components["schemas"]["Order"],
-                        components["schemas"]["Order"]
-                    ];
+                    "application/json": components["schemas"]["TradeSchema"][];
                 };
             };
             /** @description Not found */
@@ -1133,15 +317,6 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
             };
         };
     };
