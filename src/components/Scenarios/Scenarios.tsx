@@ -16,7 +16,7 @@ import {
     BracketOrderSchemaFormValues,
     BracketOrderSchema,
     BracketOrderSchemaInputData,
-    InputItem
+    InputItem, TakeProfitLevel
 } from '@/components/Scenarios/Scenarios.util';
 import {Input, Select} from "@/components/ui/input";
 
@@ -34,43 +34,65 @@ const Scenarios: React.FC = () => {
         console.log(data);
     };
 
-    const chooseInputToRender = (item: InputItem,field: any) => {
-        console.log(field)
-        switch (item.type) {
-            case 'select':
-                return (
-                    <Select
-                        className="w-full border border-gray-300 rounded-md p-2"
-                        options={item.options || []}
-                        {...item}
-                    />
-                );
-            default:
-                return (
-                    <Input
-                        {...item}
-                        {...field}
-                        type="text"
-                        className="w-full border border-gray-300 rounded-md p-2"
-                        placeholder={item.placeholder}
-                    />
-                );
+    const chooseInputToRender = (item: InputItem, field: any) => {
+        // if (item.type === 'select') {
+        //     console.log(item)
+        //     return (
+        //         <Select
+        //             className="w-full border border-gray-300 rounded-md p-2"
+        //             options={item.options || []}
+        //             {...item}
+        //             {...field}
+        //         />
+        //     );
+        // }
+        if (item.type === 'array') {
+            return (
+                <Input
+                    {...item}
+                    {...field}
+                    type="text"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    placeholder={item.placeholder}
+                />
+            );
         }
+
+        if (item.type === 'number') {
+            return (
+                <Input
+                    {...item}
+                    {...field}
+                    type="number"
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    placeholder={item.placeholder}
+                />
+            );
+        }
+
+        return (
+            <Input
+                {...item}
+                {...field}
+                type="text"
+                className="w-full border border-gray-300 rounded-md p-2"
+                placeholder={item.placeholder}
+            />
+        );
     }
 
 
-    const renderErrorMessages = (index: number) => {
-        const errorFields = ["price", "quantity"];
-        return errorFields.map(field => (
-            errors.takeProfitLevels?.[index]?.[field] && (
-                <span key={field} className="text-red-500 text-sm mt-1 block">
-                    {errors.takeProfitLevels[index][field]?.message}
-                </span>
-            )
-        ));
-    };
+    // const renderErrorMessages = (index: number) => {
+    //     const errorFields = ["price", "quantity"];
+    //     return errorFields.map(field => (
+    //         errors.takeProfitLevels?.[index]?.[field] && (
+    //             <span key={field} className="text-red-500 text-sm mt-1 block">
+    //                 {errors.takeProfitLevels[index][field]?.message}
+    //             </span>
+    //         )
+    //     ));
+    // };
 
-    console.log(errors.takeProfitLevels)
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
@@ -98,9 +120,10 @@ const Scenarios: React.FC = () => {
                                                 <Controller
                                                     name={item.name}
                                                     control={control}
+                                                    defaultValue={item.default}
                                                     render={({field}) => (
                                                         <>
-                                                            {chooseInputToRender(item,field)}
+                                                            {chooseInputToRender(item, field)}
                                                             {errors[item.name] && (
                                                                 <span className="text-red-500 text-sm mt-1 block">
                                                                     {errors[item.name]?.message}
@@ -115,41 +138,30 @@ const Scenarios: React.FC = () => {
                                                 <label className="block text-sm font-medium mb-1">
                                                     Take Profit Levels
                                                 </label>
-                                                {fields.map((field, index: number) => (
-                                                    <div key={field.id} className="mb-4">
-                                                        <div className="flex">
-                                                            <Controller
-                                                                name={`takeProfitLevels.${index}.price`}
-                                                                control={control}
-                                                                render={({field}) => (
-                                                                    <Input
-                                                                        {...field}
-                                                                        type="number"
-                                                                        className="w-full border border-gray-300 rounded-md p-2"
-                                                                        placeholder="Take Profit Price"
-                                                                    />
-                                                                )}
-                                                            />
-                                                            <Controller
-                                                                name={`takeProfitLevels.${index}.quantity`}
-                                                                control={control}
-                                                                render={({field}) => (
-                                                                    <Input
-                                                                        {...field}
-                                                                        type="number"
-                                                                        className="w-full border border-gray-300 rounded-md p-2 ml-2"
-                                                                        placeholder="Quantity"
-                                                                    />
-                                                                )}
-                                                            />
-                                                            <Button type="button" variant="outline" className="ml-2"
-                                                                    onClick={() => remove(index)}>
-                                                                Remove
-                                                            </Button>
-                                                        </div>
-                                                        {renderErrorMessages(index)}
-                                                    </div>
-                                                ))}
+                                                {fields.map((profitTakerField, index: number) => {
+                                                        return (
+                                                            <div key={profitTakerField.id} className="mb-4">
+                                                                <div className="flex">
+                                                                    {Object.entries(profitTakerField).map(([key, value]) => (
+                                                                        <Controller
+                                                                            key={key}
+                                                                            name={`takeProfitLevels.${index}.${key as keyof TakeProfitLevel}`}
+                                                                            control={control}
+                                                                            render={({field}) => (
+                                                                                chooseInputToRender(item, field)
+                                                                            )}
+                                                                        />
+                                                                    ))}
+                                                                    <Button type="button" variant="outline" className="ml-2"
+                                                                            onClick={() => remove(index)}>
+                                                                        Remove
+                                                                    </Button>
+                                                                </div>
+                                                                {/*{renderErrorMessages(index)}*/}
+                                                            </div>
+                                                        )
+                                                    }
+                                                )}
                                                 <Button type="button" variant="outline"
                                                         onClick={() => append({price: 0, quantity: 0})}>
                                                     Add Take Profit Level
@@ -175,6 +187,6 @@ const Scenarios: React.FC = () => {
             </Dialog.Portal>
         </Dialog.Root>
     );
-};
+}
 
 export default Scenarios;

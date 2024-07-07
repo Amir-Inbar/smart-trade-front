@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { StrategyType, Ticker } from "@/schemas/types";
+import {StrategyType, Ticker} from "@/schemas/types";
 
 export type TakeProfitLevel = {
     price: number;
@@ -7,8 +7,8 @@ export type TakeProfitLevel = {
 };
 
 export type BracketOrderSchemaFormValues = {
-    ticker: string;
-    strategy: string;
+    ticker: Ticker;
+    strategy: StrategyType;
     enterPrice: number;
     stopPrice: number;
     takeProfitLevels: TakeProfitLevel[];
@@ -24,10 +24,10 @@ export type InputItemOptions = {
 export type InputItem = {
     name: keyof BracketOrderSchemaFormValues;
     label: string;
-    placeholder: string;
+    placeholder?: string;
     required: boolean;
     type?: string;
-    default?: string;
+    default?: string | number
     options?: InputItemOptions[];
 };
 
@@ -54,9 +54,9 @@ export const BracketOrderSchemaInputData: InputItem[] = [
         type: 'select',
         default: Ticker.MES,
         options: [
-            { value: Ticker.MES, label: 'MES' },
-            { value: Ticker.MNQ, label: 'MNQ', disabled: true },
-            { value: Ticker.M2K, label: 'M2K', disabled: true },
+            {value: Ticker.MES, label: 'MES'},
+            {value: Ticker.MNQ, label: 'MNQ', disabled: true},
+            {value: Ticker.M2K, label: 'M2K', disabled: true},
         ],
     },
     {
@@ -67,13 +67,14 @@ export const BracketOrderSchemaInputData: InputItem[] = [
         type: 'select',
         default: StrategyType.FALSE_BREAKOUT,
         options: [
-            { value: StrategyType.FALSE_BREAKOUT, label: 'False Breakout' },
+            {value: StrategyType.FALSE_BREAKOUT, label: 'False Breakout'},
         ],
     },
     {
         name: 'enterPrice',
         label: 'Enter Price',
         placeholder: 'Enter the price',
+        default: '0',
         required: true,
         type: 'number',
     },
@@ -82,6 +83,7 @@ export const BracketOrderSchemaInputData: InputItem[] = [
         label: 'Stop Price',
         placeholder: 'Enter the stop price',
         required: true,
+        default: '0',
         type: 'number',
     },
     {
@@ -96,6 +98,7 @@ export const BracketOrderSchemaInputData: InputItem[] = [
         label: 'Description',
         placeholder: 'Describe why you chose the break point level',
         required: true,
+        default: '',
         type: 'text',
     },
 ];
