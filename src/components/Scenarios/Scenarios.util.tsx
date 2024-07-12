@@ -1,18 +1,23 @@
 import * as yup from 'yup';
 import {StrategyType, Ticker} from "@/schemas/types";
 
+
 export type TakeProfitLevel = {
     price: number;
     quantity: number;
 };
 
 export type BracketOrderSchemaFormValues = {
-    ticker: Ticker;
-    strategy: StrategyType;
+    ticker: string;
+    strategy: string;
     enterPrice: number;
     stopPrice: number;
-    takeProfitLevels: TakeProfitLevel[];
+    takeProfitLevels: {
+        price: number;
+        quantity: number;
+    }[];
     description: string;
+    constructQuantity: number;
 };
 
 export type InputItemOptions = {
@@ -26,23 +31,25 @@ export type InputItem = {
     label: string;
     placeholder?: string;
     required: boolean;
-    type?: string;
-    default?: string | number
+    type?: 'text' | 'number' | 'select' | 'array';
+    default?: string | number;
     options?: InputItemOptions[];
 };
 
+
 export const BracketOrderSchema = yup.object().shape({
-    ticker: yup.string().required('Please enter the ticker').default('MES'),
+    ticker: yup.string().required('Please select a ticker').default(Ticker.MES),
     strategy: yup.string().required('Please select a strategy').default(StrategyType.FALSE_BREAKOUT),
     enterPrice: yup.number().required('Please enter the entry price').positive(),
     stopPrice: yup.number().required('Please enter the stop price').positive(),
     takeProfitLevels: yup.array().of(
         yup.object().shape({
-            price: yup.number().required('Please enter the take profit price').positive(),
-            quantity: yup.number().required('Please enter the quantity').positive().integer(),
+            price: yup.number().required('Please enter the price').positive(),
+            quantity: yup.number().required('Please enter the quantity').positive(),
         })
-    ).min(1, 'Please enter at least one take profit level'),
+    ).required('Please enter the take profit levels'),
     description: yup.string().required('Please describe why you chose the break point level'),
+    constructQuantity: yup.number().required('Please enter the construct quantity').positive(), // Add this line
 });
 
 export const BracketOrderSchemaInputData: InputItem[] = [
@@ -54,9 +61,9 @@ export const BracketOrderSchemaInputData: InputItem[] = [
         type: 'select',
         default: Ticker.MES,
         options: [
-            {value: Ticker.MES, label: 'MES'},
-            {value: Ticker.MNQ, label: 'MNQ', disabled: true},
-            {value: Ticker.M2K, label: 'M2K', disabled: true},
+            { value: Ticker.MES, label: 'MES' },
+            { value: Ticker.MNQ, label: 'MNQ', disabled: true },
+            { value: Ticker.M2K, label: 'M2K', disabled: true },
         ],
     },
     {
@@ -67,24 +74,24 @@ export const BracketOrderSchemaInputData: InputItem[] = [
         type: 'select',
         default: StrategyType.FALSE_BREAKOUT,
         options: [
-            {value: StrategyType.FALSE_BREAKOUT, label: 'False Breakout'},
+            { value: StrategyType.FALSE_BREAKOUT, label: 'False Breakout' },
         ],
     },
     {
         name: 'enterPrice',
         label: 'Enter Price',
         placeholder: 'Enter the price',
-        default: '0',
         required: true,
         type: 'number',
+        default: 0,
     },
     {
         name: 'stopPrice',
         label: 'Stop Price',
         placeholder: 'Enter the stop price',
         required: true,
-        default: '0',
         type: 'number',
+        default: 0,
     },
     {
         name: 'takeProfitLevels',
@@ -98,7 +105,7 @@ export const BracketOrderSchemaInputData: InputItem[] = [
         label: 'Description',
         placeholder: 'Describe why you chose the break point level',
         required: true,
-        default: '',
         type: 'text',
+        default: '',
     },
 ];

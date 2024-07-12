@@ -34,7 +34,7 @@ const selectVariants = cva(
 export interface SelectProps
     extends InputHTMLAttributes<HTMLSelectElement>,
         VariantProps<typeof selectVariants> {
-    options: InputItemOptions[]
+    options?: InputItemOptions[]
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
@@ -42,9 +42,10 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         <select
             ref={ref}
             className={cn(selectVariants(), className)}
+            disabled={props.disabled}
             {...props}
         >
-            {props.options.map((option) => (
+            {props.options?.map((option) => (
                 <option key={option.value} value={option.value} disabled={option.disabled}>
                     {option.label}
                 </option>

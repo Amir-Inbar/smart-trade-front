@@ -33,6 +33,7 @@ const CustomDialogContent = React.forwardRef<
             className={cn(
                 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-4',
                 'border rounded-2xl shadow-lg',
+                theme.theme === 'dark' ? 'bg-zinc-50 dark:bg-zinc-900' : 'bg-white',
                 className
             )}
             {...props}

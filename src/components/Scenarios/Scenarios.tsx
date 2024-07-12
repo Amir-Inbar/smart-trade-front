@@ -35,21 +35,18 @@ const Scenarios: React.FC = () => {
     };
 
     const chooseInputToRender = (item: InputItem, field: any) => {
-        // if (item.type === 'select') {
-        //     console.log(item)
-        //     return (
-        //         <Select
-        //             className="w-full border border-gray-300 rounded-md p-2"
-        //             options={item.options || []}
-        //             {...item}
-        //             {...field}
-        //         />
-        //     );
-        // }
+        if (item.type === 'select') {
+            return (
+                <Select
+                    className="w-full border border-gray-300 rounded-md p-2"
+                    // options={item.options}
+                    {...field}
+                />
+            );
+        }
         if (item.type === 'array') {
             return (
                 <Input
-                    {...item}
                     {...field}
                     type="text"
                     className="w-full border border-gray-300 rounded-md p-2"
@@ -61,7 +58,6 @@ const Scenarios: React.FC = () => {
         if (item.type === 'number') {
             return (
                 <Input
-                    {...item}
                     {...field}
                     type="number"
                     className="w-full border border-gray-300 rounded-md p-2"
@@ -124,11 +120,11 @@ const Scenarios: React.FC = () => {
                                                     render={({field}) => (
                                                         <>
                                                             {chooseInputToRender(item, field)}
-                                                            {errors[item.name] && (
-                                                                <span className="text-red-500 text-sm mt-1 block">
-                                                                    {errors[item.name]?.message}
-                                                                </span>
-                                                            )}
+                                                            {/*{errors[item.name] && (*/}
+                                                            {/*    <span className="text-red-500 text-sm mt-1 block">*/}
+                                                            {/*        {errors[item.name]?.message}*/}
+                                                            {/*    </span>*/}
+                                                            {/*)}*/}
                                                         </>
                                                     )}
                                                 />
@@ -139,20 +135,32 @@ const Scenarios: React.FC = () => {
                                                     Take Profit Levels
                                                 </label>
                                                 {fields.map((profitTakerField, index: number) => {
+                                                        const takeProfitLevels = Object.entries(profitTakerField).filter(([key]) => key !== 'id');
                                                         return (
                                                             <div key={profitTakerField.id} className="mb-4">
-                                                                <div className="flex">
-                                                                    {Object.entries(profitTakerField).map(([key, value]) => (
-                                                                        <Controller
-                                                                            key={key}
-                                                                            name={`takeProfitLevels.${index}.${key as keyof TakeProfitLevel}`}
-                                                                            control={control}
-                                                                            render={({field}) => (
-                                                                                chooseInputToRender(item, field)
-                                                                            )}
-                                                                        />
-                                                                    ))}
-                                                                    <Button type="button" variant="outline" className="ml-2"
+                                                                <div className="flex items-center">
+                                                                    {takeProfitLevels.map(([key, value]) => {
+                                                                            return <div key={key} className="flex flex-col">
+                                                                                <label
+                                                                                    className="block text-sm font-medium mb-1"
+                                                                                    htmlFor={key}>
+                                                                                    {key}
+                                                                                </label>
+                                                                                <Controller
+                                                                                    key={key}
+                                                                                    name={`takeProfitLevels.${index}.${key as keyof TakeProfitLevel}`}
+                                                                                    control={control}
+                                                                                    render={({field}) => (
+                                                                                        <div className='mr-4'>
+                                                                                            {chooseInputToRender(item, field)}
+                                                                                        </div>
+                                                                                    )}
+                                                                                />
+                                                                            </div>
+                                                                        }
+                                                                    )}
+                                                                    <Button type="button" variant="outline"
+                                                                            className="mt-5 p-2"
                                                                             onClick={() => remove(index)}>
                                                                         Remove
                                                                     </Button>
