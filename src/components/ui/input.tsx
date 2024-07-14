@@ -79,4 +79,28 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 
 Textarea.displayName = "Textarea";
 
-export {Input, Select, Textarea};
+// Checkbox
+
+const checkboxVariants = cva(
+    "rounded text-primary focus:ring-primary",
+);
+
+export interface CheckboxProps
+    extends InputHTMLAttributes<HTMLInputElement>,
+        VariantProps<typeof checkboxVariants> {
+}
+
+const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
+    ({className, ...props}, ref) => (
+        <input
+            ref={ref}
+            type="checkbox"
+            className={cn(checkboxVariants(), className)}
+            {...props}
+        />
+    )
+);
+
+Checkbox.displayName = "Checkbox";
+
+export {Input, Select, Textarea, Checkbox};

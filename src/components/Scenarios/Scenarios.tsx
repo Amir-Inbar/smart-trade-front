@@ -18,9 +18,11 @@ import {
     BracketOrderSchemaInputData,
     InputItem, TakeProfitLevel
 } from '@/components/Scenarios/Scenarios.util';
-import {Input, Select} from "@/components/ui/input";
+import {Checkbox, Input, Select} from "@/components/ui/input";
+import {useCreateTradeMutation} from "@/store/api/tradeApi";
 
 const Scenarios: React.FC = () => {
+    const [createTrade] = useCreateTradeMutation();
     const {handleSubmit, formState: {errors}, control} = useForm<BracketOrderSchemaFormValues>({
         resolver: yupResolver(BracketOrderSchema),
     });
@@ -31,7 +33,7 @@ const Scenarios: React.FC = () => {
     });
 
     const onSubmit: SubmitHandler<BracketOrderSchemaFormValues> = data => {
-        console.log(data);
+        createTrade(data);
     };
 
     const chooseInputToRender = (item: InputItem, field: any) => {
@@ -39,7 +41,7 @@ const Scenarios: React.FC = () => {
             return (
                 <Select
                     className="w-full border border-gray-300 rounded-md p-2"
-                    // options={item.options}
+                    options={item.options}
                     {...field}
                 />
             );
@@ -64,6 +66,14 @@ const Scenarios: React.FC = () => {
                     placeholder={item.placeholder}
                 />
             );
+        }
+
+        if (item.type === 'checkbox') {
+            return <Checkbox
+                {...field}
+                className="w-full border border-gray-300 rounded-md p-2"
+                placeholder={item.placeholder}
+            />
         }
 
         return (

@@ -9,6 +9,7 @@ export type TakeProfitLevel = {
 
 export type BracketOrderSchemaFormValues = {
     ticker: string;
+    action: string;
     strategy: string;
     enterPrice: number;
     stopPrice: number;
@@ -31,7 +32,7 @@ export type InputItem = {
     label: string;
     placeholder?: string;
     required: boolean;
-    type?: 'text' | 'number' | 'select' | 'array';
+    type?: 'text' | 'number' | 'select' | 'array' | 'checkbox';
     default?: string | number;
     options?: InputItemOptions[];
 };
@@ -39,6 +40,7 @@ export type InputItem = {
 
 export const BracketOrderSchema = yup.object().shape({
     ticker: yup.string().required('Please select a ticker').default(Ticker.MES),
+    action: yup.string().required('Please select an action').default('BUY'),
     strategy: yup.string().required('Please select a strategy').default(StrategyType.FALSE_BREAKOUT),
     enterPrice: yup.number().required('Please enter the entry price').positive(),
     stopPrice: yup.number().required('Please enter the stop price').positive(),
@@ -64,6 +66,18 @@ export const BracketOrderSchemaInputData: InputItem[] = [
             { value: Ticker.MES, label: 'MES' },
             { value: Ticker.MNQ, label: 'MNQ', disabled: true },
             { value: Ticker.M2K, label: 'M2K', disabled: true },
+        ],
+    },
+    {
+        name: 'action',
+        label: 'Action',
+        placeholder: 'Select your action',
+        required: true,
+        type: 'select',
+        default: 'BUY',
+        options: [
+            { value: 'BUY', label: 'BUY' },
+            { value: 'SELL', label: 'SELL' },
         ],
     },
     {
