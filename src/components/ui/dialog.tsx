@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import {Cross2Icon} from '@radix-ui/react-icons';
 import {cn} from '@/lib/utils';
 import {useTheme} from 'next-themes';
@@ -117,6 +117,15 @@ const CustomDialogCloseButton = React.forwardRef<
 ));
 CustomDialogCloseButton.displayName = 'CustomDialogCloseButton';
 
+const CustomDialogForm = forwardRef<
+    HTMLFormElement,
+    React.ComponentPropsWithoutRef<'form'>
+>(({className, ...props}, ref) => (
+    <form ref={ref} className={cn('mt-4', className)} {...props} />
+));
+
+CustomDialogForm.displayName = 'CustomDialogForm';
+
 export {
     CustomDialog,
     CustomDialogContent,
@@ -126,4 +135,5 @@ export {
     CustomDialogContentWrapper,
     CustomDialogFooter,
     CustomDialogCloseButton,
+    CustomDialogForm,
 };

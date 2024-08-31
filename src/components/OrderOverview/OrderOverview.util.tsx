@@ -1,124 +1,69 @@
-import {MRT_ColumnDef, MRT_Row, MRT_TableInstance} from "mantine-react-table";
-import {OrderSchema} from "@/schemas/types";
+import {MRT_ColumnDef, MRT_Row} from "mantine-react-table";
+import {ScenarioSchema, TakeProfitLevelSchema} from "@/schemas/types";
 
-export const getOrderOverviewColumns = () => {
-    const orderOverviewColumns: MRT_ColumnDef<OrderSchema>[] = [
+
+export const getScenarioColumns = (): MRT_ColumnDef<ScenarioSchema>[]  => {
+    return [
         {
             accessorKey: 'id',
-            header: 'Id',
+            header: 'ID'
         },
         {
-            accessorKey: 'trade_id',
-            header: 'Trade Id',
+            accessorKey: 'contract_id',
+            header: 'Contract ID',
         },
         {
-            accessorKey: 'client_id',
-            header: 'Client Id',
+            accessorKey: 'is_quality_scenario',
+            header: 'Quality Scenario',
         },
         {
             accessorKey: 'action',
             header: 'Action',
         },
         {
-            accessorKey: 'total_quantity',
-            header: 'Total Quantity',
-            AggregatedCell: ({
-                                 row,
-                                 table,
-                             }: {
-                row: MRT_Row<OrderSchema>;
-                table: MRT_TableInstance<OrderSchema>;
-            }) => (
-                row.getLeafRows().reduce((acc, v) => acc + (v.original.total_quantity || 0), 0)
-            ),
+            accessorKey: 'select_strategy',
+            header: 'Select Strategy',
         },
         {
-            accessorKey: 'order_type',
-            header: 'Order Type',
+            accessorKey: 'break_down_price',
+            header: 'Break Down Price',
         },
         {
-            accessorKey: 'lmt_price',
-            header: 'Lmt Price',
+            accessorKey: 'enter_price',
+            header: 'Enter Price',
         },
         {
-            accessorKey: 'tif',
-            header: 'Tif',
+            accessorKey: 'stop_price',
+            header: 'Stop Price',
         },
         {
-            accessorKey: 'oca_group',
-            header: 'Oca Group',
-            AggregatedCell: ({
-                                    row,
-                                    table,
-                                }: {
-                    row: MRT_Row<OrderSchema>;
-                    table: MRT_TableInstance<OrderSchema>;
-                }) => {
-                    return row.getLeafRows()[0].original.oca_group;
+            accessorKey: 'stop_price_mode',
+            header: 'Stop Price Mode',
+        },
+        {
+            accessorKey: 'take_profit_levels',
+            header: 'Take Profit Levels',
+            Cell: ({row: {original}}: { row: MRT_Row<ScenarioSchema> }) => {
+                if (!original.take_profit_levels) return <span/>;
+                return (
+                    <span>
+                        {original.take_profit_levels.map((level: TakeProfitLevelSchema) => (
+                            <span key={level.id}>{level.price}</span>
+                        ))}
+                    </span>
+                );
             }
         },
         {
-            accessorKey: 'order_ref',
-            header: 'Order Ref',
+            accessorKey: 'description',
+            header: 'Description',
         },
         {
-            accessorKey: 'transmit',
-            header: 'Transmit',
-        },
-        {
-            accessorKey: 'account',
-            header: 'Account',
-            AggregatedCell: ({
-                                 row,
-                                 table,
-                             }: {
-                row: MRT_Row<OrderSchema>;
-                table: MRT_TableInstance<OrderSchema>;
-            }) => {
-                return row.getLeafRows()[0].original.account;
-            }
-        },
-        {
-            accessorKey: 'clearing_intent',
-            header: 'Clearing Intent',
-        },
-        {
-            accessorKey: 'algo_strategy',
-            header: 'Algo Strategy',
-        },
-        {
-            accessorKey: 'what_if',
-            header: 'What If',
-        },
-        {
-            accessorKey: 'aggregate',
-            header: 'Total Cost per Trade',
-            AggregatedCell: ({
-                                 row,
-                                 table,
-                             }: {
-                row: MRT_Row<OrderSchema>;
-                table: MRT_TableInstance<OrderSchema>;
-            }) => (
-                <>
-                    Total by{" "}
-                    {table.getColumn(row.groupingColumnId ?? "").columnDef.header}:{" "}
-                    {row
-                        .getLeafRows()
-                        .reduce((acc, v) => acc + (v.original.total_quantity || 0), 0)
-                        .toLocaleString("en-US", {
-                            style: "currency",
-                            currency: "USD",
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                        })}
-                </>
-            ),
+            accessorKey: 'quantity',
+            header: 'Quantity',
         },
     ];
-    return orderOverviewColumns;
 }
-
 
 export const OrderDataInitialState = {
     enableStickyHeader: true,
@@ -131,9 +76,9 @@ export const OrderDataInitialState = {
     enableHiding: true,
     paginationDisplayMode: "pages",
     initialState: {
-        grouping: ["trade_id"],
         density: "xs",
         expanded: true,
         pagination: {pageIndex: 0, pageSize: 20},
     },
 };
+

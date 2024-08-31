@@ -4,15 +4,18 @@
  */
 
 export interface paths {
-    "/": {
+    "/root/": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Root */
-        get: operations["root__get"];
+        /**
+         * Root
+         * @description Root endpoint returning a welcome message.
+         */
+        get: operations["root_root__get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -21,15 +24,18 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/health": {
+    "/root/health": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Health */
-        get: operations["health_health_get"];
+        /**
+         * Health
+         * @description Health check endpoint returning OK status.
+         */
+        get: operations["health_root_health_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -92,103 +98,260 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/scenarios/scenarios/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Search Scenarios */
+        post: operations["search_scenarios_scenarios_scenarios_search_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/scenarios/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Scenario */
+        post: operations["create_scenario_scenarios__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/scenarios{scenario_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Scenario */
+        get: operations["read_scenario_scenarios_scenario_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/scenarios/{scenario_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Scenario */
+        put: operations["update_scenario_scenarios__scenario_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** ContractSchema */
+        ContractSchema: {
+            /** Id */
+            id: number;
+            contract?: components["schemas"]["FutureContracts"];
+            /** Active */
+            active?: boolean;
+            /** Exchange */
+            exchange?: string;
+            /** Currency */
+            currency?: string;
+            /** Last Trade Date Or Contract Month */
+            last_trade_date_or_contract_month?: string;
+        };
+        /**
+         * FutureContracts
+         * @description An enumeration.
+         * @enum {unknown}
+         */
+        FutureContracts: "ES" | "NQ" | "YM" | "RTY" | "MES" | "MNQ" | "MYM" | "M2K" | "MGC" | "MCL";
+        /** HTTPValidationError */
+        HTTPValidationError: {
+            /** Detail */
+            detail?: components["schemas"]["ValidationError"][];
+        };
         /** OrderSchema */
         OrderSchema: {
             /** Id */
             id: number;
             /** Trade Id */
-            trade_id: number;
+            trade_id?: number;
             /** Client Id */
-            client_id: number;
+            client_id?: number;
             /** Action */
-            action: string;
+            action?: string;
             /** Total Quantity */
-            total_quantity: number;
+            total_quantity?: number;
             /** Order Type */
-            order_type: string;
+            order_type?: string;
             /** Lmt Price */
-            lmt_price: number;
-            /** Tif */
-            tif: string;
-            /** Oca Group */
-            oca_group: string;
-            /** Order Ref */
-            order_ref: string;
-            /** Transmit */
-            transmit: boolean;
+            lmt_price?: number;
             /** Account */
-            account: string;
-            /** Clearing Intent */
-            clearing_intent: string;
-            /** Algo Strategy */
-            algo_strategy: string;
-            /** What If */
-            what_if: boolean;
+            account?: string;
         };
-        /** OrderStatusSchema */
-        OrderStatusSchema: {
-            /** Status */
-            status: string;
-            /** Filled */
-            filled: number;
-            /** Remaining */
-            remaining: number;
-            /** Avgfillprice */
-            avgFillPrice: number;
-            /** Permid */
-            permId: number;
-            /** Parentid */
-            parentId: number;
-            /** Lastfillprice */
-            lastFillPrice: number;
-            /** Clientid */
-            clientId: number;
-            /** Whyheld */
-            whyHeld: string;
-            /** Mktcapprice */
-            mktCapPrice: number;
-            /** Id */
-            id: number;
-        };
-        /** TradeLogEntrySchema */
-        TradeLogEntrySchema: {
+        /** ScenarioSchema */
+        ScenarioSchema: {
             /**
-             * Time
-             * Format: date-time
+             * Id
+             * Format: uuid
              */
-            time: string;
-            /** Status */
-            status: string;
-            /** Message */
-            message: string;
-            /** Errorcode */
-            errorCode: number;
+            id: string;
+            /** Contract Id */
+            contract_id?: number;
+            /** Action */
+            action?: string;
+            select_strategy?: components["schemas"]["StrategyType"];
+            /** Break Down Price */
+            break_down_price?: number;
+            /** Enter Price */
+            enter_price?: number;
+            /** Stop Price */
+            stop_price?: number;
+            stop_price_mode?: components["schemas"]["StopPriceMode"];
+            /** Description */
+            description?: string;
+            /** Is Quality Scenario */
+            is_quality_scenario?: number;
+            /** Take Profit Levels */
+            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
+        };
+        /** ScenarioSchemaCreate */
+        ScenarioSchemaCreate: {
+            /** Id */
+            id?: number;
+            /** Contract Id */
+            contract_id?: number;
+            /** Action */
+            action?: string;
+            select_strategy?: components["schemas"]["StrategyType"];
+            /** Break Down Price */
+            break_down_price?: number;
+            /** Enter Price */
+            enter_price?: number;
+            /** Stop Price */
+            stop_price?: number;
+            stop_price_mode?: components["schemas"]["StopPriceMode"];
+            /** Description */
+            description?: string;
+            /** Is Quality Scenario */
+            is_quality_scenario?: number;
+            /** Take Profit Levels */
+            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
+        };
+        /** ScenarioSchemaSearch */
+        ScenarioSchemaSearch: {
+            /** Id */
+            id?: number;
+            /** Contract Id */
+            contract_id?: number;
+            /** Action */
+            action?: string;
+            select_strategy?: components["schemas"]["StrategyType"];
+            /** Break Down Price */
+            break_down_price?: number;
+            /** Enter Price */
+            enter_price?: number;
+            /** Stop Price */
+            stop_price?: number;
+            stop_price_mode?: components["schemas"]["StopPriceMode"];
+            /** Description */
+            description?: string;
+            /** Is Quality Scenario */
+            is_quality_scenario?: number;
+            /** Take Profit Levels */
+            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
+        };
+        /** ScenarioSchemaUpdate */
+        ScenarioSchemaUpdate: {
+            /** Id */
+            id?: number;
+            /** Contract Id */
+            contract_id?: number;
+            /** Action */
+            action?: string;
+            select_strategy?: components["schemas"]["StrategyType"];
+            /** Break Down Price */
+            break_down_price?: number;
+            /** Enter Price */
+            enter_price?: number;
+            /** Stop Price */
+            stop_price?: number;
+            stop_price_mode?: components["schemas"]["StopPriceMode"];
+            /** Description */
+            description?: string;
+            /** Is Quality Scenario */
+            is_quality_scenario?: number;
+            /** Take Profit Levels */
+            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
+        };
+        /**
+         * StopPriceMode
+         * @description An enumeration.
+         * @enum {unknown}
+         */
+        StopPriceMode: "AUTOMATIC" | "MANUAL";
+        /**
+         * StrategyType
+         * @description An enumeration.
+         * @enum {unknown}
+         */
+        StrategyType: "FALSE_BREAKOUT";
+        /** TakeProfitLevelSchema */
+        TakeProfitLevelSchema: {
             /** Id */
             id: number;
+            /** Scenario Id */
+            scenario_id: number;
+            /** Price */
+            price: number;
+            /** Quantity */
+            quantity: number;
         };
         /** TradeSchema */
         TradeSchema: {
-            /** Id */
-            id: number;
             /**
-             * Orders
-             * @default []
+             * Id
+             * Format: uuid
              */
-            orders: components["schemas"]["OrderSchema"][];
-            /**
-             * Order Statuses
-             * @default []
-             */
-            order_statuses: components["schemas"]["OrderStatusSchema"][];
-            /**
-             * Logs
-             * @default []
-             */
-            logs: components["schemas"]["TradeLogEntrySchema"][];
+            id: string;
+            scenario_id?: components["schemas"]["ScenarioSchema"];
+            contract_id?: components["schemas"]["ContractSchema"];
+            /** Orders */
+            orders?: components["schemas"]["OrderSchema"][];
+        };
+        /** ValidationError */
+        ValidationError: {
+            /** Location */
+            loc: (string | number)[];
+            /** Message */
+            msg: string;
+            /** Error Type */
+            type: string;
         };
     };
     responses: never;
@@ -199,7 +362,7 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    root__get: {
+    root_root__get: {
         parameters: {
             query?: never;
             header?: never;
@@ -217,9 +380,16 @@ export interface operations {
                     "application/json": unknown;
                 };
             };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
-    health_health_get: {
+    health_root_health_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -236,6 +406,13 @@ export interface operations {
                 content: {
                     "application/json": unknown;
                 };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -317,6 +494,169 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    search_scenarios_scenarios_scenarios_search_post: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ScenarioSchemaSearch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioSchema"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_scenario_scenarios__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScenarioSchemaCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioSchemaCreate"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_scenario_scenarios_scenario_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                scenario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ScenarioSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_scenario_scenarios__scenario_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                scenario_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ScenarioSchemaUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };

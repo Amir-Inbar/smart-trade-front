@@ -7,23 +7,23 @@ import {
     CustomDialogTitle,
     CustomDialogDescription,
     CustomDialogContentWrapper,
-    CustomDialogFooter,
+    CustomDialogFooter, CustomDialogForm,
 } from '@/components/ui/dialog';
 import {Button} from '@/components/ui/button';
 import {useForm, SubmitHandler, Controller, useFieldArray} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {
-    BracketOrderSchemaFormValues,
+    ScenarioSchemaFormValues,
     BracketOrderSchema,
     BracketOrderSchemaInputData,
     InputItem, TakeProfitLevel
 } from '@/components/Scenarios/Scenarios.util';
 import {Checkbox, Input, Select} from "@/components/ui/input";
-import {useCreateTradeMutation} from "@/store/api/tradeApi";
+import {useCreateScenarioMutation} from "@/store/api/scenarioApi";
 
 const Scenarios: React.FC = () => {
-    const [createTrade] = useCreateTradeMutation();
-    const {handleSubmit, formState: {errors}, control} = useForm<BracketOrderSchemaFormValues>({
+    const [createScenario] = useCreateScenarioMutation();
+    const {handleSubmit, reset: resetCreateScenario, formState: {errors}, control} = useForm<ScenarioSchemaFormValues>({
         resolver: yupResolver(BracketOrderSchema),
     });
 
@@ -32,9 +32,13 @@ const Scenarios: React.FC = () => {
         name: "takeProfitLevels",
     });
 
-    const onSubmit: SubmitHandler<BracketOrderSchemaFormValues> = data => {
-        createTrade(data);
-    };
+    const onSubmit: SubmitHandler<ScenarioSchemaFormValues> = async (data) => {
+        try {
+            createScenario(data);
+        } catch (error) {
+            console.log('Failed:', error);
+        }
+    }
 
     const chooseInputToRender = (item: InputItem, field: any) => {
         if (item.type === 'select') {
@@ -87,22 +91,31 @@ const Scenarios: React.FC = () => {
         );
     }
 
+    const renderErrorMessages = (index: number) => {
+        const errorFields = ["price", "quantity"];
+        return errorFields.map(field => {
+                if (!errors.takeProfitLevels) return;
+                const takeProfitLevel = errors.takeProfitLevels[index];
+                if (!takeProfitLevel) return;
+                const takeProfitLevelLine = takeProfitLevel[field as keyof TakeProfitLevel];
+                return takeProfitLevelLine && (
+                    <span key={field} className="text-red-500 text-sm mt-1 block">
+                    {takeProfitLevelLine.message}
+                </span>
+                )
+            }
+        )
+    }
 
-    // const renderErrorMessages = (index: number) => {
-    //     const errorFields = ["price", "quantity"];
-    //     return errorFields.map(field => (
-    //         errors.takeProfitLevels?.[index]?.[field] && (
-    //             <span key={field} className="text-red-500 text-sm mt-1 block">
-    //                 {errors.takeProfitLevels[index][field]?.message}
-    //             </span>
-    //         )
-    //     ));
-    // };
+    const onCloseCreateScenario = () => {
+        resetCreateScenario();
+    }
+
 
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
-                <Button variant="outline">Open Dialog</Button>
+                <Button variant="outline" type='button'>Open Dialog</Button>
             </Dialog.Trigger>
             <Dialog.Portal>
                 <CustomDialog>
@@ -114,7 +127,7 @@ const Scenarios: React.FC = () => {
                             The bracket order is a complex order type that allows you to set a stop loss and take profit
                             order at the same time.
                         </CustomDialogDescription>
-                        <form onSubmit={handleSubmit(onSubmit)}>
+                        <CustomDialogForm onSubmit={handleSubmit(onSubmit)}>
                             <CustomDialogContentWrapper>
                                 <div className='h-[600px] overflow-y-auto'>
                                     {BracketOrderSchemaInputData.map((item) => (
@@ -130,11 +143,11 @@ const Scenarios: React.FC = () => {
                                                     render={({field}) => (
                                                         <>
                                                             {chooseInputToRender(item, field)}
-                                                            {/*{errors[item.name] && (*/}
-                                                            {/*    <span className="text-red-500 text-sm mt-1 block">*/}
-                                                            {/*        {errors[item.name]?.message}*/}
-                                                            {/*    </span>*/}
-                                                            {/*)}*/}
+                                                            {errors[item.name] && (
+                                                                <span className="text-red-500 text-sm mt-1 block">
+                                                                    {errors[item.name]?.message}
+                                                                </span>
+                                                            )}
                                                         </>
                                                     )}
                                                 />
@@ -175,7 +188,7 @@ const Scenarios: React.FC = () => {
                                                                         Remove
                                                                     </Button>
                                                                 </div>
-                                                                {/*{renderErrorMessages(index)}*/}
+                                                                {renderErrorMessages(index)}
                                                             </div>
                                                         )
                                                     }
@@ -191,7 +204,8 @@ const Scenarios: React.FC = () => {
                             </CustomDialogContentWrapper>
                             <CustomDialogFooter>
                                 <Dialog.Close asChild>
-                                    <Button variant="outline" color="red">
+                                    <Button type='button' variant="outline" color="red"
+                                            onClick={() => onCloseCreateScenario()}>
                                         Cancel
                                     </Button>
                                 </Dialog.Close>
@@ -199,7 +213,7 @@ const Scenarios: React.FC = () => {
                                     Save
                                 </Button>
                             </CustomDialogFooter>
-                        </form>
+                        </CustomDialogForm>
                     </CustomDialogContent>
                 </CustomDialog>
             </Dialog.Portal>

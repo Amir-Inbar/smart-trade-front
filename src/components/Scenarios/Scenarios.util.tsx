@@ -7,7 +7,7 @@ export type TakeProfitLevel = {
     quantity: number;
 };
 
-export type BracketOrderSchemaFormValues = {
+export type ScenarioSchemaFormValues = {
     ticker: string;
     action: string;
     strategy: string;
@@ -18,7 +18,6 @@ export type BracketOrderSchemaFormValues = {
         quantity: number;
     }[];
     description: string;
-    constructQuantity: number;
 };
 
 export type InputItemOptions = {
@@ -28,7 +27,7 @@ export type InputItemOptions = {
 };
 
 export type InputItem = {
-    name: keyof BracketOrderSchemaFormValues;
+    name: keyof ScenarioSchemaFormValues;
     label: string;
     placeholder?: string;
     required: boolean;
@@ -51,7 +50,6 @@ export const BracketOrderSchema = yup.object().shape({
         })
     ).required('Please enter the take profit levels'),
     description: yup.string().required('Please describe why you chose the break point level'),
-    constructQuantity: yup.number().required('Please enter the construct quantity').positive(), // Add this line
 });
 
 export const BracketOrderSchemaInputData: InputItem[] = [

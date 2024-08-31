@@ -4,9 +4,8 @@ import {components} from "@/schemas/openapi"
 
 export type TradeSchema = components["schemas"]["TradeSchema"]
 export type OrderSchema = components["schemas"]["OrderSchema"]
-export type OrderStatusSchema = components["schemas"]["OrderStatusSchema"]
-export type TradeLogEntrySchema = components["schemas"]["TradeLogEntrySchema"]
-
+export type ScenarioSchema = components["schemas"]["ScenarioSchema"]
+export type TakeProfitLevelSchema = components["schemas"]["TakeProfitLevelSchema"]
 
 export interface AccountValueSchema {
     account: string;

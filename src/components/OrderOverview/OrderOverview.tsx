@@ -1,34 +1,29 @@
 import {SmartTable} from "@/components/SmartTable/SmartTable";
 import {MRT_ColumnDef} from "mantine-react-table";
 import {useEffect, useMemo} from "react";
-import {useFetchTradesQuery} from "@/store/api/tradeApi";
-import {getOrderOverviewColumns, OrderDataInitialState} from "./OrderOverview.util";
-import {OrderSchema} from "@/schemas/types";
-import useTradesStore from "@/store/actions/trade";
+import {getScenarioColumns, OrderDataInitialState} from "./OrderOverview.util";
+import {ScenarioSchema} from "@/schemas/types";
+import useScenarioStore from "@/store/actions/trade";
+import {useFetchScenariosQuery} from "@/store/api/scenarioApi";
 
 const OrderOverview = () => {
-    const {data: fetchTrades = [], isSuccess} = useFetchTradesQuery();
-    const {setTrades, trades} = useTradesStore();
+    const {data: fetchScenarios, isSuccess} = useFetchScenariosQuery();
+    const {setScenarios, scenarios} = useScenarioStore();
 
 
     useEffect(() => {
         if (isSuccess) {
-            setTrades(fetchTrades);
+            setScenarios(fetchScenarios || []);
         }
     }, [isSuccess]);
 
-    const columns = useMemo<MRT_ColumnDef<OrderSchema>[]>(
-        () => [...getOrderOverviewColumns()],
-        []
-    );
+    const columns = useMemo<MRT_ColumnDef<ScenarioSchema>[]>(() => getScenarioColumns(), []);
 
-    const orders: OrderSchema[] = trades.map((trade) => trade.orders).flat()
-    // Need to change the orders to be a class object
     return (
         <SmartTable
             className="w-full"
             columns={columns}
-            data={orders || []}
+            data={scenarios || []}
             config={OrderDataInitialState}
         />
     );
