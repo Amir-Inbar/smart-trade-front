@@ -44,6 +44,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/root/listen": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Listen
+         * @description Listen endpoint for the agent scheduler.
+         */
+        get: operations["listen_root_listen_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/account/number": {
         parameters: {
             query?: never;
@@ -236,30 +256,32 @@ export interface components {
             /** Description */
             description?: string;
             /** Is Quality Scenario */
-            is_quality_scenario?: number;
+            is_quality_scenario?: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
         };
         /** ScenarioSchemaCreate */
         ScenarioSchemaCreate: {
             /** Id */
-            id?: number;
+            id?: string;
             /** Contract Id */
-            contract_id?: number;
+            contract_id?: string;
             /** Action */
             action?: string;
-            select_strategy?: components["schemas"]["StrategyType"];
+            /** Select Strategy */
+            select_strategy?: string;
             /** Break Down Price */
             break_down_price?: number;
             /** Enter Price */
             enter_price?: number;
             /** Stop Price */
             stop_price?: number;
-            stop_price_mode?: components["schemas"]["StopPriceMode"];
+            /** Stop Price Mode */
+            stop_price_mode?: string;
             /** Description */
             description?: string;
             /** Is Quality Scenario */
-            is_quality_scenario?: number;
+            is_quality_scenario?: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
         };
@@ -282,7 +304,7 @@ export interface components {
             /** Description */
             description?: string;
             /** Is Quality Scenario */
-            is_quality_scenario?: number;
+            is_quality_scenario?: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
         };
@@ -305,7 +327,7 @@ export interface components {
             /** Description */
             description?: string;
             /** Is Quality Scenario */
-            is_quality_scenario?: number;
+            is_quality_scenario?: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
         };
@@ -324,9 +346,9 @@ export interface components {
         /** TakeProfitLevelSchema */
         TakeProfitLevelSchema: {
             /** Id */
-            id: number;
+            id?: number;
             /** Scenario Id */
-            scenario_id: number;
+            scenario_id?: number;
             /** Price */
             price: number;
             /** Quantity */
@@ -390,6 +412,33 @@ export interface operations {
         };
     };
     health_root_health_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listen_root_listen_get: {
         parameters: {
             query?: never;
             header?: never;

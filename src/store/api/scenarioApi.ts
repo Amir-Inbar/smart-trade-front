@@ -1,7 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {API_HOST} from "@/config/consts";
-import {ScenarioSchema} from "@/schemas/types";
-import {ScenarioSchemaFormValues} from "@/components/Scenarios/Scenarios.util";
+import {ScenarioSchema, ScenarioSchemaCreateSchema} from "@/schemas/types";
 
 export const scenarioApi = createApi({
     reducerPath: 'scenarioApi',
@@ -14,7 +13,7 @@ export const scenarioApi = createApi({
             query: () => 'scenarios',
             providesTags: ['scenarios'],
         }),
-        createScenario: builder.mutation<ScenarioSchemaFormValues, ScenarioSchema>({
+        createScenario: builder.mutation<ScenarioSchema, ScenarioSchemaCreateSchema>({
             query: (body) => ({
                 url: 'scenarios',
                 method: 'POST',

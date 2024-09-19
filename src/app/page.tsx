@@ -1,8 +1,7 @@
 'use client';
 
 import {ContentLayout} from "@/components/Layout/ContentLayout";
-import {useFetchAccountNumberQuery, useFetchAccountSummaryQuery} from "@/store/api/accountApi";
-import AccountSummary from "@/components/AccountSummary/AccountSummary";
+import {useFetchAccountNumberQuery} from "@/store/api/accountApi";
 
 const Overview = () => {
     const {data: accountNumber} = useFetchAccountNumberQuery();
@@ -13,7 +12,6 @@ const Overview = () => {
             <p className="text-sm pb-2 text-gray-500">Welcome back,
                 <span className='font-bold'>{accountNumber}</span>
             </p>
-            <AccountSummary/>
         </ContentLayout>
     );
 }

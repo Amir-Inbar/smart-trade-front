@@ -13,18 +13,22 @@ import {Button} from '@/components/ui/button';
 import {useForm, SubmitHandler, Controller, useFieldArray} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {
-    ScenarioSchemaFormValues,
-    BracketOrderSchema,
     BracketOrderSchemaInputData,
-    InputItem, TakeProfitLevel
+    InputItem, ScenarioSchemaCreate, TakeProfitLevel
 } from '@/components/Scenarios/Scenarios.util';
 import {Checkbox, Input, Select} from "@/components/ui/input";
 import {useCreateScenarioMutation} from "@/store/api/scenarioApi";
+import {ScenarioSchemaCreateSchema} from "@/schemas/types";
 
 const Scenarios: React.FC = () => {
     const [createScenario] = useCreateScenarioMutation();
-    const {handleSubmit, reset: resetCreateScenario, formState: {errors}, control} = useForm<ScenarioSchemaFormValues>({
-        resolver: yupResolver(BracketOrderSchema),
+    const {
+        handleSubmit,
+        reset: resetCreateScenario,
+        formState: {errors},
+        control
+    } = useForm<ScenarioSchemaCreateSchema>({
+        resolver: yupResolver(ScenarioSchemaCreate),
     });
 
     const {fields, append, remove} = useFieldArray({
@@ -32,7 +36,7 @@ const Scenarios: React.FC = () => {
         name: "takeProfitLevels",
     });
 
-    const onSubmit: SubmitHandler<ScenarioSchemaFormValues> = async (data) => {
+    const onSubmit: SubmitHandler<ScenarioSchemaCreateSchema> = async (data) => {
         try {
             createScenario(data);
         } catch (error) {
@@ -162,7 +166,7 @@ const Scenarios: React.FC = () => {
                                                         return (
                                                             <div key={profitTakerField.id} className="mb-4">
                                                                 <div className="flex items-center">
-                                                                    {takeProfitLevels.map(([key, value]) => {
+                                                                    {takeProfitLevels.map(([key]) => {
                                                                             return <div key={key} className="flex flex-col">
                                                                                 <label
                                                                                     className="block text-sm font-medium mb-1"

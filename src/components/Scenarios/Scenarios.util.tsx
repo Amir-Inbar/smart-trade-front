@@ -1,23 +1,9 @@
 import * as yup from 'yup';
-import {StrategyType, Ticker} from "@/schemas/types";
-
+import {ScenarioSchemaCreateSchema, StrategyType, Ticker} from "@/schemas/types";
 
 export type TakeProfitLevel = {
     price: number;
     quantity: number;
-};
-
-export type ScenarioSchemaFormValues = {
-    ticker: string;
-    action: string;
-    strategy: string;
-    enterPrice: number;
-    stopPrice: number;
-    takeProfitLevels: {
-        price: number;
-        quantity: number;
-    }[];
-    description: string;
 };
 
 export type InputItemOptions = {
@@ -26,8 +12,9 @@ export type InputItemOptions = {
     disabled?: boolean;
 };
 
+
 export type InputItem = {
-    name: keyof ScenarioSchemaFormValues;
+    name: keyof ScenarioSchemaCreateSchema;
     label: string;
     placeholder?: string;
     required: boolean;
@@ -36,34 +23,37 @@ export type InputItem = {
     options?: InputItemOptions[];
 };
 
-
-export const BracketOrderSchema = yup.object().shape({
-    ticker: yup.string().required('Please select a ticker').default(Ticker.MES),
-    action: yup.string().required('Please select an action').default('BUY'),
-    strategy: yup.string().required('Please select a strategy').default(StrategyType.FALSE_BREAKOUT),
-    enterPrice: yup.number().required('Please enter the entry price').positive(),
-    stopPrice: yup.number().required('Please enter the stop price').positive(),
+export const ScenarioSchemaCreate = yup.object().shape({
+    id: yup.string().optional(),
+    contractId: yup.string().optional(),
+    action: yup.string().required('Action is required'),
+    selectStrategy: yup.string().required('Select strategy is required'),
+    breakDownPrice: yup.number().optional(),
+    enterPrice: yup.number().optional(),
+    stopPrice: yup.number().optional(),
+    stopPriceMode: yup.string().optional(),
+    description: yup.string().optional(),
+    isQualityScenario: yup.boolean().optional(),
     takeProfitLevels: yup.array().of(
         yup.object().shape({
-            price: yup.number().required('Please enter the price').positive(),
-            quantity: yup.number().required('Please enter the quantity').positive(),
+            price: yup.number().required('Price is required').positive('Price must be positive'),
+            quantity: yup.number().required('Quantity is required').positive('Quantity must be positive'),
         })
-    ).required('Please enter the take profit levels'),
-    description: yup.string().required('Please describe why you chose the break point level'),
+    ).optional(),
 });
 
 export const BracketOrderSchemaInputData: InputItem[] = [
     {
-        name: 'ticker',
+        name: 'contractId',
         label: 'Ticker',
         placeholder: 'Enter the ticker',
         required: true,
         type: 'select',
         default: Ticker.MES,
         options: [
-            { value: Ticker.MES, label: 'MES' },
-            { value: Ticker.MNQ, label: 'MNQ', disabled: true },
-            { value: Ticker.M2K, label: 'M2K', disabled: true },
+            {value: 'MES', label: 'MES'},
+            {value: 'MNQ', label: 'MNQ', disabled: true},
+            {value: 'M2K', label: 'M2K', disabled: true},
         ],
     },
     {
@@ -74,20 +64,27 @@ export const BracketOrderSchemaInputData: InputItem[] = [
         type: 'select',
         default: 'BUY',
         options: [
-            { value: 'BUY', label: 'BUY' },
-            { value: 'SELL', label: 'SELL' },
+            {value: 'BUY', label: 'BUY'},
+            {value: 'SELL', label: 'SELL'},
         ],
     },
     {
-        name: 'strategy',
+        name: 'selectStrategy',
         label: 'Select Strategy',
         placeholder: 'Select your strategy',
         required: true,
         type: 'select',
         default: StrategyType.FALSE_BREAKOUT,
         options: [
-            { value: StrategyType.FALSE_BREAKOUT, label: 'False Breakout' },
+            {value: StrategyType.FALSE_BREAKOUT, label: 'False Breakout'},
         ],
+    }, {
+        name: 'breakDownPrice',
+        label: 'Break Down Price',
+        placeholder: 'Enter the break down price',
+        required: true,
+        type: 'number',
+        default: 0,
     },
     {
         name: 'enterPrice',
@@ -106,7 +103,7 @@ export const BracketOrderSchemaInputData: InputItem[] = [
         default: 0,
     },
     {
-        name: 'takeProfitLevels',
+        name: 'stopPriceMode',
         label: 'Take Profit Levels',
         placeholder: 'Enter take profit levels',
         required: true,

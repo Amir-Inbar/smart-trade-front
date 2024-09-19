@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import {useState} from "react";
-import {ChevronDown, Dot} from "lucide-react";
+import {ChevronDown, Dot, LucideIcon} from "lucide-react";
 
 import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
@@ -26,8 +26,20 @@ import {
     DropdownMenuContent,
     DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
-import {CollapseMenuButtonProps} from "@/types/AppSidebar/CollapseMenuButtonProps";
 
+export interface Submenu {
+    href: string;
+    label: string;
+    active: boolean;
+}
+
+export interface CollapseMenuButtonProps {
+    icon: LucideIcon;
+    label: string;
+    active: boolean;
+    submenus: Submenu[];
+    isOpen: boolean | undefined;
+}
 
 export const CollapseMenuButton = ({
                                        icon: Icon,
