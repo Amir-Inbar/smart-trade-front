@@ -1,8 +1,9 @@
-import Navbar from "@/components/Layout/Navbar";
+import Navbar from "@/components/Layout/Navarbar/Navbar";
+import {ReactNode} from "react";
 
 interface ContentLayoutProps {
     title: string;
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 export function ContentLayout({title, children}: ContentLayoutProps) {

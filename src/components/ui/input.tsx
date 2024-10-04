@@ -1,106 +1,25 @@
-import {cva, VariantProps} from "class-variance-authority";
-import React, {InputHTMLAttributes} from "react";
-import {cn} from "@/lib/utils";
-import {InputItemOptions} from "@/components/Scenarios/Scenarios.util";
+import * as React from "react"
 
-const inputVariants = cva(
-    "block w-full rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm",
-);
+import { cn } from "@/lib/utils"
 
 export interface InputProps
-    extends InputHTMLAttributes<HTMLInputElement>,
-        VariantProps<typeof inputVariants> {
-}
+  extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({className, type, disabled, ...props}, ref) => (
-        <input
-            ref={ref}
-            type={type || "text"}
-            className={cn(inputVariants(), className)}
-            disabled={disabled}
-            {...props}
-        />
+  ({ className, type, ...props }, ref) => {
+    return (
+      <input
+        type={type}
+        className={cn(
+          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+          className
+        )}
+        ref={ref}
+        {...props}
+      />
     )
-);
-Input.displayName = "Input";
+  }
+)
+Input.displayName = "Input"
 
-//select
-
-const selectVariants = cva(
-    "block w-full rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm",
-);
-
-export interface SelectProps
-    extends InputHTMLAttributes<HTMLSelectElement>,
-        VariantProps<typeof selectVariants> {
-    options?: InputItemOptions[]
-}
-
-const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-    ({className, ...props}, ref) => (
-        <select
-            ref={ref}
-            className={cn(selectVariants(), className)}
-            disabled={props.disabled}
-            {...props}
-        >
-            {props.options?.map((option) => (
-                <option key={option.value} value={option.value} disabled={option.disabled}>
-                    {option.label}
-                </option>
-            ))}
-        </select>
-    )
-);
-
-Select.displayName = "Select";
-
-//textarea
-
-const textareaVariants = cva(
-    "block w-full rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm",
-);
-
-export interface TextareaProps
-    extends InputHTMLAttributes<HTMLTextAreaElement>,
-        VariantProps<typeof textareaVariants> {
-}
-
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-    ({className, ...props}, ref) => (
-        <textarea
-            ref={ref}
-            className={cn(textareaVariants(), className)}
-            {...props}
-        />
-    )
-);
-
-Textarea.displayName = "Textarea";
-
-// Checkbox
-
-const checkboxVariants = cva(
-    "rounded text-primary focus:ring-primary",
-);
-
-export interface CheckboxProps
-    extends InputHTMLAttributes<HTMLInputElement>,
-        VariantProps<typeof checkboxVariants> {
-}
-
-const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-    ({className, ...props}, ref) => (
-        <input
-            ref={ref}
-            type="checkbox"
-            className={cn(checkboxVariants(), className)}
-            {...props}
-        />
-    )
-);
-
-Checkbox.displayName = "Checkbox";
-
-export {Input, Select, Textarea, Checkbox};
+export { Input }

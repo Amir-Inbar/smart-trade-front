@@ -1,7 +1,7 @@
 import {configureStore, combineReducers} from '@reduxjs/toolkit';
 import {useDispatch} from 'react-redux';
 import {scenarioApi} from './api/scenarioApi';
-import {accountApi} from "@/store/api/accountApi";
+import {accountApi} from '@/store/api/accountApi';
 
 const rootReducer = combineReducers({
     [scenarioApi.reducerPath]: scenarioApi.reducer,

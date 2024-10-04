@@ -15,7 +15,7 @@ const OrderOverview = () => {
         if (isSuccess) {
             setScenarios(fetchScenarios || []);
         }
-    }, [isSuccess]);
+    }, [fetchScenarios, isSuccess, setScenarios]);
 
     const columns = useMemo<MRT_ColumnDef<ScenarioSchema>[]>(() => getScenarioColumns(), []);
 

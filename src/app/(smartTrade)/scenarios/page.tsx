@@ -11,31 +11,30 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import Scenarios from "@/components/Scenarios/Scenarios";
+import CreateScenarioForm from "../../../components/Scenarios/CreateScenarioModal/CreateScenarioForm";
+import {CreateScenarioModal} from "@/components/Scenarios/CreateScenarioModal/CreateScenarioModal";
 
 const Breadcrumbs = () => (
     <Breadcrumb>
         <BreadcrumbList>
             <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                    <Link href="/">Home</Link>
+                    <Link href="/overview">Home</Link>
                 </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator/>
             <BreadcrumbItem>
-                <BreadcrumbPage>Scenarios</BreadcrumbPage>
+                <BreadcrumbPage>CreateScenarioForm</BreadcrumbPage>
             </BreadcrumbItem>
         </BreadcrumbList>
     </Breadcrumb>
 );
 
-const ScenariosPage = () => {
-    return (
-        <ContentLayout title="Scenarios">
-            <Breadcrumbs/>
-            <Scenarios/>
-        </ContentLayout>
-    );
-}
+const ScenariosPage = () => (
+    <ContentLayout title="CreateScenarioForm">
+        <Breadcrumbs/>
+        <CreateScenarioModal/>
+    </ContentLayout>
+)
 
 export default ScenariosPage;

@@ -5,7 +5,7 @@ import {Ellipsis, LogOut} from "lucide-react";
 import {usePathname} from "next/navigation";
 
 import {cn} from "@/lib/utils";
-import {getMenuList} from "@/lib/menu-list";
+import {getMenuList} from "@/components/Layout/AppSideBar/menu-list";
 import {Button} from "@/components/ui/button";
 import {ScrollArea} from "@/components/ui/scroll-area";
 import {CollapseMenuButton} from "@/components/Layout/CollapseMenuButton";
@@ -48,7 +48,7 @@ const AppSideBarMenu = ({isOpen}: MenuProps) => {
                                     </Tooltip>
                                 </TooltipProvider>
                             ) : (
-                                <p className="pb-2"></p>
+                                <p className="pb-2"/>
                             )}
                             {menus.map(
                                 ({href, label, icon: Icon, active, submenus}, index) =>
@@ -137,5 +137,5 @@ const AppSideBarMenu = ({isOpen}: MenuProps) => {
         </ScrollArea>
     );
 }
-    
+
 export default AppSideBarMenu

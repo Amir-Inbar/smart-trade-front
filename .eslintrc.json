@@ -1,3 +1,37 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "no-console": "error",
+    "react/self-closing-comp": "error",
+    "no-empty": "error",
+    "no-unreachable": "error",
+    "eqeqeq": "error",
+    "curly": "error",
+    "default-case": "error",
+    "no-use-before-define": "error",
+    "consistent-return": "error",
+    "no-unused-vars": "off",
+    "no-undef": "error",
+    "no-redeclare": "error",
+    "space-in-parens": [
+      "error",
+      "never"
+    ],
+    "prefer-const": "error",
+    "arrow-body-style": [
+      "error",
+      "as-needed"
+    ],
+    "prefer-arrow-callback": "error",
+    "global-require": "error",
+    "no-new-require": "error"
+  },
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    "*.test.js",
+    "config/*.js",
+    "src/schemas/*.ts",
+    "src/components/ui/*.tsx"
+  ]
 }

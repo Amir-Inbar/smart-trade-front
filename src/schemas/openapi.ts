@@ -186,6 +186,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/contracts/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Search Scenarios */
+        post: operations["search_scenarios_contracts_search_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/contracts/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Scenario */
+        post: operations["create_scenario_contracts__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/contracts{contract_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Contract */
+        get: operations["read_contract_contracts_contract_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/contracts/{contract_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Scenario */
+        put: operations["update_scenario_contracts__contract_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -204,10 +272,52 @@ export interface components {
             /** Last Trade Date Or Contract Month */
             last_trade_date_or_contract_month?: string;
         };
+        /** ContractSchemaCreate */
+        ContractSchemaCreate: {
+            /** Id */
+            id: number;
+            contract?: components["schemas"]["FutureContracts"];
+            /** Active */
+            active?: boolean;
+            /** Exchange */
+            exchange?: string;
+            /** Currency */
+            currency?: string;
+            /** Last Trade Date Or Contract Month */
+            last_trade_date_or_contract_month?: string;
+        };
+        /** ContractSchemaSearch */
+        ContractSchemaSearch: {
+            /** Id */
+            id: number;
+            contract?: components["schemas"]["FutureContracts"];
+            /** Active */
+            active?: boolean;
+            /** Exchange */
+            exchange?: string;
+            /** Currency */
+            currency?: string;
+            /** Last Trade Date Or Contract Month */
+            last_trade_date_or_contract_month?: string;
+        };
+        /** ContractSchemaUpdate */
+        ContractSchemaUpdate: {
+            /** Id */
+            id?: number;
+            contract?: components["schemas"]["FutureContracts"];
+            /** Active */
+            active?: boolean;
+            /** Exchange */
+            exchange?: string;
+            /** Currency */
+            currency?: string;
+            /** Last Trade Date Or Contract Month */
+            last_trade_date_or_contract_month?: string;
+        };
         /**
          * FutureContracts
          * @description An enumeration.
-         * @enum {unknown}
+         * @enum {string}
          */
         FutureContracts: "ES" | "NQ" | "YM" | "RTY" | "MES" | "MNQ" | "MYM" | "M2K" | "MGC" | "MCL";
         /** HTTPValidationError */
@@ -262,26 +372,22 @@ export interface components {
         };
         /** ScenarioSchemaCreate */
         ScenarioSchemaCreate: {
-            /** Id */
-            id?: string;
-            /** Contract Id */
-            contract_id?: string;
+            /** Contract Name */
+            contract_name: string;
             /** Action */
-            action?: string;
-            /** Select Strategy */
-            select_strategy?: string;
+            action: string;
+            select_strategy: components["schemas"]["StrategyType"];
             /** Break Down Price */
-            break_down_price?: number;
+            break_down_price: number;
             /** Enter Price */
-            enter_price?: number;
+            enter_price: number;
             /** Stop Price */
-            stop_price?: number;
-            /** Stop Price Mode */
-            stop_price_mode?: string;
+            stop_price: number;
+            stop_price_mode: components["schemas"]["StopPriceMode"];
             /** Description */
-            description?: string;
+            description: string;
             /** Is Quality Scenario */
-            is_quality_scenario?: boolean;
+            is_quality_scenario: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
         };
@@ -340,7 +446,7 @@ export interface components {
         /**
          * StrategyType
          * @description An enumeration.
-         * @enum {unknown}
+         * @enum {string}
          */
         StrategyType: "FALSE_BREAKOUT";
         /** TakeProfitLevelSchema */
@@ -679,6 +785,169 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": components["schemas"]["ScenarioSchemaUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_scenarios_contracts_search_post: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["ContractSchemaSearch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContractSchema"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_scenario_contracts__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContractSchemaCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContractSchemaCreate"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_contract_contracts_contract_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contract_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ContractSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_scenario_contracts__contract_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                contract_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ContractSchemaUpdate"];
             };
         };
         responses: {

@@ -4,14 +4,16 @@ import {PanelsTopLeft} from "lucide-react";
 import {cn} from "@/lib/utils";
 import {useStore} from "@/hooks/use-store";
 import {Button} from "@/components/ui/button";
-import AppSideBarMenu from "@/components/Layout/AppSideBarMenu";
+import AppSideBarMenu from "@/components/Layout/AppSideBar/AppSideBarMenu";
 import {useSidebarToggle} from "@/hooks/use-sidebar-toggle";
-import SidebarToggle from "@/components/Layout/SidebarToggle";
+import SidebarToggle from "@/components/Layout/AppSideBar/SidebarToggle";
 
 export const AppSideBar = () => {
     const sidebar = useStore(useSidebarToggle, (state) => state);
 
-    if (!sidebar) return null;
+    if (!sidebar) {
+        return null;
+    }
 
     return (
         <aside
@@ -30,7 +32,7 @@ export const AppSideBar = () => {
                     variant="link"
                     asChild
                 >
-                    <Link href="/" className="flex items-center gap-2">
+                    <Link href="/overview" className="flex items-center gap-2">
                         <PanelsTopLeft className="w-6 h-6 mr-1"/>
                         <h1
                             className={cn(
@@ -40,7 +42,7 @@ export const AppSideBar = () => {
                                     : "translate-x-0 opacity-100"
                             )}
                         >
-                            Brand
+                            Overview
                         </h1>
                     </Link>
                 </Button>

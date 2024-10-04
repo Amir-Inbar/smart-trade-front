@@ -1,13 +1,12 @@
 import {ModeToggle} from "@/components/mode-toggle";
-import UserNav from "@/components/Layout/UserNav";
+import UserNav from "@/components/Layout/Navarbar/UserNav";
 import SheetMenu from "@/components/Layout/SheetMenu";
 
 interface NavbarProps {
     title: string;
 }
 
-const Navbar = ({title}: NavbarProps) => {
-    return (
+const Navbar = ({title}: NavbarProps) => (
         <header
             className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
             <div className="mx-4 sm:mx-8 flex h-14 items-center">
@@ -21,7 +20,6 @@ const Navbar = ({title}: NavbarProps) => {
                 </div>
             </div>
         </header>
-    );
-}
+    )
 
 export default Navbar;

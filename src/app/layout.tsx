@@ -1,16 +1,16 @@
 import {AppLayout} from "@/components/Layout/AppLayout";
-
 import {GeistSans} from "geist/font/sans";
-
+import {ThemeProvider} from "@/config/theme-provider";
+import {ReactNode} from "react";
 import "./globals.css";
 
-import {ThemeProvider} from "@/providers/theme-provider";
 
-export default function RootLayout({
-                                       children
-                                   }: Readonly<{
-    children: React.ReactNode;
-}>) {
+export default function RootLayout(
+    {
+        children
+    }: Readonly<{
+        children: ReactNode;
+    }>) {
     return (
         <html lang="en" suppressHydrationWarning>
         <body className={GeistSans.className}>
