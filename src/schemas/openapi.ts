@@ -258,6 +258,19 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AccountValue */
+        AccountValue: {
+            /** Account */
+            account: string;
+            /** Tag */
+            tag: string;
+            /** Value */
+            value: string;
+            /** Currency */
+            currency: string;
+            /** Modelcode */
+            modelCode: string;
+        };
         /** ContractSchema */
         ContractSchema: {
             /** Id */
@@ -288,8 +301,6 @@ export interface components {
         };
         /** ContractSchemaSearch */
         ContractSchemaSearch: {
-            /** Id */
-            id: number;
             contract?: components["schemas"]["FutureContracts"];
             /** Active */
             active?: boolean;
@@ -613,7 +624,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": string[][];
+                    "application/json": unknown[][];
                 };
             };
             /** @description Not found */

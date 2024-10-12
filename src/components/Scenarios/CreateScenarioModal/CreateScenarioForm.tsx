@@ -14,12 +14,12 @@ import {
   TakeProfitLevel
 } from "@/components/Scenarios/Scenarios.util";
 import { useCreateScenarioMutation } from "@/store/api/scenarioApi";
-import { ScenarioSchemaCreateSchema } from "@/schemas/types";
 import { TradeSelect } from "@/components/TradeUi/TradeSelect";
 import { TradeCheckbox } from "@/components/TradeUi/TradeCheckbox";
 import { TradeInput } from "@/components/TradeUi/TradeInput";
 import { DialogForm } from "../../DialogWrapper/DialogForm";
 import { TradeInputWrapper } from "@/components/TradeUi/TradeInputWrapper";
+import { ScenarioSchemaCreateSchema } from "@/schemas/types";
 
 const CreateScenarioForm: React.FC = () => {
   const [createScenario] = useCreateScenarioMutation();

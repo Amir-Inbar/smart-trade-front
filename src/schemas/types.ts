@@ -7,6 +7,9 @@ export type TakeProfitLevelSchema =
   components["schemas"]["TakeProfitLevelSchema"];
 export type ScenarioSchemaCreateSchema =
   components["schemas"]["ScenarioSchemaCreate"];
+export type ContractSchema = components["schemas"]["ContractSchema"];
+export type ContractSchemaSearchSchema =
+  components["schemas"]["ContractSchemaSearch"];
 
 export enum StrategyTypeEnum {
   FALSE_BREAKOUT = "FALSE_BREAKOUT"
