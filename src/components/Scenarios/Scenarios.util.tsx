@@ -3,7 +3,7 @@ import {
   ScenarioSchemaCreateSchema,
   StopPriceModeChoices,
   StrategyTypeEnum,
-  Ticker
+  Ticker,
 } from "@/schemas/types";
 
 export type TakeProfitLevel = {
@@ -22,15 +22,24 @@ export type InputItem = {
   label: string;
   placeholder?: string;
   required: boolean;
-  type?: "text" | "number" | "select" | "array" | "checkbox";
+  type?:
+    | "text"
+    | "number"
+    | "select"
+    | "array"
+    | "checkbox"
+    | "textarea"
+    | "date";
   default?: string | number | boolean;
   options?: InputItemOptions[];
+  note?: string;
 };
 
 type SelectStrategy = "FALSE_BREAKOUT" | "TRUE_BREAKOUT";
 
 export const ScenarioSchemaCreate = yup.object().shape({
   contract_name: yup.string().required("Contract Name is required"),
+  date_trade: yup.string().required("Trade Date is required").optional(),
   action: yup.string().required("Action is required"),
   select_strategy: yup
     .mixed<"FALSE_BREAKOUT">()
@@ -40,14 +49,12 @@ export const ScenarioSchemaCreate = yup.object().shape({
     .number()
     .required("Break down price is required")
     .positive("Break down price must be positive"),
-  enter_price: yup
-    .number()
-    .required("Enter price is required")
-    .positive("Enter price must be positive"),
+  enter_price: yup.number().positive("Enter price must be positive").optional(),
   stop_price: yup
     .number()
     .required("Stop price is required")
-    .positive("Stop price must be positive"),
+    .positive("Stop price must be positive")
+    .optional(),
   stop_price_mode: yup
     .mixed<"MANUAL" | "AUTOMATIC">()
     .oneOf(["MANUAL", "AUTOMATIC"], "Invalid stop price mode")
@@ -65,10 +72,10 @@ export const ScenarioSchemaCreate = yup.object().shape({
         quantity: yup
           .number()
           .required("Quantity is required")
-          .positive("Quantity must be positive")
-      })
+          .positive("Quantity must be positive"),
+      }),
     )
-    .optional()
+    .optional(),
 });
 
 export const BracketOrderSchemaInputData: InputItem[] = [
@@ -82,8 +89,16 @@ export const BracketOrderSchemaInputData: InputItem[] = [
     options: [
       { value: "MES", label: "MES" },
       { value: "MNQ", label: "MNQ", disabled: true },
-      { value: "M2K", label: "M2K", disabled: true }
-    ]
+      { value: "M2K", label: "M2K", disabled: true },
+    ],
+  },
+  {
+    name: "date_trade",
+    label: "Date Trade",
+    placeholder: "Select the trade date",
+    required: true,
+    type: "date",
+    note: "The date of the trade",
   },
   {
     name: "action",
@@ -94,8 +109,8 @@ export const BracketOrderSchemaInputData: InputItem[] = [
     default: "BUY",
     options: [
       { value: "BUY", label: "BUY" },
-      { value: "SELL", label: "SELL" }
-    ]
+      { value: "SELL", label: "SELL" },
+    ],
   },
   {
     name: "select_strategy",
@@ -105,8 +120,8 @@ export const BracketOrderSchemaInputData: InputItem[] = [
     type: "select",
     default: StrategyTypeEnum.FALSE_BREAKOUT,
     options: [
-      { value: StrategyTypeEnum.FALSE_BREAKOUT, label: "False Breakout" }
-    ]
+      { value: StrategyTypeEnum.FALSE_BREAKOUT, label: "False Breakout" },
+    ],
   },
   {
     name: "break_down_price",
@@ -114,7 +129,7 @@ export const BracketOrderSchemaInputData: InputItem[] = [
     placeholder: "Enter the break down price",
     required: true,
     type: "number",
-    default: 0
+    default: 0,
   },
   {
     name: "enter_price",
@@ -122,7 +137,8 @@ export const BracketOrderSchemaInputData: InputItem[] = [
     placeholder: "Enter the price",
     required: true,
     type: "number",
-    default: 0
+    default: 0,
+    note: "If empty, the enter price will be LMT of 3 ticks above the break down price",
   },
   {
     name: "stop_price",
@@ -130,7 +146,8 @@ export const BracketOrderSchemaInputData: InputItem[] = [
     placeholder: "Enter the stop price",
     required: true,
     type: "number",
-    default: 0
+    default: 0,
+    note: "If empty, the stop price will be 12 tick below the break down price",
   },
   {
     name: "stop_price_mode",
@@ -138,18 +155,18 @@ export const BracketOrderSchemaInputData: InputItem[] = [
     placeholder: "Select the stop price mode",
     required: true,
     type: "select",
-    default: StopPriceModeChoices.MANUAL,
+    default: StopPriceModeChoices.AUTOMATIC,
     options: [
       { value: StopPriceModeChoices.MANUAL, label: "Manual" },
-      { value: StopPriceModeChoices.AUTOMATIC, label: "Automatic" }
-    ]
+      { value: StopPriceModeChoices.AUTOMATIC, label: "Automatic" },
+    ],
   },
   {
     name: "take_profit_levels",
     label: "Take Profit Levels",
     placeholder: "Enter take profit levels",
     required: true,
-    type: "array"
+    type: "array",
   },
   {
     name: "is_quality_scenario",
@@ -157,14 +174,14 @@ export const BracketOrderSchemaInputData: InputItem[] = [
     placeholder: "Is this a quality scenario?",
     required: false,
     type: "checkbox",
-    default: false
+    default: false,
   },
   {
     name: "description",
     label: "Description",
     placeholder: "Describe why you chose the break point level",
     required: true,
-    type: "text",
-    default: false
-  }
+    type: "textarea",
+    default: false,
+  },
 ];

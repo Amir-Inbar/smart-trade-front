@@ -118,7 +118,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/scenarios/scenarios/search": {
+    "/scenarios/search": {
         parameters: {
             query?: never;
             header?: never;
@@ -127,8 +127,18 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Search Scenarios */
-        post: operations["search_scenarios_scenarios_scenarios_search_post"];
+        /**
+         * Search scenarios
+         * @description Search scenarios based on filters.
+         *
+         *     :param page: Page number.
+         *     :param page_size: Page size.
+         *     :param filters: Filters for searching scenarios.
+         *     :param db: Database session.
+         *     :param settings: Application settings.
+         *     :return: List of scenarios.
+         */
+        post: operations["search_scenarios_scenarios_search_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -144,25 +154,15 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create Scenario */
+        /**
+         * Create a new scenario
+         * @description Create a new scenario.
+         *
+         *     :param scenario: Scenario data to create.
+         *     :param db: Database session.
+         *     :return: The created scenario.
+         */
         post: operations["create_scenario_scenarios__post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/scenarios{scenario_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Read Scenario */
-        get: operations["read_scenario_scenarios_scenario_id__get"];
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -176,8 +176,24 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        /** Update Scenario */
+        /**
+         * Get a scenario by ID
+         * @description Read a scenario by ID.
+         *
+         *     :param scenario_id: ID of the scenario to retrieve.
+         *     :param db: Database session.
+         *     :return: The scenario details.
+         */
+        get: operations["read_scenario_scenarios__scenario_id__get"];
+        /**
+         * Update a scenario
+         * @description Update a scenario by ID.
+         *
+         *     :param scenario_id: ID of the scenario to update.
+         *     :param scenario: Updated scenario data.
+         *     :param db: Database session.
+         *     :return: The updated scenario.
+         */
         put: operations["update_scenario_scenarios__scenario_id__put"];
         post?: never;
         delete?: never;
@@ -195,8 +211,18 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Search Scenarios */
-        post: operations["search_scenarios_contracts_search_post"];
+        /**
+         * Search contracts
+         * @description Search contracts based on filters.
+         *
+         *     :param page: Page number.
+         *     :param page_size: Page size.
+         *     :param filters: Filters for searching contracts.
+         *     :param db: Database session.
+         *     :param settings: Application settings.
+         *     :return: List of contracts.
+         */
+        post: operations["search_contracts_contracts_search_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -212,25 +238,15 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create Scenario */
-        post: operations["create_scenario_contracts__post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/contracts{contract_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Read Contract */
-        get: operations["read_contract_contracts_contract_id__get"];
-        put?: never;
-        post?: never;
+        /**
+         * Create a new contract
+         * @description Create a new contract.
+         *
+         *     :param contract: Contract data to create.
+         *     :param db: Database session.
+         *     :return: The created contract.
+         */
+        post: operations["create_contract_contracts__post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -244,9 +260,25 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        /** Update Scenario */
-        put: operations["update_scenario_contracts__contract_id__put"];
+        /**
+         * Get a contract by ID
+         * @description Read a contract by ID.
+         *
+         *     :param contract_id: ID of the contract to retrieve.
+         *     :param db: Database session.
+         *     :return: The contract details.
+         */
+        get: operations["read_contract_contracts__contract_id__get"];
+        /**
+         * Update a contract
+         * @description Update a contract by ID.
+         *
+         *     :param contract_id: ID of the contract to update.
+         *     :param contract: Updated contract data.
+         *     :param db: Database session.
+         *     :return: The updated contract.
+         */
+        put: operations["update_contract_contracts__contract_id__put"];
         post?: never;
         delete?: never;
         options?: never;
@@ -300,17 +332,7 @@ export interface components {
             last_trade_date_or_contract_month?: string;
         };
         /** ContractSchemaSearch */
-        ContractSchemaSearch: {
-            contract?: components["schemas"]["FutureContracts"];
-            /** Active */
-            active?: boolean;
-            /** Exchange */
-            exchange?: string;
-            /** Currency */
-            currency?: string;
-            /** Last Trade Date Or Contract Month */
-            last_trade_date_or_contract_month?: string;
-        };
+        ContractSchemaSearch: Record<string, never>;
         /** ContractSchemaUpdate */
         ContractSchemaUpdate: {
             /** Id */
@@ -357,53 +379,6 @@ export interface components {
         };
         /** ScenarioSchema */
         ScenarioSchema: {
-            /**
-             * Id
-             * Format: uuid
-             */
-            id: string;
-            /** Contract Id */
-            contract_id?: number;
-            /** Action */
-            action?: string;
-            select_strategy?: components["schemas"]["StrategyType"];
-            /** Break Down Price */
-            break_down_price?: number;
-            /** Enter Price */
-            enter_price?: number;
-            /** Stop Price */
-            stop_price?: number;
-            stop_price_mode?: components["schemas"]["StopPriceMode"];
-            /** Description */
-            description?: string;
-            /** Is Quality Scenario */
-            is_quality_scenario?: boolean;
-            /** Take Profit Levels */
-            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
-        };
-        /** ScenarioSchemaCreate */
-        ScenarioSchemaCreate: {
-            /** Contract Name */
-            contract_name: string;
-            /** Action */
-            action: string;
-            select_strategy: components["schemas"]["StrategyType"];
-            /** Break Down Price */
-            break_down_price: number;
-            /** Enter Price */
-            enter_price: number;
-            /** Stop Price */
-            stop_price: number;
-            stop_price_mode: components["schemas"]["StopPriceMode"];
-            /** Description */
-            description: string;
-            /** Is Quality Scenario */
-            is_quality_scenario: boolean;
-            /** Take Profit Levels */
-            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
-        };
-        /** ScenarioSchemaSearch */
-        ScenarioSchemaSearch: {
             /** Id */
             id?: number;
             /** Contract Id */
@@ -424,7 +399,50 @@ export interface components {
             is_quality_scenario?: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
+            /**
+             * Date Trade
+             * Format: date-time
+             */
+            date_trade?: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at?: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at?: string;
         };
+        /** ScenarioSchemaCreate */
+        ScenarioSchemaCreate: {
+            /** Contract Name */
+            contract_name: string;
+            /** Action */
+            action: string;
+            select_strategy: components["schemas"]["StrategyType"];
+            /** Break Down Price */
+            break_down_price: number;
+            /** Enter Price */
+            enter_price?: number;
+            /** Stop Price */
+            stop_price?: number;
+            stop_price_mode: components["schemas"]["StopPriceMode"];
+            /** Description */
+            description: string;
+            /** Is Quality Scenario */
+            is_quality_scenario: boolean;
+            /** Take Profit Levels */
+            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
+            /**
+             * Date Trade
+             * Format: date-time
+             */
+            date_trade?: string;
+        };
+        /** ScenarioSchemaSearch */
+        ScenarioSchemaSearch: Record<string, never>;
         /** ScenarioSchemaUpdate */
         ScenarioSchemaUpdate: {
             /** Id */
@@ -447,6 +465,21 @@ export interface components {
             is_quality_scenario?: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
+            /**
+             * Date Trade
+             * Format: date-time
+             */
+            date_trade?: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at?: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at?: string;
         };
         /**
          * StopPriceMode
@@ -663,7 +696,7 @@ export interface operations {
             };
         };
     };
-    search_scenarios_scenarios_scenarios_search_post: {
+    search_scenarios_scenarios_search_post: {
         parameters: {
             query?: {
                 page?: number;
@@ -725,7 +758,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ScenarioSchemaCreate"];
+                    "application/json": components["schemas"]["ScenarioSchema"];
                 };
             };
             /** @description Not found */
@@ -746,7 +779,7 @@ export interface operations {
             };
         };
     };
-    read_scenario_scenarios_scenario_id__get: {
+    read_scenario_scenarios__scenario_id__get: {
         parameters: {
             query?: never;
             header?: never;
@@ -805,7 +838,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["ScenarioSchema"];
                 };
             };
             /** @description Not found */
@@ -826,7 +859,7 @@ export interface operations {
             };
         };
     };
-    search_scenarios_contracts_search_post: {
+    search_contracts_contracts_search_post: {
         parameters: {
             query?: {
                 page?: number;
@@ -869,7 +902,7 @@ export interface operations {
             };
         };
     };
-    create_scenario_contracts__post: {
+    create_contract_contracts__post: {
         parameters: {
             query?: never;
             header?: never;
@@ -888,7 +921,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ContractSchemaCreate"];
+                    "application/json": components["schemas"]["ContractSchema"];
                 };
             };
             /** @description Not found */
@@ -909,7 +942,7 @@ export interface operations {
             };
         };
     };
-    read_contract_contracts_contract_id__get: {
+    read_contract_contracts__contract_id__get: {
         parameters: {
             query?: never;
             header?: never;
@@ -947,7 +980,7 @@ export interface operations {
             };
         };
     };
-    update_scenario_contracts__contract_id__put: {
+    update_contract_contracts__contract_id__put: {
         parameters: {
             query?: never;
             header?: never;
@@ -968,7 +1001,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["ContractSchema"];
                 };
             };
             /** @description Not found */

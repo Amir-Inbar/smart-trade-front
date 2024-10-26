@@ -1,17 +1,17 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   useForm,
   SubmitHandler,
   Controller,
-  useFieldArray
+  useFieldArray,
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
   BracketOrderSchemaInputData,
   InputItem,
   ScenarioSchemaCreate,
-  TakeProfitLevel
+  TakeProfitLevel,
 } from "@/components/Scenarios/Scenarios.util";
 import { useCreateScenarioMutation } from "@/store/api/scenarioApi";
 import { TradeSelect } from "@/components/TradeUi/TradeSelect";
@@ -19,26 +19,41 @@ import { TradeCheckbox } from "@/components/TradeUi/TradeCheckbox";
 import { TradeInput } from "@/components/TradeUi/TradeInput";
 import { DialogForm } from "../../DialogWrapper/DialogForm";
 import { TradeInputWrapper } from "@/components/TradeUi/TradeInputWrapper";
-import { ScenarioSchemaCreateSchema } from "@/schemas/types";
+import {
+  ScenarioSchemaCreateSchema,
+  StopPriceModeChoices,
+} from "@/schemas/types";
+import { Textarea } from "@/components/ui/textarea";
+import { DatePicker } from "@/components/ui/date-picker";
+import { TradeDatePicker } from "@/components/TradeUi/TradeDatePicker";
 
 const CreateScenarioForm: React.FC = () => {
   const [createScenario] = useCreateScenarioMutation();
   const form = useForm<ScenarioSchemaCreateSchema>({
-    resolver: yupResolver(ScenarioSchemaCreate)
+    resolver: yupResolver(ScenarioSchemaCreate),
   });
 
   const {
-    handleSubmit,
+    watch,
     control,
     reset: resetCreateScenario,
     setError,
-    formState: { errors }
+    formState: { errors },
   } = form;
+
+  const stopPrice = watch("stop_price");
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "take_profit_levels"
+    name: "take_profit_levels",
   });
+
+  useEffect(() => {
+    const mode = stopPrice
+      ? StopPriceModeChoices.MANUAL
+      : StopPriceModeChoices.AUTOMATIC;
+    form.setValue("stop_price_mode", mode);
+  }, [stopPrice, form]);
 
   const onSubmit: SubmitHandler<ScenarioSchemaCreateSchema> = async (data) => {
     try {
@@ -46,7 +61,7 @@ const CreateScenarioForm: React.FC = () => {
     } catch (error) {
       setError("root", {
         type: "manual",
-        message: "Scenario creation failed."
+        message: "Scenario creation failed.",
       });
     }
   };
@@ -60,15 +75,23 @@ const CreateScenarioForm: React.FC = () => {
       string,
       (field: any, item: InputItem) => ReactElement
     > = {
+      textarea: (field, item) => (
+        <Textarea
+          className="ml-1 w-full resize-none rounded-md border p-2"
+          {...field}
+          placeholder={item.placeholder}
+        />
+      ),
       select: (field, item) => <TradeSelect field={field} item={item} />,
       checkbox: (field, item) => <TradeCheckbox field={field} item={item} />,
+      date: (field, item) => <TradeDatePicker field={field} item={item} />,
       default: (field, item) => (
         <TradeInput
           item={item}
           field={field}
           type={item.type === "array" ? "number" : item.type}
         />
-      )
+      ),
     };
 
     const renderComponent = componentMap[item.type] || componentMap.default;
@@ -92,7 +115,7 @@ const CreateScenarioForm: React.FC = () => {
         takeProfitLevel[field as keyof TakeProfitLevel];
 
       return takeProfitLevelLine ? (
-        <span key={field} className='text-red-500 text-sm mt-1 block'>
+        <span key={field} className="mt-1 block text-sm text-red-500">
           {takeProfitLevelLine.message}
         </span>
       ) : null;
@@ -104,18 +127,18 @@ const CreateScenarioForm: React.FC = () => {
   };
 
   const ProfitTakerLevels = ({ item }: { item: InputItem }) => (
-    <div className='mb-4 mr-4'>
+    <div className="mb-4 mr-4">
       {fields.map((profitTakerField, index: number) => {
         const take_profit_levels = Object.entries(profitTakerField).filter(
-          ([key]) => key !== "id"
+          ([key]) => key !== "id",
         );
         return (
-          <div key={profitTakerField.id} className='mb-4'>
-            <div className='flex items-center'>
+          <div key={profitTakerField.id} className="mb-4">
+            <div className="flex items-center">
               {take_profit_levels.map(([key]) => (
-                <div key={key} className='flex flex-col px-1'>
+                <div key={key} className="flex flex-col px-1">
                   <label
-                    className='block text-sm font-medium mb-1'
+                    className="mb-1 block text-sm font-medium"
                     htmlFor={key}
                   >
                     {key}
@@ -131,9 +154,9 @@ const CreateScenarioForm: React.FC = () => {
                 </div>
               ))}
               <Button
-                type='button'
-                variant='outline'
-                className='mt-5 p-2'
+                type="button"
+                variant="outline"
+                className="mt-5 p-2"
                 onClick={() => remove(index)}
               >
                 Remove
@@ -144,8 +167,8 @@ const CreateScenarioForm: React.FC = () => {
         );
       })}
       <Button
-        type='button'
-        variant='outline'
+        type="button"
+        variant="outline"
         onClick={() => append({ price: 0, quantity: 0 })}
       >
         Add Take Profit Level
@@ -158,9 +181,9 @@ const CreateScenarioForm: React.FC = () => {
       onSubmit={onSubmit}
       form={form}
       onClose={onCloseCreateScenario}
-      submitText='Submit'
+      submitText="Submit"
     >
-      <div className='h-[600px] overflow-y-auto'>
+      <div className="h-[600px] overflow-y-auto">
         {BracketOrderSchemaInputData.map((item) =>
           item.name === "take_profit_levels" ? (
             <ProfitTakerLevels key={item.name} item={item} />
@@ -171,7 +194,7 @@ const CreateScenarioForm: React.FC = () => {
               control={control}
               render={chooseInputToRender}
             />
-          )
+          ),
         )}
         {errors.root && <div>{errors.root.message}</div>}
       </div>
