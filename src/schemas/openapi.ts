@@ -305,9 +305,12 @@ export interface components {
         };
         /** ContractSchema */
         ContractSchema: {
-            /** Id */
-            id: number;
-            contract?: components["schemas"]["FutureContracts"];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            name?: components["schemas"]["FutureContracts"];
             /** Active */
             active?: boolean;
             /** Exchange */
@@ -319,9 +322,12 @@ export interface components {
         };
         /** ContractSchemaCreate */
         ContractSchemaCreate: {
-            /** Id */
-            id: number;
-            contract?: components["schemas"]["FutureContracts"];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            name?: components["schemas"]["FutureContracts"];
             /** Active */
             active?: boolean;
             /** Exchange */
@@ -335,9 +341,12 @@ export interface components {
         ContractSchemaSearch: Record<string, never>;
         /** ContractSchemaUpdate */
         ContractSchemaUpdate: {
-            /** Id */
-            id?: number;
-            contract?: components["schemas"]["FutureContracts"];
+            /**
+             * Id
+             * Format: uuid
+             */
+            id?: string;
+            name?: components["schemas"]["FutureContracts"];
             /** Active */
             active?: boolean;
             /** Exchange */
@@ -360,12 +369,21 @@ export interface components {
         };
         /** OrderSchema */
         OrderSchema: {
-            /** Id */
-            id: number;
-            /** Trade Id */
-            trade_id?: number;
-            /** Client Id */
-            client_id?: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Trade Id
+             * Format: uuid
+             */
+            trade_id?: string;
+            /**
+             * Client Id
+             * Format: uuid
+             */
+            client_id?: string;
             /** Action */
             action?: string;
             /** Total Quantity */
@@ -379,10 +397,16 @@ export interface components {
         };
         /** ScenarioSchema */
         ScenarioSchema: {
-            /** Id */
-            id?: number;
-            /** Contract Id */
-            contract_id?: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Contract Id
+             * Format: uuid
+             */
+            contract_id?: string;
             /** Action */
             action?: string;
             select_strategy?: components["schemas"]["StrategyType"];
@@ -399,10 +423,7 @@ export interface components {
             is_quality_scenario?: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
-            /**
-             * Date Trade
-             * Format: date-time
-             */
+            /** Date Trade */
             date_trade?: string;
             /**
              * Created At
@@ -417,8 +438,11 @@ export interface components {
         };
         /** ScenarioSchemaCreate */
         ScenarioSchemaCreate: {
-            /** Contract Name */
-            contract_name: string;
+            /**
+             * Contract Id
+             * Format: uuid
+             */
+            contract_id: string;
             /** Action */
             action: string;
             select_strategy: components["schemas"]["StrategyType"];
@@ -435,20 +459,23 @@ export interface components {
             is_quality_scenario: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
-            /**
-             * Date Trade
-             * Format: date-time
-             */
+            /** Date Trade */
             date_trade?: string;
         };
         /** ScenarioSchemaSearch */
         ScenarioSchemaSearch: Record<string, never>;
         /** ScenarioSchemaUpdate */
         ScenarioSchemaUpdate: {
-            /** Id */
-            id?: number;
-            /** Contract Id */
-            contract_id?: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id?: string;
+            /**
+             * Contract Id
+             * Format: uuid
+             */
+            contract_id?: string;
             /** Action */
             action?: string;
             select_strategy?: components["schemas"]["StrategyType"];
@@ -465,10 +492,7 @@ export interface components {
             is_quality_scenario?: boolean;
             /** Take Profit Levels */
             take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
-            /**
-             * Date Trade
-             * Format: date-time
-             */
+            /** Date Trade */
             date_trade?: string;
             /**
              * Created At
@@ -495,8 +519,11 @@ export interface components {
         StrategyType: "FALSE_BREAKOUT";
         /** TakeProfitLevelSchema */
         TakeProfitLevelSchema: {
-            /** Id */
-            id?: number;
+            /**
+             * Id
+             * Format: uuid
+             */
+            id?: string;
             /** Scenario Id */
             scenario_id?: number;
             /** Price */

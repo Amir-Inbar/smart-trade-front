@@ -3,6 +3,7 @@ import {GeistSans} from "geist/font/sans";
 import {ThemeProvider} from "@/config/theme-provider";
 import {ReactNode} from "react";
 import "./globals.css";
+import {FetchDataInBackground} from "@/components/FetchDataInBackground/FetchDataInBackground";
 
 
 export default function RootLayout(
@@ -15,7 +16,10 @@ export default function RootLayout(
         <html lang="en" suppressHydrationWarning>
         <body className={GeistSans.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <AppLayout>{children}</AppLayout>
+            <AppLayout>
+                <FetchDataInBackground/>
+                {children}
+            </AppLayout>
         </ThemeProvider>
         </body>
         </html>
