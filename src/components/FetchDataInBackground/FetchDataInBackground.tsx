@@ -1,26 +1,39 @@
-'use client';
+"use client";
 
+import { useEffect } from "react";
 import useContractsStore from "@/store/actions/contract";
-import {useSearchContractsMutation} from "@/store/api/contractApi";
-import {useEffect} from "react";
+import useScenarioStore from "@/store/actions/trade";
+import { useSearchContractsMutation } from "@/store/api/contractApi";
+import { useSearchScenariosMutation } from "@/store/api/scenarioApi";
 
 export const FetchDataInBackground = () => {
-    const [searchContracts, {data}] = useSearchContractsMutation();
-    const setContracts = useContractsStore((state) => state.setContracts);
+  const [searchContracts, { data: contractsData }] = useSearchContractsMutation();
+  const [searchScenarios, { data: scenariosData }] = useSearchScenariosMutation();
 
-    const fetchContracts = async () => {
+  const setContracts = useContractsStore((state) => state.setContracts);
+  const setScenarios = useScenarioStore((state) => state.setScenarios);
 
-        const contracts = await searchContracts({}).unwrap();
-        setContracts(contracts);
-    };
+  const fetchContractsAndScenarios = async () => {
+    try {
+      const [contracts, scenarios] = await Promise.all([
+        searchContracts({}).unwrap(),
+        searchScenarios({}).unwrap()
+      ]);
+      setContracts(contracts);
+      setScenarios(scenarios);
+    } catch (error) {
+      console.error("Failed to fetch contracts or scenarios:", error);
+    }
+  };
 
-    useEffect(() => {
-        if (data) {
-            setContracts(data);
-        } else {
-            fetchContracts();
-        }
-    }, [data, setContracts]);
+  useEffect(() => {
+    if (!contractsData || !scenariosData) {
+      fetchContractsAndScenarios();
+    } else {
+      setContracts(contractsData);
+      setScenarios(scenariosData);
+    }
+  }, []);
 
-    return null;
+  return null;
 };

@@ -35,45 +35,29 @@ export type InputItem = {
     note?: string;
 };
 
+const TakeProfitLevelCreateSchema = yup.object({
+    price: yup.number().required("Price is required").positive("Price must be positive"),
+    quantity: yup.number().required("Quantity is required").positive("Quantity must be positive"),
+});
+
+
 export const ScenarioSchemaCreate = yup.object().shape({
     contract_id: yup.string().required("Contract Name is required"),
-    date_trade: yup.string().required("Trade Date is required").optional(),
+    date_trade: yup.string().required("Date Trade is required").optional(),
     action: yup.string().required("Action is required"),
-    select_strategy: yup
-        .mixed<"FALSE_BREAKOUT">()
-        .oneOf(["FALSE_BREAKOUT"], "Invalid select strategy")
-        .required("Select strategy is required"),
-    break_down_price: yup
-        .number()
-        .required("Break down price is required")
-        .positive("Break down price must be positive"),
-    enter_price: yup.number().positive("Enter price must be positive").optional(),
+    select_strategy: yup.string().required("Select Strategy is required"),
+    break_down_price: yup.number().required("Break down price is required"),
+    enter_price: yup.number().positive("Enter price must be positive").required("Enter price is required").default(0),
     stop_price: yup
         .number()
-        .required("Stop price is required")
         .positive("Stop price must be positive")
-        .optional(),
-    stop_price_mode: yup
-        .mixed<"MANUAL" | "AUTOMATIC">()
-        .oneOf(["MANUAL", "AUTOMATIC"], "Invalid stop price mode")
+        .required("Stop price is required")
+        .default(0),
+    stop_price_mode: yup.string()
         .required("Stop price mode is required"),
     description: yup.string().required("Description is required"),
-    is_quality_scenario: yup.boolean().optional().default(false),
-    take_profit_levels: yup
-        .array()
-        .of(
-            yup.object().shape({
-                price: yup
-                    .number()
-                    .required("Price is required")
-                    .positive("Price must be positive"),
-                quantity: yup
-                    .number()
-                    .required("Quantity is required")
-                    .positive("Quantity must be positive"),
-            }),
-        )
-        .optional(),
+    is_quality_scenario: yup.boolean().default(false).optional(),
+    take_profit_levels: yup.array().of(TakeProfitLevelCreateSchema).default([]).required("Take Profit Levels are required"),
 });
 
 export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputItem[] => [

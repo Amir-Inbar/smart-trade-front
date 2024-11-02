@@ -1,43 +1,47 @@
-// app/scenarios/page.tsx
+"use client";
 
 import Link from "next/link";
-import {ContentLayout} from "@/components/Layout/ContentLayout";
+import { ContentLayout } from "@/components/Layout/ContentLayout";
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import {CreateScenarioModal} from "@/components/Scenarios/CreateScenarioModal/CreateScenarioModal";
+import { CreateScenarioModal } from "@/components/Scenarios/CreateScenarioModal/CreateScenarioModal";
+import { ScenariosOverview } from "@/components/Scenarios/ScenariosOverview/ScenariosOverview";
 
-export const metadata = {
-    title: "Scenario Page",
-    description: "Create a new scenario",
-};
+// export const metadata = {
+//   title: "Scenario Page",
+//   description: "Create a new scenario"
+// };
 
 const Breadcrumbs = () => (
-    <Breadcrumb>
-        <BreadcrumbList>
-            <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                    <Link href="/overview">Home</Link>
-                </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator/>
-            <BreadcrumbItem>
-                <BreadcrumbPage>CreateScenarioForm</BreadcrumbPage>
-            </BreadcrumbItem>
-        </BreadcrumbList>
-    </Breadcrumb>
+  <Breadcrumb>
+    <BreadcrumbList>
+      <BreadcrumbItem>
+        <BreadcrumbLink asChild>
+          <Link href="/overview">Home</Link>
+        </BreadcrumbLink>
+      </BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem>
+        <BreadcrumbPage>CreateScenarioForm</BreadcrumbPage>
+      </BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
 );
 
 const ScenariosPage = () => (
-    <ContentLayout title="CreateScenarioForm">
-        <Breadcrumbs/>
-        <CreateScenarioModal/>
-    </ContentLayout>
+  <ContentLayout title="CreateScenarioForm">
+    <Breadcrumbs />
+    <div className="m-3">
+      <CreateScenarioModal />
+    </div>
+    <ScenariosOverview />
+  </ContentLayout>
 );
 
 export default ScenariosPage;

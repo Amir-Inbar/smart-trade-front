@@ -3,7 +3,7 @@ import { API_HOST } from "@/config/consts";
 import {
   ContractSchema,
   ScenarioSchema,
-  ScenarioSchemaCreateSchema
+  ScenarioSchemaCreateSchema, ScenarioSchemaSearch, ScenarioSchemaUpdateSchema
 } from "@/schemas/types";
 
 export const scenarioApi = createApi({
@@ -17,22 +17,30 @@ export const scenarioApi = createApi({
       query: () => "scenarios",
       providesTags: ["scenarios"]
     }),
-    createScenario: builder.mutation<
-      ScenarioSchema,
-      ScenarioSchemaCreateSchema
-    >({
+    searchScenarios: builder.mutation<ScenarioSchema[], ScenarioSchemaSearch>
+    ({
       query: (body) => ({
-        url: "scenarios",
+        url: "scenarios/search",
         method: "POST",
         body
       }),
       invalidatesTags: ["scenarios"]
     }),
-    updateScenario: builder.mutation<ScenarioSchema, ScenarioSchema>({
+    createScenario: builder.mutation<
+      ScenarioSchema,
+      ScenarioSchemaCreateSchema
+    >({
       query: (body) => ({
-        url: `scenarios/${body.id}`,
-        method: "PUT",
+        url: "scenarios/",
+        method: "POST",
         body
+      })
+    }),
+    updateScenario: builder.mutation<ScenarioSchema, { scenarioId: string; fields: ScenarioSchemaUpdateSchema }>({
+      query: ({ scenarioId, fields }) => ({
+        url: `scenarios/${scenarioId}`,
+        method: "PUT",
+        body: fields
       }),
       invalidatesTags: ["scenarios"]
     })
@@ -40,7 +48,7 @@ export const scenarioApi = createApi({
 });
 
 export const {
-  useFetchScenariosQuery,
   useCreateScenarioMutation,
+  useSearchScenariosMutation,
   useUpdateScenarioMutation
 } = scenarioApi;

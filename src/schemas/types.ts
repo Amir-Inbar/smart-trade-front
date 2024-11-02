@@ -1,18 +1,22 @@
-'use client';
-import { components } from '@/schemas/openapi';
+"use client";
+import { components } from "@/schemas/openapi";
 
-export type OrderSchema = components['schemas']['OrderSchema'];
-export type ScenarioSchema = components['schemas']['ScenarioSchema'];
-export type TakeProfitLevelSchema =
-  components['schemas']['TakeProfitLevelSchema'];
+export type OrderSchema = components["schemas"]["OrderSchema"];
+export type ScenarioSchema = components["schemas"]["ScenarioSchema"];
+export type ScenarioSchemaUpdateSchema =
+  components["schemas"]["ScenarioSchemaUpdate"];
+export type TakeProfitLevelCreateSchema =
+  components["schemas"]["TakeProfitLevelCreateSchema"];
 export type ScenarioSchemaCreateSchema =
-  components['schemas']['ScenarioSchemaCreate'];
-export type ContractSchema = components['schemas']['ContractSchema'];
+  components["schemas"]["ScenarioSchemaCreate"];
+export type ContractSchema = components["schemas"]["ContractSchema"];
 export type ContractSchemaSearchSchema =
-  components['schemas']['ContractSchemaSearch'];
+  components["schemas"]["ContractSchemaSearch"];
+export type ScenarioSchemaSearch = components["schemas"]["ScenarioSchemaSearch"];
+export type OperationalStateType = components["schemas"]["OperationalState"];
 
 export enum StrategyTypeEnum {
-  FALSE_BREAKOUT = 'FALSE_BREAKOUT',
+  FALSE_BREAKOUT = "FALSE_BREAKOUT",
 }
 
 export interface AccountValueSchema {
@@ -25,12 +29,29 @@ export interface AccountValueSchema {
 }
 
 export enum Ticker {
-  MES = 'MES',
-  MNQ = 'MNQ',
-  M2K = 'M2K',
+  MES = "MES",
+  MNQ = "MNQ",
+  M2K = "M2K",
 }
 
 export enum StopPriceModeChoices {
-  AUTOMATIC = 'AUTOMATIC',
-  MANUAL = 'MANUAL',
+  AUTOMATIC = "AUTOMATIC",
+  MANUAL = "MANUAL",
+}
+
+export enum ProgressState {
+  INITIAL = "initial",
+  BREAKOUT_OCCURRED = "breakout_occurred",
+  MINIMUM_BREAKOUT_POINTS_ACHIEVED = "minimum_breakout_points_achieved",
+  PRICE_RETURNED_TO_SIGNIFICANT_LEVEL = "price_returned_to_significant_level",
+  FIRST_15_MIN_CANDLE_CLOSED = "first_15_min_candle_closed",
+  TWO_5_MIN_CANDLES_CLOSED = "two_5_min_candles_closed"
+}
+
+export enum OperationalState {
+  PENDING = "pending",
+  COMPLETED = "completed",
+  CANCELLED = "cancelled",
+  ERROR = "error",
+  PAUSED = "paused"
 }

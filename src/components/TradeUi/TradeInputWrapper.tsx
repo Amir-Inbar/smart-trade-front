@@ -26,7 +26,7 @@ export const TradeInputWrapper = ({
     <Controller
       name={item.name}
       control={control}
-      defaultValue={item.default || ''}
+      defaultValue={item.default === undefined ? '' : item.default}
       render={({ field }) => renderElement(item, field)}
     />
     {errorMessage && (

@@ -157,7 +157,7 @@ export interface paths {
         /**
          * Create a new scenario
          * @description Create a new scenario.
-         *
+         *     :param data: Scenario data to create.
          *     :param scenario: Scenario data to create.
          *     :param db: Database session.
          *     :return: The created scenario.
@@ -190,7 +190,7 @@ export interface paths {
          * @description Update a scenario by ID.
          *
          *     :param scenario_id: ID of the scenario to update.
-         *     :param scenario: Updated scenario data.
+         *     :param data: Updated scenario data.
          *     :param db: Database session.
          *     :return: The updated scenario.
          */
@@ -290,19 +290,13 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** AccountValue */
-        AccountValue: {
-            /** Account */
-            account: string;
-            /** Tag */
-            tag: string;
-            /** Value */
-            value: string;
-            /** Currency */
-            currency: string;
-            /** Modelcode */
-            modelCode: string;
-        };
+        AccountValue: [
+            string,
+            string,
+            string,
+            string,
+            string
+        ];
         /** ContractSchema */
         ContractSchema: {
             /**
@@ -310,15 +304,15 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            name?: components["schemas"]["FutureContracts"];
+            name?: components["schemas"]["FutureContracts"] | null;
             /** Active */
-            active?: boolean;
+            active?: boolean | null;
             /** Exchange */
-            exchange?: string;
+            exchange?: string | null;
             /** Currency */
-            currency?: string;
+            currency?: string | null;
             /** Last Trade Date Or Contract Month */
-            last_trade_date_or_contract_month?: string;
+            last_trade_date_or_contract_month?: string | null;
         };
         /** ContractSchemaCreate */
         ContractSchemaCreate: {
@@ -327,38 +321,34 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            name?: components["schemas"]["FutureContracts"];
+            name?: components["schemas"]["FutureContracts"] | null;
             /** Active */
-            active?: boolean;
+            active?: boolean | null;
             /** Exchange */
-            exchange?: string;
+            exchange?: string | null;
             /** Currency */
-            currency?: string;
+            currency?: string | null;
             /** Last Trade Date Or Contract Month */
-            last_trade_date_or_contract_month?: string;
+            last_trade_date_or_contract_month?: string | null;
         };
         /** ContractSchemaSearch */
         ContractSchemaSearch: Record<string, never>;
         /** ContractSchemaUpdate */
         ContractSchemaUpdate: {
-            /**
-             * Id
-             * Format: uuid
-             */
-            id?: string;
-            name?: components["schemas"]["FutureContracts"];
+            /** Id */
+            id?: string | null;
+            name?: components["schemas"]["FutureContracts"] | null;
             /** Active */
-            active?: boolean;
+            active?: boolean | null;
             /** Exchange */
-            exchange?: string;
+            exchange?: string | null;
             /** Currency */
-            currency?: string;
+            currency?: string | null;
             /** Last Trade Date Or Contract Month */
-            last_trade_date_or_contract_month?: string;
+            last_trade_date_or_contract_month?: string | null;
         };
         /**
          * FutureContracts
-         * @description An enumeration.
          * @enum {string}
          */
         FutureContracts: "ES" | "NQ" | "YM" | "RTY" | "MES" | "MNQ" | "MYM" | "M2K" | "MGC" | "MCL";
@@ -367,6 +357,11 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /**
+         * OperationalState
+         * @enum {string}
+         */
+        OperationalState: "pending" | "completed" | "cancelled" | "error" | "paused";
         /** OrderSchema */
         OrderSchema: {
             /**
@@ -374,27 +369,26 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            /**
-             * Trade Id
-             * Format: uuid
-             */
-            trade_id?: string;
-            /**
-             * Client Id
-             * Format: uuid
-             */
-            client_id?: string;
+            /** Trade Id */
+            trade_id: string | null;
+            /** Client Id */
+            client_id: string | null;
             /** Action */
-            action?: string;
+            action: string | null;
             /** Total Quantity */
-            total_quantity?: number;
+            total_quantity: number | null;
             /** Order Type */
-            order_type?: string;
+            order_type: string | null;
             /** Lmt Price */
-            lmt_price?: number;
+            lmt_price: number | null;
             /** Account */
-            account?: string;
+            account: string | null;
         };
+        /**
+         * ProgressState
+         * @enum {string}
+         */
+        ProgressState: "initial" | "breakout_occurred" | "minimum_breakout_points_achieved" | "price_returned_to_significant_level" | "first_15_min_candle_closed" | "two_5_min_candles_closed";
         /** ScenarioSchema */
         ScenarioSchema: {
             /**
@@ -402,39 +396,37 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            /**
-             * Contract Id
-             * Format: uuid
-             */
-            contract_id?: string;
+            /** Contract Id */
+            contract_id?: string | null;
             /** Action */
-            action?: string;
-            select_strategy?: components["schemas"]["StrategyType"];
+            action?: string | null;
+            select_strategy?: components["schemas"]["StrategyType"] | null;
             /** Break Down Price */
-            break_down_price?: number;
+            break_down_price?: number | null;
             /** Enter Price */
-            enter_price?: number;
+            enter_price?: number | null;
             /** Stop Price */
-            stop_price?: number;
-            stop_price_mode?: components["schemas"]["StopPriceMode"];
+            stop_price?: number | null;
+            stop_price_mode?: components["schemas"]["StopPriceMode"] | null;
             /** Description */
-            description?: string;
+            description?: string | null;
             /** Is Quality Scenario */
-            is_quality_scenario?: boolean;
-            /** Take Profit Levels */
-            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
+            is_quality_scenario?: boolean | null;
+            /**
+             * Take Profit Levels
+             * @default []
+             */
+            take_profit_levels: components["schemas"]["TakeProfitLevelSchema"][];
             /** Date Trade */
-            date_trade?: string;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at?: string;
-            /**
-             * Updated At
-             * Format: date-time
-             */
-            updated_at?: string;
+            date_trade?: string | null;
+            /** Created At */
+            created_at?: string | null;
+            /** Updated At */
+            updated_at?: string | null;
+            /** @default pending */
+            operational_state: components["schemas"]["OperationalState"] | null;
+            /** @default initial */
+            progress_state: components["schemas"]["ProgressState"] | null;
         };
         /** ScenarioSchemaCreate */
         ScenarioSchemaCreate: {
@@ -445,87 +437,96 @@ export interface components {
             contract_id: string;
             /** Action */
             action: string;
-            select_strategy: components["schemas"]["StrategyType"];
-            /** Break Down Price */
+            /** Select Strategy */
+            select_strategy: string;
+            /**
+             * Break Down Price
+             * @default 0
+             */
             break_down_price: number;
-            /** Enter Price */
-            enter_price?: number;
-            /** Stop Price */
-            stop_price?: number;
-            stop_price_mode: components["schemas"]["StopPriceMode"];
+            /**
+             * Enter Price
+             * @default 0
+             */
+            enter_price: number;
+            /**
+             * Stop Price
+             * @default 0
+             */
+            stop_price: number;
+            /** Stop Price Mode */
+            stop_price_mode: string;
             /** Description */
             description: string;
             /** Is Quality Scenario */
             is_quality_scenario: boolean;
-            /** Take Profit Levels */
-            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
-            /** Date Trade */
+            /**
+             * Take Profit Levels
+             * @default []
+             */
+            take_profit_levels: components["schemas"]["TakeProfitLevelCreateSchema"][];
+            /**
+             * Date Trade
+             * Format: date-time
+             */
             date_trade?: string;
         };
         /** ScenarioSchemaSearch */
         ScenarioSchemaSearch: Record<string, never>;
         /** ScenarioSchemaUpdate */
         ScenarioSchemaUpdate: {
-            /**
-             * Id
-             * Format: uuid
-             */
-            id?: string;
-            /**
-             * Contract Id
-             * Format: uuid
-             */
-            contract_id?: string;
+            /** Contract Id */
+            contract_id?: string | null;
             /** Action */
-            action?: string;
-            select_strategy?: components["schemas"]["StrategyType"];
+            action?: string | null;
+            /** Select Strategy */
+            select_strategy?: string | null;
             /** Break Down Price */
-            break_down_price?: number;
+            break_down_price?: number | null;
             /** Enter Price */
-            enter_price?: number;
+            enter_price?: number | null;
             /** Stop Price */
-            stop_price?: number;
-            stop_price_mode?: components["schemas"]["StopPriceMode"];
+            stop_price?: number | null;
             /** Description */
-            description?: string;
+            description?: string | null;
             /** Is Quality Scenario */
-            is_quality_scenario?: boolean;
+            is_quality_scenario?: boolean | null;
             /** Take Profit Levels */
-            take_profit_levels?: components["schemas"]["TakeProfitLevelSchema"][];
+            take_profit_levels?: components["schemas"]["TakeProfitLevelCreateSchema"][] | null;
             /** Date Trade */
-            date_trade?: string;
-            /**
-             * Created At
-             * Format: date-time
-             */
-            created_at?: string;
-            /**
-             * Updated At
-             * Format: date-time
-             */
-            updated_at?: string;
+            date_trade?: string | null;
+            operational_state?: components["schemas"]["OperationalState"] | null;
         };
         /**
          * StopPriceMode
-         * @description An enumeration.
-         * @enum {unknown}
+         * @enum {string}
          */
         StopPriceMode: "AUTOMATIC" | "MANUAL";
         /**
          * StrategyType
-         * @description An enumeration.
+         * @constant
          * @enum {string}
          */
         StrategyType: "FALSE_BREAKOUT";
+        /** TakeProfitLevelCreateSchema */
+        TakeProfitLevelCreateSchema: {
+            /** Price */
+            price: number;
+            /** Quantity */
+            quantity: number;
+        };
         /** TakeProfitLevelSchema */
         TakeProfitLevelSchema: {
             /**
              * Id
              * Format: uuid
              */
-            id?: string;
-            /** Scenario Id */
-            scenario_id?: number;
+            id: string;
+            /**
+             * Scenario Id
+             * Format: uuid
+             */
+            scenario_id: string;
             /** Price */
             price: number;
             /** Quantity */
@@ -538,10 +539,10 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            scenario_id?: components["schemas"]["ScenarioSchema"];
-            contract_id?: components["schemas"]["ContractSchema"];
+            scenario_id: components["schemas"]["ScenarioSchema"] | null;
+            contract_id: components["schemas"]["ContractSchema"] | null;
             /** Orders */
-            orders?: components["schemas"]["OrderSchema"][];
+            orders: components["schemas"]["OrderSchema"][] | null;
         };
         /** ValidationError */
         ValidationError: {
@@ -657,7 +658,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": string;
+                    "application/json": string | null;
                 };
             };
             /** @description Not found */
@@ -684,7 +685,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown[][];
+                    "application/json": components["schemas"]["AccountValue"][] | null;
                 };
             };
             /** @description Not found */
@@ -727,7 +728,7 @@ export interface operations {
         parameters: {
             query?: {
                 page?: number;
-                page_size?: number;
+                page_size?: number | null;
             };
             header?: never;
             path?: never;
@@ -735,7 +736,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["ScenarioSchemaSearch"];
+                "application/json": components["schemas"]["ScenarioSchemaSearch"] | null;
             };
         };
         responses: {
@@ -849,7 +850,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                scenario_id: number;
+                scenario_id: string;
             };
             cookie?: never;
         };
@@ -890,7 +891,7 @@ export interface operations {
         parameters: {
             query?: {
                 page?: number;
-                page_size?: number;
+                page_size?: number | null;
             };
             header?: never;
             path?: never;
@@ -898,7 +899,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": components["schemas"]["ContractSchemaSearch"];
+                "application/json": components["schemas"]["ContractSchemaSearch"] | null;
             };
         };
         responses: {
