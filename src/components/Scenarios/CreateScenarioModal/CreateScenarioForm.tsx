@@ -20,7 +20,7 @@ import { TradeInput } from "@/components/TradeUi/TradeInput";
 import { DialogForm } from "../../DialogWrapper/DialogForm";
 import { TradeInputWrapper } from "@/components/TradeUi/TradeInputWrapper";
 import {
-  ContractSchema,
+  ContractSchema, ScenarioSchema,
   ScenarioSchemaCreateSchema,
   StopPriceModeChoices
 } from "@/schemas/types";
@@ -31,14 +31,16 @@ interface CreateScenarioFormProps {
   contracts: ContractSchema[];
 
   onCloseCreateScenarioModal(): void;
+
+  onAddScenario(scenario: ScenarioSchema): void;
 }
 
 const CreateScenarioForm: React.FC<CreateScenarioFormProps> = ({
                                                                  contracts,
-                                                                 onCloseCreateScenarioModal
+                                                                 onCloseCreateScenarioModal,
+                                                                 onAddScenario
                                                                }: CreateScenarioFormProps) => {
   const [createScenario] = useCreateScenarioMutation();
-  const [searchScenarios, { data }] = useSearchScenariosMutation();
 
   const form = useForm<ScenarioSchemaCreateSchema>({
     resolver: yupResolver(ScenarioSchemaCreate)
@@ -68,8 +70,8 @@ const CreateScenarioForm: React.FC<CreateScenarioFormProps> = ({
 
   const onSubmit: SubmitHandler<ScenarioSchemaCreateSchema> = async (data) => {
     try {
-      await createScenario(data);
-      await searchScenarios({});
+      const scenario = await createScenario(data).unwrap();
+      onAddScenario(scenario);
       onCloseCreateScenarioModal();
     } catch (error) {
       setError("root", {

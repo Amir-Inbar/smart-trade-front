@@ -13,13 +13,17 @@ interface getScenarioColumnsProps {
   updatingScenarioId: string | undefined;
 
   onUpdateScenarioState(scenario: ScenarioSchema, state: OperationalState): Promise<void>;
+
+  onDeleteScenario(scenario: ScenarioSchema): Promise<void>;
 }
 
-export const getScenarioColumns = ({
-                                     onUpdateScenarioState,
-                                     isUpdatingScenario,
-                                     updatingScenarioId
-                                   }: getScenarioColumnsProps) => [
+export const getScenarioColumns = (
+  {
+    onUpdateScenarioState,
+    isUpdatingScenario,
+    updatingScenarioId,
+    onDeleteScenario
+  }: getScenarioColumnsProps) => [
   {
     accessorKey: "id",
     header: "ID"
@@ -121,6 +125,9 @@ export const getScenarioColumns = ({
         <div>
           <Button disabled={isDisabled} onClick={() => onUpdateScenarioState(row.original, stateToSet)}>
             {buttonText}
+          </Button>
+          <Button onClick={() => onDeleteScenario(row.original)} className="ml-4">
+            Delete
           </Button>
         </div>
       );

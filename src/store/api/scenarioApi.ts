@@ -43,6 +43,13 @@ export const scenarioApi = createApi({
         body: fields
       }),
       invalidatesTags: ["scenarios"]
+    }),
+    deleteScenario: builder.mutation<void, { scenarioId: string }>({
+      query: ({ scenarioId }) => ({
+        url: `scenarios/${scenarioId}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ["scenarios"]
     })
   })
 });
@@ -50,5 +57,6 @@ export const scenarioApi = createApi({
 export const {
   useCreateScenarioMutation,
   useSearchScenariosMutation,
-  useUpdateScenarioMutation
+  useUpdateScenarioMutation,
+  useDeleteScenarioMutation,
 } = scenarioApi;

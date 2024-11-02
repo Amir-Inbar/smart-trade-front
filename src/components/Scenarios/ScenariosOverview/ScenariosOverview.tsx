@@ -1,9 +1,13 @@
 "use client";
 
 import { SmartTable } from "@/components/SmartTable/SmartTable";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import useScenarioStore from "@/store/actions/trade";
-import { useSearchScenariosMutation, useUpdateScenarioMutation } from "@/store/api/scenarioApi";
+import {
+  useDeleteScenarioMutation,
+  useSearchScenariosMutation,
+  useUpdateScenarioMutation
+} from "@/store/api/scenarioApi";
 import {
   getScenarioColumns,
   ScenariosOverviewDataInitialState
@@ -14,6 +18,7 @@ export const ScenariosOverview = () => {
   const [searchScenarios, { data }] = useSearchScenariosMutation();
   const [updateScenario, { isLoading: isUpdatingScenario, originalArgs }] = useUpdateScenarioMutation();
   const { setScenarios, scenarios } = useScenarioStore();
+  const [deleteScenario] = useDeleteScenarioMutation();
 
   const fetchScenarios = async () => {
     const scenarios = await searchScenarios({}).unwrap();
@@ -40,12 +45,18 @@ export const ScenariosOverview = () => {
     fetchScenarios();
   };
 
+  const onDeleteScenario = async (scenario: ScenarioSchema) => {
+    await deleteScenario({ scenarioId: scenario.id }).unwrap();
+    await fetchScenarios();
+  };
+
   const { scenarioId: updatingScenarioId } = originalArgs || {};
 
   const columns = useMemo(() => getScenarioColumns({
     onUpdateScenarioState,
     isUpdatingScenario,
-    updatingScenarioId
+    updatingScenarioId,
+    onDeleteScenario
   }), [isUpdatingScenario]);
 
   const config = ScenariosOverviewDataInitialState();

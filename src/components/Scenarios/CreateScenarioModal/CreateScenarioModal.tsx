@@ -4,17 +4,25 @@ import { DialogWrapper } from "@/components/DialogWrapper/DialogWrapper";
 import CreateScenarioForm from "@/components/Scenarios/CreateScenarioModal/CreateScenarioForm";
 import useContractsStore from "@/store/actions/contract";
 import { useState } from "react";
+import useScenarioStore from "@/store/actions/trade";
+import { ScenarioSchema } from "@/schemas/types";
 
 export const CreateScenarioModal = () => {
+  const addScenarios = useScenarioStore((state) => state.addScenario);
 
   const [isCreateScenarioModalOpen, setIsCreateScenarioModalOpen] = useState(false);
 
-  const onCloseCreateScenarioModal = () => {
-    setIsCreateScenarioModalOpen(false);
+
+  const onToggleCreateScenarioModal = () => {
+    setIsCreateScenarioModalOpen(!isCreateScenarioModalOpen);
   };
 
-  const onOpenCreateScenarioModal = () => {
-    setIsCreateScenarioModalOpen(true);
+  const onAddScenario = (scenario: ScenarioSchema) => {
+    try {
+      addScenarios(scenario);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const contracts = useContractsStore((state) => state.contracts);
@@ -25,11 +33,12 @@ export const CreateScenarioModal = () => {
                         order at the same time."
       openDialogText="Create Scenario"
       open={isCreateScenarioModalOpen}
-      onOpenModal={onOpenCreateScenarioModal}
+      onOpenChange={onToggleCreateScenarioModal}
     >
       <CreateScenarioForm
         contracts={contracts}
-        onCloseCreateScenarioModal={onCloseCreateScenarioModal}
+        onCloseCreateScenarioModal={onToggleCreateScenarioModal}
+        onAddScenario={onAddScenario}
       />
     </DialogWrapper>
   );

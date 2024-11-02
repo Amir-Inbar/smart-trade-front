@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 
 interface DialogWrapperProps {
@@ -20,7 +20,7 @@ interface DialogWrapperProps {
   openDialogText?: string;
   open?: boolean;
 
-  onOpenModal(): void;
+  onOpenChange: (open: boolean) => void;
 }
 
 export const DialogWrapper = ({
@@ -30,31 +30,22 @@ export const DialogWrapper = ({
                                 openDialogText,
                                 children,
                                 open,
-                                onOpenModal
-                              }: DialogWrapperProps) => {
-  const [isOpen, setIsOpen] = useState(open);
-
-  const onOpenChange = () => {
-    setIsOpen(!isOpen);
-  };
-
-  return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Button variant="outline" type="button" onClick={onOpenModal}>
-          {openDialogText}
-        </Button>
-      </DialogTrigger>
-      <DialogPortal>
-        <DialogContent className={`w-[${dialogWidth || "600px"}]`}>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-          </DialogHeader>
-          <DialogDescription>{description}</DialogDescription>
-          {children}
-        </DialogContent>
-      </DialogPortal>
-    </Dialog>
-  );
-};
-
+                                onOpenChange
+                              }: DialogWrapperProps) => (
+  <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogTrigger asChild>
+      <Button variant="outline" type="button">
+        {openDialogText}
+      </Button>
+    </DialogTrigger>
+    <DialogPortal>
+      <DialogContent className={`w-[${dialogWidth || "600px"}]`}>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>{description}</DialogDescription>
+        {children}
+      </DialogContent>
+    </DialogPortal>
+  </Dialog>
+);
