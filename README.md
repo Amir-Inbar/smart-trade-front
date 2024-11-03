@@ -1,65 +1,43 @@
-# [shadcn/ui sidebar](https://shadcn-ui-sidebar.salimi.my) &middot; [![Author Salimi](https://img.shields.io/badge/Author-Salimi-%3C%3E)](https://www.salimi.my)
+# Smart Trade
 
-A stunning and functional retractable sidebar for Next.js built on top of [shadcn/ui](https://ui.shadcn.com) complete with desktop and mobile responsiveness.
+Smart Trade is a web application designed for intuitive trading with real-time market data. This project leverages
+modern web technologies to provide a seamless trading experience.
+
+![Smart Trade Screenshot](https://github.com/user-attachments/assets/eefc2363-0d03-473d-a366-97f40c557381)
+
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
 
-- Retractable mini and wide sidebar
-- Scrollable sidebar menu
-- Sheet menu for mobile
-- Grouped menu with labels
-- Collapsible submenu
-- Extracted menu items list
+- Intuitive UI for trading
+- Real-time market data
+- Dark Mode UI with toggle for light and dark themes
+- Optimized API calls with batching
+- Enhanced error messaging for API issues
 
-## Tech/framework used
+## Tech Stack
 
-- Next.js 14
-- Shadcn/ui
-- Tailwind CSS
-- TypeScript
-- Zustand
+- **Languages**: TypeScript, JavaScript
+- **Frameworks**: React
+- **Package Manager**: npm
+- **Backend**: Node.js v16.x, Express v4.18.2
+- **Other Libraries**:
+    - react-hook-form
+    - Tailwind CSS
+    - React Query
 
-## Starting the project locally
+## Installation
 
-1. Clone the repository
+To get started with the project, clone the repository and install the dependencies:
 
-   ```bash
-   git clone https://github.com/salimi-my/shadcn-ui-sidebar
-   ```
-
-2. Install dependencies
-
-   ```bash
-   cd shadcn-ui-sidebar
-   npm install
-   ```
-
-3. Run the development server
-
-   ```bash
-   npm run dev
-   ```
-
-## Demo
-
-The app is hosted on Vercel. [Click here](https://shadcn-ui-sidebar.salimi.my) to visit.
-<br>
-Direct demo link: `https://shadcn-ui-sidebar.salimi.my`
-
-## Screenshots
-
-#### Light mode
-
-![Light mode](/screenshots/screenshot-1.png)
-
-#### Dark mode
-
-![Dark mode](/screenshots/screenshot-2.png)
-
-#### Mini sidebar
-
-![Mini sidebar](/screenshots/screenshot-3.png)
-
-#### Sheet menu
-
-<img src="/screenshots/screenshot-4.png" width="300">
+```bash
+git clone https://github.com/Amir-Inbar/smart-trade.git
+cd smart-trade
+npm install
