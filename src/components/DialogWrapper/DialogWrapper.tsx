@@ -20,7 +20,7 @@ interface DialogWrapperProps {
   openDialogText?: string;
   open?: boolean;
 
-  onOpenChange: (open: boolean) => void;
+  onOpenChange(open: boolean): void;
 }
 
 export const DialogWrapper = ({
@@ -39,7 +39,9 @@ export const DialogWrapper = ({
       </Button>
     </DialogTrigger>
     <DialogPortal>
-      <DialogContent className={`w-[${dialogWidth || "600px"}]`}>
+      <DialogContent className={`w-[${dialogWidth || "600px"}]`} onInteractOutside={(e) => {
+        e.preventDefault();
+      }}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
