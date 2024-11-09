@@ -14,7 +14,6 @@ export const CreateScenarioModal = () => {
 
 
   const onToggleCreateScenarioModal = () => {
-    console.log('dsadsa');
     setIsCreateScenarioModalOpen(!isCreateScenarioModalOpen);
   };
 
