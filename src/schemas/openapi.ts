@@ -98,20 +98,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/trades/": {
+    "/trades/search": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /**
-         * Get all trades
-         * @description Get all trades
-         */
-        get: operations["read_trades_trades__get"];
+        get?: never;
         put?: never;
-        post?: never;
+        /**
+         * Search trades
+         * @description Search scenarios based on filters.
+         *
+         *     :param page: Page number.
+         *     :param page_size: Page size.
+         *     :param filters: Filters for searching scenarios.
+         *     :param db: Database session.
+         *     :param settings: Application settings.
+         *     :return: List of scenarios.
+         */
+        post: operations["search_scenarios_trades_search_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -196,7 +203,14 @@ export interface paths {
          */
         put: operations["update_scenario_scenarios__scenario_id__put"];
         post?: never;
-        delete?: never;
+        /**
+         * Delete a scenario
+         * @description Delete a scenario by ID.
+         *
+         *     :param scenario_id: ID of the scenario to delete.
+         *     :param db: Database session.
+         */
+        delete: operations["delete_scenario_scenarios__scenario_id__delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -279,6 +293,23 @@ export interface paths {
          *     :return: The updated contract.
          */
         put: operations["update_contract_contracts__contract_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Root */
+        get: operations["root__get"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
@@ -400,7 +431,7 @@ export interface components {
             contract_id?: string | null;
             /** Action */
             action?: string | null;
-            select_strategy?: components["schemas"]["StrategyType"] | null;
+            strategy?: components["schemas"]["StrategyType"] | null;
             /** Break Down Price */
             break_down_price?: number | null;
             /** Enter Price */
@@ -437,8 +468,8 @@ export interface components {
             contract_id: string;
             /** Action */
             action: string;
-            /** Select Strategy */
-            select_strategy: string;
+            /** Strategy */
+            strategy: string;
             /**
              * Break Down Price
              * @default 0
@@ -479,8 +510,8 @@ export interface components {
             contract_id?: string | null;
             /** Action */
             action?: string | null;
-            /** Select Strategy */
-            select_strategy?: string | null;
+            /** Strategy */
+            strategy?: string | null;
             /** Break Down Price */
             break_down_price?: number | null;
             /** Enter Price */
@@ -531,6 +562,8 @@ export interface components {
             price: number;
             /** Quantity */
             quantity: number;
+            /** Level Of Execution */
+            level_of_execution: number;
         };
         /** TradeSchema */
         TradeSchema: {
@@ -544,6 +577,8 @@ export interface components {
             /** Orders */
             orders: components["schemas"]["OrderSchema"][] | null;
         };
+        /** TradeSearchSchema */
+        TradeSearchSchema: Record<string, never>;
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -697,14 +732,21 @@ export interface operations {
             };
         };
     };
-    read_trades_trades__get: {
+    search_scenarios_trades_search_post: {
         parameters: {
-            query?: never;
+            query?: {
+                page?: number;
+                page_size?: number | null;
+            };
             header?: never;
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["TradeSearchSchema"] | null;
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -721,6 +763,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };
@@ -867,6 +918,44 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ScenarioSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_scenario_scenarios__scenario_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                scenario_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Not found */
@@ -1046,6 +1135,26 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    root__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
         };

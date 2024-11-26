@@ -45,7 +45,7 @@ export const ScenarioSchemaCreate = yup.object().shape({
   contract_id: yup.string().required("Contract Name is required"),
   date_trade: yup.string().required("Date Trade is required").optional(),
   action: yup.string().required("Action is required"),
-  select_strategy: yup.string().required("Select Strategy is required"),
+  strategy: yup.string().required("Select Strategy is required"),
   break_down_price: yup.number().required("Break down price is required"),
   enter_price: yup.number().positive("Enter price must be positive").required("Enter price is required").default(0),
   stop_price: yup
@@ -67,7 +67,7 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
     placeholder: "Enter the ticker",
     required: true,
     type: "select",
-    default: contracts[0].id,
+    default: contracts[0]?.id || "",
     options: contracts.map((contract) => ({
       value: contract.id,
       label: contract.name || ""
@@ -94,7 +94,7 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
     ]
   },
   {
-    name: "select_strategy",
+    name: "strategy",
     label: "Select Strategy",
     placeholder: "Select your strategy",
     required: true,

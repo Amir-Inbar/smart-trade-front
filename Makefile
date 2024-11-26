@@ -1,7 +1,7 @@
 # Makefile for Next.js project
 
 # Variables
-PROJECT_NAME = shadcn-sidebar
+PROJECT_NAME = smart-trader
 
 # Default target
 .DEFAULT_GOAL := help

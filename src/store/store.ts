@@ -3,11 +3,13 @@ import { useDispatch } from "react-redux";
 import { scenarioApi } from "./api/scenarioApi";
 import { accountApi } from "@/store/api/accountApi";
 import { contractApi } from "./api/contractApi";
+import { tradeApi } from "@/store/api/tradeApi";
 
 const rootReducer = combineReducers({
   [scenarioApi.reducerPath]: scenarioApi.reducer,
   [accountApi.reducerPath]: accountApi.reducer,
-  [contractApi.reducerPath]: contractApi.reducer
+  [contractApi.reducerPath]: contractApi.reducer,
+  [tradeApi.reducerPath]: tradeApi.reducer
 });
 
 export const store = configureStore({
@@ -16,7 +18,8 @@ export const store = configureStore({
     getDefaultMiddleware().concat(
       scenarioApi.middleware,
       accountApi.middleware,
-      contractApi.middleware
+      contractApi.middleware,
+      tradeApi.middleware
     )
 });
 

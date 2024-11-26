@@ -14,6 +14,8 @@ export type ContractSchemaSearchSchema =
   components["schemas"]["ContractSchemaSearch"];
 export type ScenarioSchemaSearch = components["schemas"]["ScenarioSchemaSearch"];
 export type OperationalStateType = components["schemas"]["OperationalState"];
+export type TradeSchema = components["schemas"]["TradeSchema"];
+export type TradeSearchSchema = components["schemas"]["TradeSearchSchema"];
 
 export enum StrategyTypeEnum {
   FALSE_BREAKOUT = "FALSE_BREAKOUT",
