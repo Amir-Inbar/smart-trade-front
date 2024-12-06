@@ -1,11 +1,12 @@
-import {create} from 'zustand'
-import {ScenarioState} from "@/store/@types/trade";
+import { create } from "zustand";
+import { TradeState } from "@/store/@types/trade";
 
 
-const useScenarioStore = create<ScenarioState>((set) => ({
-    scenarios: [],
-    setScenarios: (scenarios) => set({scenarios}),
-    addScenario: (scenario) => set((state) => ({scenarios: [...state.scenarios, scenario]})),
-}))
+const useTradeStore = create<TradeState
+>((set) => ({
+  trades: [],
+  setTrades: (trades) => set({ trades }),
+  addTrade: (trade) => set((state) => ({ trades: [...state.trades, trade] }))
+}));
 
-export default useScenarioStore
+export default useTradeStore

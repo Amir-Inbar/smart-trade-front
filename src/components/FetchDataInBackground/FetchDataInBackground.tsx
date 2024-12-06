@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import useContractsStore from "@/store/actions/contract";
-import useScenarioStore from "@/store/actions/trade";
+import useScenarioStore from "@/store/actions/scenario";
+import useTradeStore from "@/store/actions/trade";
 import { useSearchContractsMutation } from "@/store/api/contractApi";
 import { useSearchScenariosMutation } from "@/store/api/scenarioApi";
 import { useSearchTradesMutation } from "@/store/api/tradeApi";
@@ -10,11 +11,11 @@ import { useSearchTradesMutation } from "@/store/api/tradeApi";
 export const FetchDataInBackground = () => {
   const [searchContracts, { data: contractsData }] = useSearchContractsMutation();
   const [searchScenarios, { data: scenariosData }] = useSearchScenariosMutation();
-  const [searchTrades] = useSearchTradesMutation();
+  const [searchTrades, { data: tradesData }] = useSearchTradesMutation();
 
   const setContracts = useContractsStore((state) => state.setContracts);
   const setScenarios = useScenarioStore((state) => state.setScenarios);
-  const setTrades = useScenarioStore((state) => state.setTrades);
+  const setTrades = useTradeStore((state) => state.setTrades);
 
   const fetchContractsAndScenarios = async () => {
     try {
@@ -32,11 +33,12 @@ export const FetchDataInBackground = () => {
   };
 
   useEffect(() => {
-    if (!contractsData || !scenariosData) {
+    if (!contractsData || !scenariosData || !tradesData) {
       fetchContractsAndScenarios();
     } else {
       setContracts(contractsData);
       setScenarios(scenariosData);
+      setTrades(tradesData);
     }
   }, []);
 

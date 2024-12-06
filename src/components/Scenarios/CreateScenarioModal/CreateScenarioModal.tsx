@@ -4,7 +4,7 @@ import { DialogWrapper } from "@/components/DialogWrapper/DialogWrapper";
 import CreateScenarioForm from "@/components/Scenarios/CreateScenarioModal/CreateScenarioForm";
 import useContractsStore from "@/store/actions/contract";
 import { useState } from "react";
-import useScenarioStore from "@/store/actions/trade";
+import useScenarioStore from "@/store/actions/scenario";
 import { ScenarioSchema } from "@/schemas/types";
 
 export const CreateScenarioModal = () => {

@@ -1,9 +1,9 @@
-import {ScenarioSchema} from "@/schemas/types";
+import {TradeSchema} from "@/schemas/types";
 
-export interface ScenarioState {
-    scenarios: ScenarioSchema[];
+export interface TradeState {
+    trades: TradeSchema[];
 
-    setScenarios(scenarios: ScenarioSchema[]): void;
+    setTrades(trades: TradeSchema[]): void;
 
-    addScenario(scenario: ScenarioSchema): void;
+    addTrade(trade: TradeSchema): void;
 }

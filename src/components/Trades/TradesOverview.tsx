@@ -1,11 +1,14 @@
-import { useSearchTradesMutation } from "@/store/api/tradeApi";
+import useTradeStore from "@/store/actions/trade";
 
 export const TradesOverview = () => {
-  const [_, { data, isLoading }] = useSearchTradesMutation({});
-  console.log(data);
+  const trades = useTradeStore((state) => state.trades);
   return (
     <div>
-      {isLoading && <div>Loading...</div>}
+      {trades.map((trade) => (
+        <div key={trade.id}>
+          {trade.id}
+        </div>
+      ))}
     </div>
   );
 };

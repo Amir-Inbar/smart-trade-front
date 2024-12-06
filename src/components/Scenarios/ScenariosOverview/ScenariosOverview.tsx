@@ -2,7 +2,7 @@
 
 import { SmartTable } from "@/components/SmartTable/SmartTable";
 import { useEffect, useMemo } from "react";
-import useScenarioStore from "@/store/actions/trade";
+import useScenarioStore from "@/store/actions/scenario";
 import {
   useDeleteScenarioMutation,
   useSearchScenariosMutation,

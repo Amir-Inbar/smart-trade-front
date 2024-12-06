@@ -13,11 +13,6 @@ import {
 import { CreateScenarioModal } from "@/components/Scenarios/CreateScenarioModal/CreateScenarioModal";
 import { ScenariosOverview } from "@/components/Scenarios/ScenariosOverview/ScenariosOverview";
 
-// export const metadata = {
-//   title: "Scenario Page",
-//   description: "Create a new scenario"
-// };
-
 const Breadcrumbs = () => (
   <Breadcrumb>
     <BreadcrumbList>

@@ -1,4 +1,4 @@
-import { MRT_Cell, MRT_ColumnDef, MRT_Row } from "mantine-react-table";
+import { MRT_Cell, MRT_Row } from "mantine-react-table";
 import {
   OperationalState,
   ScenarioSchema,

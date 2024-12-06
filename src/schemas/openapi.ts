@@ -165,7 +165,6 @@ export interface paths {
          * Create a new scenario
          * @description Create a new scenario.
          *     :param data: Scenario data to create.
-         *     :param scenario: Scenario data to create.
          *     :param db: Database session.
          *     :return: The created scenario.
          */
@@ -420,6 +419,15 @@ export interface components {
          * @enum {string}
          */
         ProgressState: "initial" | "breakout_occurred" | "minimum_breakout_points_achieved" | "price_returned_to_significant_level" | "first_15_min_candle_closed" | "two_5_min_candles_closed";
+        /** ProgressStateSchema */
+        ProgressStateSchema: {
+            state: components["schemas"]["ProgressState"];
+            /**
+             * Time
+             * Format: date-time
+             */
+            time: string;
+        };
         /** ScenarioSchema */
         ScenarioSchema: {
             /**
@@ -456,8 +464,16 @@ export interface components {
             updated_at?: string | null;
             /** @default pending */
             operational_state: components["schemas"]["OperationalState"] | null;
-            /** @default initial */
-            progress_state: components["schemas"]["ProgressState"] | null;
+            /**
+             * Progress State
+             * @default [
+             *       {
+             *         "state": "initial",
+             *         "time": "2024-12-06T08:27:30.019788"
+             *       }
+             *     ]
+             */
+            progress_state: components["schemas"]["ProgressStateSchema"][];
         };
         /** ScenarioSchemaCreate */
         ScenarioSchemaCreate: {
