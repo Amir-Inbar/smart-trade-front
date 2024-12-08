@@ -109,16 +109,16 @@ export interface paths {
         put?: never;
         /**
          * Search trades
-         * @description Search scenarios based on filters.
+         * @description Search trades based on filters.
          *
          *     :param page: Page number.
          *     :param page_size: Page size.
-         *     :param filters: Filters for searching scenarios.
+         *     :param filters: Filters for searching trades.
          *     :param db: Database session.
          *     :param settings: Application settings.
          *     :return: List of scenarios.
          */
-        post: operations["search_scenarios_trades_search_post"];
+        post: operations["search_trades_trades_search_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -401,18 +401,14 @@ export interface components {
             id: string;
             /** Trade Id */
             trade_id: string | null;
-            /** Client Id */
-            client_id: string | null;
             /** Action */
             action: string | null;
-            /** Total Quantity */
-            total_quantity: number | null;
+            /** Quantity */
+            quantity: number | null;
             /** Order Type */
             order_type: string | null;
             /** Lmt Price */
             lmt_price: number | null;
-            /** Account */
-            account: string | null;
         };
         /**
          * ProgressState
@@ -469,7 +465,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2024-12-06T08:27:30.019788"
+             *         "time": "2024-12-07T19:57:59.541666"
              *       }
              *     ]
              */
@@ -580,6 +576,8 @@ export interface components {
             quantity: number;
             /** Level Of Execution */
             level_of_execution: number;
+            /** Execution At */
+            execution_at?: string | null;
         };
         /** TradeSchema */
         TradeSchema: {
@@ -588,8 +586,8 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            scenario_id: components["schemas"]["ScenarioSchema"] | null;
-            contract_id: components["schemas"]["ContractSchema"] | null;
+            scenario: components["schemas"]["ScenarioSchema"] | null;
+            contract: components["schemas"]["ContractSchema"] | null;
             /** Orders */
             orders: components["schemas"]["OrderSchema"][] | null;
         };
@@ -748,7 +746,7 @@ export interface operations {
             };
         };
     };
-    search_scenarios_trades_search_post: {
+    search_trades_trades_search_post: {
         parameters: {
             query?: {
                 page?: number;

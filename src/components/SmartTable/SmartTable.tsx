@@ -51,7 +51,7 @@ export const SmartTable = <T extends Record<string, any>>(
       sx: { marginTop: hasFullScreen ? "0" : `${NAVBAR_HEIGHT}px` }
     },
     mantineTableContainerProps: {
-      sx: { height: hasFullScreen ? "300px" : "auto" }
+      sx: { height: hasFullScreen ? "600px" : "auto" }
     },
     mantineToolbarAlertBannerProps: isError
       ? {

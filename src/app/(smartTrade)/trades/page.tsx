@@ -10,7 +10,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import { TradesOverview } from "@/components/Trades/TradesOverview";
+import { TradesOverview } from "@/components/Trades/TradesOverview/TradesOverview";
 
 
 const Breadcrumbs = () => (
