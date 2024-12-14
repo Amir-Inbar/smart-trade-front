@@ -16,6 +16,7 @@ export type ScenarioSchemaSearch = components["schemas"]["ScenarioSchemaSearch"]
 export type OperationalStateType = components["schemas"]["OperationalState"];
 export type TradeSchema = components["schemas"]["TradeSchema"];
 export type TradeSearchSchema = components["schemas"]["TradeSearchSchema"];
+export type ProgressStateSchema = components["schemas"]["ProgressStateSchema"];
 
 export enum StrategyTypeEnum {
   FALSE_BREAKOUT = "FALSE_BREAKOUT",
@@ -56,4 +57,11 @@ export enum OperationalState {
   CANCELLED = "cancelled",
   ERROR = "error",
   PAUSED = "paused"
+}
+
+export enum OrderStatusOptions {
+  PENDING = "pending",
+  FILLED = "filled",
+  CANCELLED = "cancelled",
+  ERROR = "error"
 }

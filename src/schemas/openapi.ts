@@ -409,7 +409,15 @@ export interface components {
             order_type: string | null;
             /** Lmt Price */
             lmt_price: number | null;
+            /** Broker Order Id */
+            broker_order_id: number | null;
+            status: components["schemas"]["OrderStatus"] | null;
         };
+        /**
+         * OrderStatus
+         * @enum {string}
+         */
+        OrderStatus: "pending" | "filled" | "cancelled" | "error";
         /**
          * ProgressState
          * @enum {string}
@@ -465,7 +473,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2024-12-07T19:57:59.541666"
+             *         "time": "2024-12-14T15:57:52.592049"
              *       }
              *     ]
              */

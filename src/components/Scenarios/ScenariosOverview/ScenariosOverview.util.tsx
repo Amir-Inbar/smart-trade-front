@@ -1,11 +1,13 @@
 import { MRT_Cell, MRT_Row } from "mantine-react-table";
 import {
-  OperationalState,
+  OperationalState, ProgressState, ProgressStateSchema,
   ScenarioSchema,
   TakeProfitLevelCreateSchema
 } from "@/schemas/types";
 import { ScenarioStateUtil } from "@/lib/scenario.state.util";
 import { Button } from "@/components/ui/button";
+import { recentScenarioProgressState } from "@/components/Scenarios/Scenarios.util";
+import { IconAlertTriangle, IconArrowRight, IconCheck, IconClock, IconTrendingUp, IconX } from "@tabler/icons-react";
 
 
 interface getScenarioColumnsProps {
@@ -16,6 +18,79 @@ interface getScenarioColumnsProps {
 
   onDeleteScenario(scenario: ScenarioSchema): Promise<void>;
 }
+
+export const ProgressStateToConfig: {
+  [key in ProgressState]: {
+    label: string;
+    color: string;
+    icon: JSX.Element;
+  }
+} = {
+  [ProgressState.INITIAL]: {
+    label: "Initial",
+    color: "text-gray-500",
+    icon: <IconClock size={16} className="text-gray-500" />
+  },
+  [ProgressState.BREAKOUT_OCCURRED]: {
+    label: "Breakout Occurred",
+    color: "text-blue-500",
+    icon: <IconArrowRight size={16} className="text-blue-500" />
+  },
+  [ProgressState.MINIMUM_BREAKOUT_POINTS_ACHIEVED]: {
+    label: "Minimum Breakout Points Achieved",
+    color: "text-green-500",
+    icon: <IconTrendingUp size={16} className="text-green-500" />
+  },
+  [ProgressState.PRICE_RETURNED_TO_SIGNIFICANT_LEVEL]: {
+    label: "Price Returned to Significant Level",
+    color: "text-yellow-500",
+    icon: <IconAlertTriangle size={16} className="text-yellow-500" />
+  },
+  [ProgressState.FIRST_15_MIN_CANDLE_CLOSED]: {
+    label: "First 15 Min Candle Closed",
+    color: "text-purple-500",
+    icon: <IconCheck size={16} className="text-purple-500" />
+  },
+  [ProgressState.TWO_5_MIN_CANDLES_CLOSED]: {
+    label: "Two 5 Min Candles Closed",
+    color: "text-red-500",
+    icon: <IconCheck size={16} className="text-red-500" />
+  }
+};
+
+export const OperationalStateToConfig: {
+  [key in OperationalState]: {
+    label: string;
+    color: string;
+    icon: JSX.Element;
+  };
+} = {
+  [OperationalState.PENDING]: {
+    label: "Pending",
+    color: "text-blue-500",
+    icon: <IconClock size={16} className="text-blue-500" />
+  },
+  [OperationalState.COMPLETED]: {
+    label: "Completed",
+    color: "text-green-500",
+    icon: <IconCheck size={16} className="text-green-500" />
+  },
+  [OperationalState.CANCELLED]: {
+    label: "Cancelled",
+    color: "text-red-500",
+    icon: <IconX size={16} className="text-red-500" />
+  },
+  [OperationalState.ERROR]: {
+    label: "Error",
+    color: "text-yellow-500",
+    icon: <IconAlertTriangle size={16} className="text-yellow-500" />
+  },
+  [OperationalState.PAUSED]: {
+    label: "Paused",
+    color: "text-gray-500",
+    icon: <IconClock size={16} className="text-gray-500" />
+  }
+};
 
 export const getScenarioColumns = (
   {
@@ -104,8 +179,54 @@ export const getScenarioColumns = (
       cell.getValue() ? new Date(cell.getValue() as string).toLocaleString() : "-"
   },
   {
-    accessorKey: "state",
-    header: "State"
+    accessorKey: "operational_state",
+    header: "Operational State",
+    Cell: ({ cell }: { cell: MRT_Cell<ScenarioSchema> }) => {
+      const operationalState = cell.getValue() as OperationalState;
+
+      if (!operationalState) {
+        return <span>No operational state</span>;
+      }
+
+      const stateConfig = OperationalStateToConfig[operationalState];
+
+      if (!stateConfig) {
+        return <span>Unknown state</span>;
+      }
+
+      return (
+        <div className="flex items-center gap-2">
+          {stateConfig.icon}
+          <span className={stateConfig.color}>{stateConfig.label}</span>
+        </div>
+      );
+    }
+  },
+  {
+    accessorKey: "progress_state",
+    header: "Progress State",
+    Cell: ({ cell }: { cell: MRT_Cell<ScenarioSchema> }) => {
+      const scenarioProgressState = cell.getValue() as ProgressStateSchema[];
+      const scenarioRecentState = recentScenarioProgressState(scenarioProgressState);
+
+      if (!scenarioRecentState) {
+        return <span>No progress state</span>;
+      }
+
+      const { state } = scenarioRecentState;
+      const stateConfig = ProgressStateToConfig[state];
+
+      if (!stateConfig) {
+        return <span>Unknown state</span>;
+      }
+
+      return (
+        <div className="flex items-center gap-2">
+          {stateConfig.icon}
+          <span className={stateConfig.color}>{stateConfig.label}</span>
+        </div>
+      );
+    }
   },
   {
     accessorKey: "actions",
