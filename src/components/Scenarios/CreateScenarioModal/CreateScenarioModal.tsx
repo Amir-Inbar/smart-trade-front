@@ -1,13 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import { DialogWrapper } from "@/components/DialogWrapper/DialogWrapper";
 import CreateScenarioForm from "@/components/Scenarios/CreateScenarioModal/CreateScenarioForm";
 import useContractsStore from "@/store/actions/contract";
-import { useState } from "react";
 import useScenarioStore from "@/store/actions/scenario";
 import { ScenarioSchema } from "@/schemas/types";
 
-export const CreateScenarioModal = () => {
+const CreateScenarioModal = () => {
   const addScenarios = useScenarioStore((state) => state.addScenario);
 
   const [isCreateScenarioModalOpen, setIsCreateScenarioModalOpen] = useState(false);
@@ -20,8 +20,7 @@ export const CreateScenarioModal = () => {
   const onAddScenario = (scenario: ScenarioSchema) => {
     try {
       addScenarios(scenario);
-    } catch (e) {
-      console.error(e);
+    } catch (e) { /* empty */
     }
   };
 
@@ -43,3 +42,5 @@ export const CreateScenarioModal = () => {
     </DialogWrapper>
   );
 };
+
+export default CreateScenarioModal;

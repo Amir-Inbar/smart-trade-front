@@ -14,7 +14,7 @@ import {
 } from "@/components/Scenarios/ScenariosOverview/ScenariosOverview.util";
 import { OperationalStateType, ScenarioSchema } from "@/schemas/types";
 
-export const ScenariosOverview = () => {
+const ScenariosOverview = () => {
   const [searchScenarios, { data }] = useSearchScenariosMutation();
   const [updateScenario, { isLoading: isUpdatingScenario, originalArgs }] = useUpdateScenarioMutation();
   const { setScenarios, scenarios } = useScenarioStore();
@@ -71,3 +71,5 @@ export const ScenariosOverview = () => {
   );
 };
 
+
+export default ScenariosOverview;

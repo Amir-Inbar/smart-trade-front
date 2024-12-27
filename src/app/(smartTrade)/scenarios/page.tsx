@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { lazy } from "react";
 import { ContentLayout } from "@/components/Layout/ContentLayout";
 import {
   Breadcrumb,
@@ -10,8 +11,8 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import { CreateScenarioModal } from "@/components/Scenarios/CreateScenarioModal/CreateScenarioModal";
-import { ScenariosOverview } from "@/components/Scenarios/ScenariosOverview/ScenariosOverview";
+const CreateScenarioModal = lazy(() => import("@/components/Scenarios/CreateScenarioModal/CreateScenarioModal"));
+const ScenariosOverview = lazy(() => import("@/components/Scenarios/ScenariosOverview/ScenariosOverview"));
 
 const Breadcrumbs = () => (
   <Breadcrumb>

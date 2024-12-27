@@ -1,13 +1,14 @@
 import { MRT_Row } from "mantine-react-table";
-import { OperationalState, OrderStatusOptions, TradeSchema } from "@/schemas/types";
+import { OrderStatusOptions, TradeSchema } from "@/schemas/types";
 
-import { IconClock, IconCheck, IconX, IconAlertTriangle } from "@tabler/icons-react"; // Assuming you're using Tabler Icons
+import { IconClock, IconCheck, IconX, IconAlertTriangle } from "@tabler/icons-react";
+import { ReactElement } from "react"; // Assuming you're using Tabler Icons
 
 export const OrderStatusToConfig: {
   [key in OrderStatusOptions]: {
     label: string;
     color: string;
-    icon: JSX.Element;
+    icon: ReactElement;
   };
 } = {
   [OrderStatusOptions.PENDING]: {

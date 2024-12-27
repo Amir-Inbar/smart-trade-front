@@ -27,8 +27,7 @@ export const FetchDataInBackground = () => {
       setContracts(contracts);
       setScenarios(scenarios);
       setTrades(trades);
-    } catch (error) {
-      console.error("Failed to fetch contracts or scenarios:", error);
+    } catch (error) { /* empty */
     }
   };
 
