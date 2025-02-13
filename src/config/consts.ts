@@ -1,1 +1,1 @@
-export const API_HOST = process.env.NEXT_PUBLIC_API_HOST
+export const API_HOST = import.meta.env.VITE_APP_API_HOST

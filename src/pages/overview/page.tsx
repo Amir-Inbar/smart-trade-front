@@ -1,6 +1,3 @@
-'use client';
-
-import Link from "next/link";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -10,6 +7,7 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import {ContentLayout} from "@/components/Layout/ContentLayout";
+import {Link} from "react-router-dom";
 
 interface OverviewCardProps {
     title: string;
@@ -22,7 +20,7 @@ const OverviewCard = ({title, description, link}: OverviewCardProps) => (
     <div className="p-6 border rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-gray-600 mb-4">{description}</p>
-        <Link href={link} className="text-blue-600 hover:underline">
+        <Link to={link} className="text-blue-600 hover:underline">
             Learn More →
         </Link>
     </div>
@@ -33,7 +31,7 @@ const Breadcrumbs = () => (
         <BreadcrumbList>
             <BreadcrumbItem>
                 <BreadcrumbLink asChild>
-                    <Link href="/">Home</Link>
+                    <Link to="/">Home</Link>
                 </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator/>

@@ -1,5 +1,5 @@
 import {create} from 'zustand'
-import {ScenarioState} from "@/store/@types/scenario";
+import {ScenarioState} from "../@types/scenario.ts";
 
 
 const useScenarioStore = create<ScenarioState>((set) => ({

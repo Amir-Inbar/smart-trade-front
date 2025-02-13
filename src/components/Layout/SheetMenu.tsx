@@ -1,4 +1,4 @@
-import Link from "next/link";
+import {Link} from "react-router-dom";
 import {MenuIcon, PanelsTopLeft} from "lucide-react";
 
 import {Button} from "@/components/ui/button";
@@ -24,7 +24,7 @@ const SheetMenu = () => (
                     variant="link"
                     asChild
                 >
-                    <Link href="/" className="flex items-center gap-2">
+                    <Link to="/" className="flex items-center gap-2">
                         <PanelsTopLeft className="w-6 h-6 mr-1"/>
                         <h1 className="font-bold text-lg">Overview</h1>
                     </Link>

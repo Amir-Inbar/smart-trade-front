@@ -1,5 +1,3 @@
-'use client';
-
 import {TradeInputTypesProps} from "@/components/TradeUi/trade.util";
 import {Input} from "@/components/ui/input";
 

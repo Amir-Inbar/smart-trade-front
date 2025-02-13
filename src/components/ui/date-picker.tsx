@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import {format} from "date-fns";
 import {Calendar as CalendarIcon} from "lucide-react";
 
@@ -18,8 +15,7 @@ type DatePickerProps = {
     onDateChange(date: Date | undefined): void;
 };
 
-export function DatePicker({date, onDateChange}: DatePickerProps) {
-
+export function DatePicker({date = new Date(), onDateChange}: DatePickerProps) {
     return (
         <Popover>
             <PopoverTrigger asChild>

@@ -1,5 +1,3 @@
-"use client";
-
 import { SmartTable } from "@/components/SmartTable/SmartTable";
 import { useEffect, useMemo } from "react";
 import useScenarioStore from "@/store/actions/scenario";
@@ -13,6 +11,7 @@ import {
   ScenariosOverviewDataInitialState
 } from "@/components/Scenarios/ScenariosOverview/ScenariosOverview.util";
 import { OperationalStateType, ScenarioSchema } from "@/schemas/types";
+import {type MRT_ColumnDef} from "mantine-react-table";
 
 const ScenariosOverview = () => {
   const [searchScenarios, { data }] = useSearchScenariosMutation();
@@ -52,7 +51,7 @@ const ScenariosOverview = () => {
 
   const { scenarioId: updatingScenarioId } = originalArgs || {};
 
-  const columns = useMemo(() => getScenarioColumns({
+  const columns = useMemo<MRT_ColumnDef<ScenarioSchema>[]>(() => getScenarioColumns({
     onUpdateScenarioState,
     isUpdatingScenario,
     updatingScenarioId,

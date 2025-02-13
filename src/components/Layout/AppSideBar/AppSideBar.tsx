@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {PanelsTopLeft} from "lucide-react";
 
 import {cn} from "@/lib/utils";
@@ -7,6 +6,7 @@ import {Button} from "@/components/ui/button";
 import AppSideBarMenu from "@/components/Layout/AppSideBar/AppSideBarMenu";
 import {useSidebarToggle} from "@/hooks/use-sidebar-toggle";
 import SidebarToggle from "@/components/Layout/AppSideBar/SidebarToggle";
+import {Link} from "react-router-dom";
 
 export const AppSideBar = () => {
     const sidebar = useStore(useSidebarToggle, (state) => state);
@@ -32,14 +32,14 @@ export const AppSideBar = () => {
                     variant="link"
                     asChild
                 >
-                    <Link href="/overview" className="flex items-center gap-2">
+                    <Link to="/" className="flex items-center gap-2">
                         <PanelsTopLeft className="w-6 h-6 mr-1"/>
                         <h1
                             className={cn(
                                 "font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300",
                                 sidebar?.isOpen === false
                                     ? "-translate-x-96 opacity-0 hidden"
-                                    : "translate-x-0 opacity-100"
+                                    : "translate-x-0 opacity-100",
                             )}
                         >
                             Overview

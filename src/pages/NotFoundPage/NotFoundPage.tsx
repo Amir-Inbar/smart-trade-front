@@ -1,11 +1,8 @@
-import {ContentLayout} from "@/components/Layout/ContentLayout";
+import {ContentLayout} from "@/components/Layout/ContentLayout.tsx";
+import {Link} from "react-router-dom";
 
-'use-client';
 
-import Link from "next/link";
-import Image from "next/image";
-
-import {Card, CardContent} from "@/components/ui/card";
+import {Card, CardContent} from "@/components/ui/card.tsx";
 
 export default function NotFoundPage() {
     return (
@@ -14,12 +11,11 @@ export default function NotFoundPage() {
                 <CardContent className="p-6">
                     <div className="flex justify-center items-center">
                         <div className="flex flex-col relative">
-                            <Image
-                                src="/placeholder.png"
+                            <img
+                                src=""
                                 alt="Placeholder Image"
                                 width={500}
                                 height={500}
-                                priority
                             />
                         </div>
                     </div>
@@ -28,7 +24,7 @@ export default function NotFoundPage() {
                             <p className="text-center text-2xl font-bold text-muted-foreground">Page Not Found</p>
                             <p className="text-center text-lg text-muted-foreground">The page you are looking for does
                                 not exist.</p>
-                            <Link href="/" className="text-center text-lg text-muted-foreground">
+                            <Link to="/" className="text-center text-lg text-muted-foreground">
                                 Go to main page
                             </Link>
                         </div>

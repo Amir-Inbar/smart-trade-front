@@ -1,5 +1,5 @@
-import Navbar from "@/components/Layout/Navarbar/Navbar";
 import {ReactNode} from "react";
+import {Navbar} from "@/components/Layout/Navarbar/Navbar.tsx";
 
 interface ContentLayoutProps {
     title: string;

@@ -108,15 +108,15 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Search trades
-         * @description Search trades based on filters.
+         * Search TradesPage
+         * @description Search TradesPage based on filters.
          *
          *     :param page: Page number.
          *     :param page_size: Page size.
-         *     :param filters: Filters for searching trades.
+         *     :param filters: Filters for searching TradesPage.
          *     :param db: Database session.
          *     :param settings: Application settings.
-         *     :return: List of scenarios.
+         *     :return: List of ScenariosPage.
          */
         post: operations["search_trades_trades_search_post"];
         delete?: never;
@@ -135,15 +135,15 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Search scenarios
-         * @description Search scenarios based on filters.
+         * Search ScenariosPage
+         * @description Search ScenariosPage based on filters.
          *
          *     :param page: Page number.
          *     :param page_size: Page size.
-         *     :param filters: Filters for searching scenarios.
+         *     :param filters: Filters for searching ScenariosPage.
          *     :param db: Database session.
          *     :param settings: Application settings.
-         *     :return: List of scenarios.
+         *     :return: List of ScenariosPage.
          */
         post: operations["search_scenarios_scenarios_search_post"];
         delete?: never;
@@ -473,7 +473,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2024-12-14T15:57:52.592049"
+             *         "time": "2024-12-28T10:08:58.239177"
              *       }
              *     ]
              */
