@@ -5,7 +5,7 @@ import {
     MRT_TableInstance,
     useMantineReactTable,
 } from "mantine-react-table";
-import {MantineProvider, useMantineColorScheme, useMantineTheme} from "@mantine/core";
+import {MantineProvider, useMantineColorScheme} from "@mantine/core";
 
 export interface TableToolbarActionsProps<T extends Record<string, any>> {
     data: T[];

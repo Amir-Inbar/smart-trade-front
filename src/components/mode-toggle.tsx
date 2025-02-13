@@ -13,7 +13,7 @@ export function ModeToggle() {
     const [isDarkMode, setIsDarkMode] = useState(
         () => localStorage.getItem("theme") === "dark"
     );
-    const {colorScheme, toggleColorScheme} = useMantineColorScheme();
+    const {toggleColorScheme} = useMantineColorScheme();
 
     useEffect(() => {
         if (isDarkMode) {
