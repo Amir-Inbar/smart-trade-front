@@ -168,11 +168,7 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
     }
 ];
 
-export const recentScenarioProgressState = (progressStates: ProgressStateSchema[]): ProgressStateSchema | null => {
-    if (!progressStates || progressStates.length === 0) {
-        return null;
-    }
-
+export const recentScenarioProgressState = (progressStates: ProgressStateSchema[]): ProgressStateSchema => {
     return progressStates.reduce((latest, current) => new Date(current.time) > new Date(latest.time) ? current : latest);
 };
 

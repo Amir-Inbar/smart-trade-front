@@ -1,4 +1,4 @@
-import {components} from "./openapi.ts";
+import {components} from "./openapi";
 
 export type OrderSchema = components["schemas"]["OrderSchema"];
 export type ScenarioSchema = components["schemas"]["ScenarioSchema"];
@@ -16,6 +16,7 @@ export type OperationalStateType = components["schemas"]["OperationalState"];
 export type TradeSchema = components["schemas"]["TradeSchema"];
 export type TradeSearchSchema = components["schemas"]["TradeSearchSchema"];
 export type ProgressStateSchema = components["schemas"]["ProgressStateSchema"];
+export type ProgressStateOptions = ProgressStateSchema["state"]
 
 export enum StrategyTypeEnum {
     FALSE_BREAKOUT = "FALSE_BREAKOUT",

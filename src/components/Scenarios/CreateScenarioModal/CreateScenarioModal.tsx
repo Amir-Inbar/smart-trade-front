@@ -4,9 +4,10 @@ import CreateScenarioForm from "@/components/Scenarios/CreateScenarioModal/Creat
 import useContractsStore from "@/store/actions/contract";
 import useScenarioStore from "@/store/actions/scenario";
 import {ScenarioSchema} from "@/schemas/types";
+import {ScenarioState} from "@/store/@types/scenario";
 
 const CreateScenarioModal = () => {
-    const addScenarios = useScenarioStore((state) => state.addScenario);
+    const addScenarios = useScenarioStore((state:ScenarioState) => state.addScenario);
     const [isCreateScenarioModalOpen, setIsCreateScenarioModalOpen] = useState(false);
 
     const onToggleCreateScenarioModal = () => {

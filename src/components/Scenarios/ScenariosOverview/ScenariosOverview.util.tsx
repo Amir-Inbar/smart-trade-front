@@ -1,7 +1,7 @@
-import {MRT_Cell, MRT_Row} from "mantine-react-table";
+import {MRT_Cell, type MRT_ColumnDef, MRT_Row} from "mantine-react-table";
 import {
     OperationalState, ProgressState, ProgressStateSchema,
-    ScenarioSchema,
+    ScenarioSchema, StrategyTypeEnum,
     TakeProfitLevelCreateSchema
 } from "@/schemas/types";
 import {ScenarioStateUtil} from "@/lib/scenario.state.util";
@@ -57,6 +57,10 @@ export const ProgressStateToConfig: {
     }
 };
 
+export const SelectStrategiesOptions = {
+    [StrategyTypeEnum.FALSE_BREAKOUT]: "False Breakout",
+}
+
 export const OperationalStateToConfig: {
     [key in OperationalState]: {
         label: string;
@@ -97,7 +101,7 @@ export const getScenarioColumns = (
         isUpdatingScenario,
         updatingScenarioId,
         onDeleteScenario
-    }: getScenarioColumnsProps) => [
+    }: getScenarioColumnsProps): MRT_ColumnDef<ScenarioSchema>[] => [
     {
         accessorKey: "id",
         header: "ID"
@@ -109,9 +113,12 @@ export const getScenarioColumns = (
     {
         accessorKey: "is_quality_scenario",
         header: "Quality Scenario",
-        Cell: ({cell}: { cell: MRT_Cell<any> }) => (
-            <span>{cell.getValue() ? "Yes" : "No"}</span>
-        )
+        Cell: ({cell}: { cell: MRT_Cell<ScenarioSchema> }) => {
+            return (
+                <span>{cell.getValue() ? "Yes" : "No"}</span>
+            )
+        }
+
     },
     {
         accessorKey: "action",
@@ -119,7 +126,12 @@ export const getScenarioColumns = (
     },
     {
         accessorKey: "select_strategy",
-        header: "Select Strategy"
+        header: "Select Strategy",
+        Cell: ({row}: { row: MRT_Row<ScenarioSchema> }) => {
+            const strategy = row.original.strategy;
+            const strategyLabel = SelectStrategiesOptions[strategy as StrategyTypeEnum];
+            return strategy ? <span>{strategyLabel}</span> : <span/>;
+        }
     },
     {
         accessorKey: "break_down_price",
@@ -206,13 +218,16 @@ export const getScenarioColumns = (
         header: "Progress State",
         Cell: ({cell}: { cell: MRT_Cell<ScenarioSchema> }) => {
             const scenarioProgressState = cell.getValue() as ProgressStateSchema[];
-            const scenarioRecentState = recentScenarioProgressState(scenarioProgressState);
+            if (!scenarioProgressState || scenarioProgressState.length === 0) {
+                return <span>No progress state</span>;
+            }
+            const scenarioRecentState: ProgressStateSchema = recentScenarioProgressState(scenarioProgressState);
 
             if (!scenarioRecentState) {
                 return <span>No progress state</span>;
             }
 
-            const {state} = scenarioRecentState;
+            const {state, time} = scenarioRecentState;
             const stateConfig = ProgressStateToConfig[state];
 
             if (!stateConfig) {
@@ -223,6 +238,7 @@ export const getScenarioColumns = (
                 <div className="flex items-center gap-2">
                     {stateConfig.icon}
                     <span className={stateConfig.color}>{stateConfig.label}</span>
+                    <span className="text-gray-500 text-sm">{new Date(time).toLocaleString()}</span>
                 </div>
             );
         }

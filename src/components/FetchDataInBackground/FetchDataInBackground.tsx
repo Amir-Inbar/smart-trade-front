@@ -1,11 +1,12 @@
 import {useEffect} from "react";
-import {useSearchContractsMutation} from "../../store/api/contractApi.ts";
-import {useSearchScenariosMutation} from "../../store/api/scenarioApi.ts";
-import {useSearchTradesMutation} from "../../store/api/tradeApi.ts";
-import useContractsStore from "../../store/actions/contract.ts";
-import useScenarioStore from "../../store/actions/scenario.ts";
-import useTradeStore from "../../store/actions/trade.ts";
-
+import {useSearchContractsMutation} from "@/store/api/contractApi";
+import {useSearchScenariosMutation} from "@/store/api/scenarioApi";
+import {useSearchTradesMutation} from "@/store/api/tradeApi";
+import useContractsStore from "@/store/actions/contract";
+import useScenarioStore from "@/store/actions/scenario";
+import useTradeStore from "@/store/actions/trade";
+import {ScenarioState} from "@/store/@types/scenario";
+import {TradeState} from "@/store/@types/trade";
 
 export const FetchDataInBackground = () => {
     const [searchContracts, {data: contractsData}] = useSearchContractsMutation();
@@ -13,8 +14,8 @@ export const FetchDataInBackground = () => {
     const [searchTrades, {data: tradesData}] = useSearchTradesMutation();
 
     const setContracts = useContractsStore((state) => state.setContracts);
-    const setScenarios = useScenarioStore((state) => state.setScenarios);
-    const setTrades = useTradeStore((state) => state.setTrades);
+    const setScenarios = useScenarioStore((state: ScenarioState) => state.setScenarios);
+    const setTrades = useTradeStore((state: TradeState) => state.setTrades);
 
     const fetchContractsAndScenarios = async () => {
         try {

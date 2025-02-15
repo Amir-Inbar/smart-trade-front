@@ -4,6 +4,7 @@ import {AppFooter} from "@/components/Layout/AppFooter";
 import {AppSideBar} from "@/components/Layout/AppSideBar/AppSideBar";
 import {useSidebarToggle} from "@/hooks/use-sidebar-toggle";
 import {ReactNode} from "react";
+import {FetchDataInBackground} from "@/components/FetchDataInBackground/FetchDataInBackground";
 
 export const AppLayout = ({children}: { children: ReactNode }) => {
     const sidebar = useStore(useSidebarToggle, (state) => state);
@@ -14,6 +15,7 @@ export const AppLayout = ({children}: { children: ReactNode }) => {
 
     return (
         <>
+            <FetchDataInBackground/>
             <AppSideBar/>
             <main
                 className={cn(

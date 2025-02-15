@@ -50,7 +50,7 @@ export const SmartTable = <T extends Record<string, any>, >(
         enableSorting: true,
         mantineTopToolbarProps: {sx: {marginTop: hasFullScreen ? "0" : `${NAVBAR_HEIGHT}px`}},
         mantineTableContainerProps: {
-            sx: {height: hasFullScreen ? "600px" : "auto", overflowY: "auto", width: "100%"},
+            sx: {height: hasFullScreen ? "600px" : "600px", overflowY: "auto", width: "100%"},
         },
         mantineToolbarAlertBannerProps: isError
             ? {color: "red", children: "Error loading data, please try again later or contact support"}

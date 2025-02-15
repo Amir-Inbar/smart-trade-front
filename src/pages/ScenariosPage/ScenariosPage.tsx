@@ -1,5 +1,7 @@
+import {Link} from "react-router-dom";
 import {lazy, Suspense} from "react";
 import {ContentLayout} from "@/components/Layout/ContentLayout";
+
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -8,12 +10,9 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-// import CreateScenarioModal from "@/components/Scenarios/CreateScenarioModal/CreateScenarioModal";
-// import ScenariosOverview from "@/components/Scenarios/ScenariosOverview/ScenariosOverview";
-
 const CreateScenarioModal = lazy(() => import("@/components/Scenarios/CreateScenarioModal/CreateScenarioModal"));
 const ScenariosOverview = lazy(() => import("@/components/Scenarios/ScenariosOverview/ScenariosOverview"));
-import {Link} from "react-router-dom";
+import {FetchScenariosInBackground} from "@/components/FetchDataInBackground/FetchScenariosInBackground";
 
 const Breadcrumbs = () => (
     <Breadcrumb>
@@ -33,6 +32,7 @@ const Breadcrumbs = () => (
 
 const ScenariosPage = () => (
     <ContentLayout title="Scenarios">
+        <FetchScenariosInBackground/>
         <Breadcrumbs/>
         <div className="m-3">
             <Suspense fallback={<div>Loading...</div>}>
