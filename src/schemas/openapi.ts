@@ -98,6 +98,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/account/disconnected": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Read Account Disconnected */
+        get: operations["read_account_disconnected_account_disconnected_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/trades/search": {
         parameters: {
             query?: never;
@@ -108,15 +125,15 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Search TradesPage
-         * @description Search TradesPage based on filters.
+         * Search trades
+         * @description Search trades based on filters.
          *
          *     :param page: Page number.
          *     :param page_size: Page size.
-         *     :param filters: Filters for searching TradesPage.
+         *     :param filters: Filters for searching trades.
          *     :param db: Database session.
          *     :param settings: Application settings.
-         *     :return: List of ScenariosPage.
+         *     :return: List of scenarios.
          */
         post: operations["search_trades_trades_search_post"];
         delete?: never;
@@ -135,15 +152,15 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Search ScenariosPage
-         * @description Search ScenariosPage based on filters.
+         * Search scenarios
+         * @description Search scenarios based on filters.
          *
          *     :param page: Page number.
          *     :param page_size: Page size.
-         *     :param filters: Filters for searching ScenariosPage.
+         *     :param filters: Filters for searching scenarios.
          *     :param db: Database session.
          *     :param settings: Application settings.
-         *     :return: List of ScenariosPage.
+         *     :return: List of scenarios.
          */
         post: operations["search_scenarios_scenarios_search_post"];
         delete?: never;
@@ -446,8 +463,6 @@ export interface components {
             strategy?: components["schemas"]["StrategyType"] | null;
             /** Break Down Price */
             break_down_price?: number | null;
-            /** Enter Price */
-            enter_price?: number | null;
             /** Stop Price */
             stop_price?: number | null;
             stop_price_mode?: components["schemas"]["StopPriceMode"] | null;
@@ -473,7 +488,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2024-12-28T10:08:58.239177"
+             *         "time": "2025-02-18T12:57:36.414916"
              *       }
              *     ]
              */
@@ -495,11 +510,6 @@ export interface components {
              * @default 0
              */
             break_down_price: number;
-            /**
-             * Enter Price
-             * @default 0
-             */
-            enter_price: number;
             /**
              * Stop Price
              * @default 0
@@ -534,8 +544,6 @@ export interface components {
             strategy?: string | null;
             /** Break Down Price */
             break_down_price?: number | null;
-            /** Enter Price */
-            enter_price?: number | null;
             /** Stop Price */
             stop_price?: number | null;
             /** Description */
@@ -743,6 +751,33 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AccountValue"][] | null;
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    read_account_disconnected_account_disconnected_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": boolean;
                 };
             };
             /** @description Not found */

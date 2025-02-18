@@ -48,7 +48,6 @@ export const ScenarioSchemaCreate = object().shape({
     action: string().required("Action is required"),
     strategy: string().required("Select Strategy is required"),
     break_down_price: number().required("Break down price is required"),
-    enter_price: number().positive("Enter price must be positive").required("Enter price is required").default(0),
     stop_price:
         number()
             .positive("Stop price must be positive")
@@ -112,15 +111,6 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         required: true,
         type: "number",
         default: 0
-    },
-    {
-        name: "enter_price",
-        label: "Enter Price",
-        placeholder: "Enter the price",
-        required: true,
-        type: "number",
-        default: 0,
-        note: "If empty, the enter price will be LMT of 3 ticks above the break down price"
     },
     {
         name: "stop_price",

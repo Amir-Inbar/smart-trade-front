@@ -138,10 +138,6 @@ export const getScenarioColumns = (
         header: "Break Down Price"
     },
     {
-        accessorKey: "enter_price",
-        header: "Enter Price"
-    },
-    {
         accessorKey: "stop_price",
         header: "Stop Price"
     },
