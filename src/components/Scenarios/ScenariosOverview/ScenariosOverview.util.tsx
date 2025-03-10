@@ -6,7 +6,6 @@ import {
 } from "@/schemas/types";
 import {ScenarioStateUtil} from "@/lib/scenario.state.util";
 import {Button} from "@/components/ui/button";
-import {recentScenarioProgressState} from "@/components/Scenarios/Scenarios.util";
 import {IconAlertTriangle, IconArrowRight, IconCheck, IconClock, IconTrendingUp, IconX} from "@tabler/icons-react";
 
 interface getScenarioColumnsProps {
@@ -212,32 +211,41 @@ export const getScenarioColumns = (
     {
         accessorKey: "progress_state",
         header: "Progress State",
+        size: 450,
         Cell: ({cell}: { cell: MRT_Cell<ScenarioSchema> }) => {
-            const scenarioProgressState = cell.getValue() as ProgressStateSchema[];
-            if (!scenarioProgressState || scenarioProgressState.length === 0) {
+            const scenarioProgressStates = cell.getValue() as ProgressStateSchema[];
+
+            if (!scenarioProgressStates || scenarioProgressStates.length === 0) {
                 return <span>No progress state</span>;
-            }
-            const scenarioRecentState: ProgressStateSchema = recentScenarioProgressState(scenarioProgressState);
-
-            if (!scenarioRecentState) {
-                return <span>No progress state</span>;
-            }
-
-            const {state, time} = scenarioRecentState;
-            const stateConfig = ProgressStateToConfig[state];
-
-            if (!stateConfig) {
-                return <span>Unknown state</span>;
             }
 
             return (
-                <div className="flex items-center gap-2">
-                    {stateConfig.icon}
-                    <span className={stateConfig.color}>{stateConfig.label}</span>
-                    <span className="text-gray-500 text-sm">{new Date(time).toLocaleString()}</span>
+                <div className="flex flex-col gap-2 w-full">
+                    {scenarioProgressStates.map((stateItem, index) => {
+                        const {state, time} = stateItem;
+                        const stateConfig = ProgressStateToConfig[state];
+
+                        if (!stateConfig) {
+                            return (
+                                <div key={index} className="flex items-center gap-2">
+                                    <span>Unknown state</span>
+                                    <span className="text-gray-500 text-sm">{new Date(time).toLocaleString()}</span>
+                                </div>
+                            );
+                        }
+
+                        return (
+                            <div key={index} className="flex items-center gap-2">
+                                {stateConfig.icon}
+                                <span className={stateConfig.color}>{stateConfig.label}</span>
+                                <span className="text-gray-500 text-sm">{new Date(time).toLocaleString()}</span>
+                            </div>
+                        );
+                    })}
                 </div>
             );
         }
+
     },
     {
         accessorKey: "actions",

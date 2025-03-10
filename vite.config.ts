@@ -5,13 +5,14 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
     plugins: [react(), tsconfigPaths()],
-    optimizeDeps: {
-        force: true,
-        include: ['mantine-react-table', '@mantine/hooks']
-    },
     server: {
+        host: "0.0.0.0", // Allow connections from Docker
+        port: 3001, // Change Vite's port to 3001
+        strictPort: true, // Ensure it doesn’t fallback to another port
         fs: {
             strict: false
         }
     }
 });
+
+
