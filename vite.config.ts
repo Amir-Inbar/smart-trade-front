@@ -11,7 +11,11 @@ export default defineConfig({
         strictPort: true, // Ensure it doesn’t fallback to another port
         fs: {
             strict: false
-        }
+        },
+    },
+    build: {
+        outDir: "dist", // Change the output directory to dist
+        emptyOutDir: true, // Empty the output directory before building
     }
 });
 

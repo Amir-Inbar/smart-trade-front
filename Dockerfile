@@ -1,19 +1,25 @@
-# Use official Node.js image from Docker Hub
-FROM node:18-alpine
+# Build Stage
+FROM node:18-alpine AS builder
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package.json and install dependencies
 COPY package.json package-lock.json ./
-
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application
+# Copy app files and build the project
 COPY . .
+RUN npm run build
 
-# Expose the frontend port
-EXPOSE 3001
+# Serve Stage
+FROM nginx:alpine
 
-CMD ["npm", "run", "dev"]
+# Copy built files to nginx public folder
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
