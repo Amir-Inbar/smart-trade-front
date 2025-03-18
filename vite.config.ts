@@ -16,7 +16,8 @@ export default defineConfig({
     build: {
         outDir: "dist", // Change the output directory to dist
         emptyOutDir: true, // Empty the output directory before building
-    }
+    },
+    base: "/",
 });
 
 

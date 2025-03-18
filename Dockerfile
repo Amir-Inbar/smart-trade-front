@@ -1,28 +1,18 @@
-# Build Stage
-FROM node:18-alpine AS builder
+FROM node:18-alpine
 
-# Set working directory
 WORKDIR /app
 
-# Copy package.json and install dependencies
-COPY package.json package-lock.json ./
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
 RUN npm install
 
-# Copy app files and build the project
+# Copy the rest of the application
 COPY . .
-RUN npm run build
 
-# Serve Stage
-FROM nginx:alpine
+# Expose the port Vite runs on
+EXPOSE 5173
 
-# Copy built files to nginx public folder
-COPY --from=builder /app/dist /usr/share/nginx/html
-
-# Ensure the permissions are correct for the files
-RUN chmod -R 755 /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the development server
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
