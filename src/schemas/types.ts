@@ -17,6 +17,7 @@ export type TradeSchema = components["schemas"]["TradeSchema"];
 export type TradeSearchSchema = components["schemas"]["TradeSearchSchema"];
 export type ProgressStateSchema = components["schemas"]["ProgressStateSchema"];
 export type ProgressStateOptions = ProgressStateSchema["state"]
+export type DailyTradeLimitSchema = components["schemas"]["DailyTradeLimitSchema"];
 
 export enum StrategyTypeEnum {
     FALSE_BREAKOUT = "FALSE_BREAKOUT",

@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {AccountValueSchema} from "@/schemas/types";
-import {API_HOST} from "@/config/consts.ts";
+import {API_HOST} from "@/config/consts";
 
 export const accountApi = createApi({
     reducerPath: 'account',

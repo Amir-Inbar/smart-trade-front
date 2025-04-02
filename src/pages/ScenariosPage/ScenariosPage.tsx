@@ -10,9 +10,11 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
+
 const CreateScenarioModal = lazy(() => import("@/components/Scenarios/CreateScenarioModal/CreateScenarioModal"));
 const ScenariosOverview = lazy(() => import("@/components/Scenarios/ScenariosOverview/ScenariosOverview"));
 import {FetchScenariosInBackground} from "@/components/FetchDataInBackground/FetchScenariosInBackground";
+import {DailyTradeLimit} from "@/components/DailyTradeLimit/DailyTradeLimit";
 
 const Breadcrumbs = () => (
     <Breadcrumb>
@@ -36,7 +38,10 @@ const ScenariosPage = () => (
         <Breadcrumbs/>
         <div className="m-3">
             <Suspense fallback={<div>Loading...</div>}>
-                <CreateScenarioModal/>
+                <div className='flex justify-between'>
+                    <CreateScenarioModal/>
+                    <DailyTradeLimit/>
+                </div>
             </Suspense>
         </div>
         <Suspense fallback={<div>Loading...</div>}>

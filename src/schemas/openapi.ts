@@ -316,6 +316,53 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/daily_trade_limit/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Search daily trade limit
+         * @description Search daily trade limit based on filters.
+         *
+         *     :param page: Page number.
+         *     :param page_size: Page size.
+         *     :param filters: Filters for searching daily trade limit.
+         *     :param db: Database session.
+         *     :param settings: Application settings.
+         *     :return: List of daily trade limit.
+         */
+        post: operations["search_daily_trade_limit_daily_trade_limit_search_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/daily_trade_limit/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create daily trade limit
+         * @description Create a new daily trade limit.
+         */
+        post: operations["create_daily_trade_limit_daily_trade_limit_create_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/": {
         parameters: {
             query?: never;
@@ -394,6 +441,35 @@ export interface components {
             /** Last Trade Date Or Contract Month */
             last_trade_date_or_contract_month?: string | null;
         };
+        /** DailyTradeLimitCreateSchema */
+        DailyTradeLimitCreateSchema: {
+            /**
+             * Scenario Id
+             * Format: uuid
+             */
+            scenario_id: string;
+            /**
+             * Contract Id
+             * Format: uuid
+             */
+            contract_id: string;
+            /** Orders */
+            orders: components["schemas"]["OrderSchema"][];
+        };
+        /** DailyTradeLimitSchema */
+        DailyTradeLimitSchema: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            scenario: components["schemas"]["ScenarioSchema"] | null;
+            contract: components["schemas"]["ContractSchema"] | null;
+            /** Orders */
+            orders: components["schemas"]["OrderSchema"][] | null;
+        };
+        /** DailyTradeLimitSearchSchema */
+        DailyTradeLimitSearchSchema: Record<string, never>;
         /**
          * FutureContracts
          * @enum {string}
@@ -488,7 +564,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-02-18T12:57:36.414916"
+             *         "time": "2025-04-01T17:06:10.106555"
              *       }
              *     ]
              */
@@ -602,10 +678,13 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            scenario: components["schemas"]["ScenarioSchema"] | null;
-            contract: components["schemas"]["ContractSchema"] | null;
-            /** Orders */
-            orders: components["schemas"]["OrderSchema"][] | null;
+            /**
+             * Date
+             * Format: date-time
+             */
+            date: string;
+            /** Max Trades */
+            max_trades: number;
         };
         /** TradeSearchSchema */
         TradeSearchSchema: Record<string, never>;
@@ -1176,6 +1255,89 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ContractSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_daily_trade_limit_daily_trade_limit_search_post: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["DailyTradeLimitSearchSchema"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DailyTradeLimitSchema"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_daily_trade_limit_daily_trade_limit_create_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DailyTradeLimitCreateSchema"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DailyTradeLimitSchema"];
                 };
             };
             /** @description Not found */
