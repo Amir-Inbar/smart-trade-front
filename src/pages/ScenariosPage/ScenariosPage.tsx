@@ -14,7 +14,6 @@ import {
 const CreateScenarioModal = lazy(() => import("@/components/Scenarios/CreateScenarioModal/CreateScenarioModal"));
 const ScenariosOverview = lazy(() => import("@/components/Scenarios/ScenariosOverview/ScenariosOverview"));
 import {FetchScenariosInBackground} from "@/components/FetchDataInBackground/FetchScenariosInBackground";
-import {DailyTradeLimit} from "@/components/DailyTradeLimit/DailyTradeLimit";
 
 const Breadcrumbs = () => (
     <Breadcrumb>
@@ -40,7 +39,6 @@ const ScenariosPage = () => (
             <Suspense fallback={<div>Loading...</div>}>
                 <div className='flex justify-between'>
                     <CreateScenarioModal/>
-                    <DailyTradeLimit/>
                 </div>
             </Suspense>
         </div>
