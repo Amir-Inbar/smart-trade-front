@@ -363,6 +363,77 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/daily-trade-events/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Search daily trade events
+         * @description Search daily trade events based on filters.
+         *
+         *     :param page: Page number.
+         *     :param page_size: Page size.
+         *     :param filters: Filters for searching daily trade limit.
+         *     :param db: Database session.
+         *     :param settings: Application settings.
+         *     :return: List of daily trade limit.
+         */
+        post: operations["search_daily_trade_events_daily_trade_events_search_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/daily-trade-events/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create daily trade events
+         * @description Create a new daily trade events.
+         */
+        post: operations["create_daily_trade_events_daily_trade_events_create_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/daily-trade-events/{daily_trade_events_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete daily trade events by ID
+         * @description Delete daily trade events by ID.
+         *
+         *     :param daily_trade_events_id: Daily trade events ID.
+         *     :param db: Database session.
+         *     :return: Daily trade events.
+         */
+        delete: operations["delete_daily_trade_events_daily_trade_events__daily_trade_events_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/": {
         parameters: {
             query?: never;
@@ -441,20 +512,65 @@ export interface components {
             /** Last Trade Date Or Contract Month */
             last_trade_date_or_contract_month?: string | null;
         };
+        /** DailyTradeEventsCreateSchema */
+        DailyTradeEventsCreateSchema: {
+            /**
+             * Title
+             * @default Daily Trade Limit
+             */
+            title: string | null;
+            /**
+             * Start Date
+             * Format: date-time
+             */
+            start_date: string;
+            /**
+             * End Date
+             * Format: date-time
+             */
+            end_date: string;
+        };
+        /** DailyTradeEventsSchema */
+        DailyTradeEventsSchema: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Title
+             * @default Daily Trade Limit
+             */
+            title: string | null;
+            /**
+             * Start Date
+             * Format: date-time
+             */
+            start_date: string;
+            /**
+             * End Date
+             * Format: date-time
+             */
+            end_date: string;
+        };
+        /** DailyTradeEventsSearchSchema */
+        DailyTradeEventsSearchSchema: {
+            /** Title */
+            title?: string | null;
+            /** Start Date */
+            start_date?: string | null;
+            /** End Date */
+            end_date?: string | null;
+        };
         /** DailyTradeLimitCreateSchema */
         DailyTradeLimitCreateSchema: {
+            /** Date */
+            date?: null;
             /**
-             * Scenario Id
-             * Format: uuid
+             * Max Trades
+             * @default 2
              */
-            scenario_id: string;
-            /**
-             * Contract Id
-             * Format: uuid
-             */
-            contract_id: string;
-            /** Orders */
-            orders: components["schemas"]["OrderSchema"][];
+            max_trades: number;
         };
         /** DailyTradeLimitSchema */
         DailyTradeLimitSchema: {
@@ -463,13 +579,21 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            scenario: components["schemas"]["ScenarioSchema"] | null;
-            contract: components["schemas"]["ContractSchema"] | null;
-            /** Orders */
-            orders: components["schemas"]["OrderSchema"][] | null;
+            /** Date */
+            date?: null;
+            /**
+             * Max Trades
+             * @default 2
+             */
+            max_trades: number;
         };
         /** DailyTradeLimitSearchSchema */
-        DailyTradeLimitSearchSchema: Record<string, never>;
+        DailyTradeLimitSearchSchema: {
+            /** Date */
+            date?: null;
+            /** Max Trades */
+            max_trades?: number | null;
+        };
         /**
          * FutureContracts
          * @enum {string}
@@ -564,7 +688,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-04-01T17:06:10.106555"
+             *         "time": "2025-04-04T16:04:45.012561"
              *       }
              *     ]
              */
@@ -678,13 +802,10 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            /**
-             * Date
-             * Format: date-time
-             */
-            date: string;
-            /** Max Trades */
-            max_trades: number;
+            scenario: components["schemas"]["ScenarioSchema"] | null;
+            contract: components["schemas"]["ContractSchema"] | null;
+            /** Orders */
+            orders: components["schemas"]["OrderSchema"][] | null;
         };
         /** TradeSearchSchema */
         TradeSearchSchema: Record<string, never>;
@@ -1338,6 +1459,127 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DailyTradeLimitSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_daily_trade_events_daily_trade_events_search_post: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["DailyTradeEventsSearchSchema"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DailyTradeEventsSchema"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_daily_trade_events_daily_trade_events_create_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DailyTradeEventsCreateSchema"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DailyTradeEventsSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_daily_trade_events_daily_trade_events__daily_trade_events_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                daily_trade_events_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DailyTradeEventsSchema"];
                 };
             };
             /** @description Not found */
