@@ -31,8 +31,8 @@ export default function FullCalendar() {
             const events = await searchEvents({}).unwrap();
             const convertedEvents = events.map(event => ({
                 ...event,
-                start_date: convertToIsraelTime(event.start_date),
-                end_date: convertToIsraelTime(event.end_date),
+                start_date: String(convertToIsraelTime(event.start_date)),
+                end_date: String(convertToIsraelTime(event.end_date)),
             }));
             setEvents(convertedEvents);
         } catch (error) {
@@ -57,7 +57,7 @@ export default function FullCalendar() {
     };
 
 
-    const handleSelectEvent = (event) => {
+    const handleSelectEvent = (event: DailyTradeEventsSchema) => {
         setEventToDelete(event);
         setDeleteModalOpened(true);
     };

@@ -688,7 +688,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-04-04T16:04:45.012561"
+             *         "time": "2025-04-04T19:08:54.101613"
              *       }
              *     ]
              */
@@ -1567,7 +1567,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                daily_trade_events_id: number;
+                daily_trade_events_id: string;
             };
             cookie?: never;
         };
