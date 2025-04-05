@@ -17,7 +17,6 @@ export const FetchDataInBackground = () => {
     const [searchScenarios, {data: scenariosData}] = useSearchScenariosMutation();
     const [searchTrades, {data: tradesData}] = useSearchTradesMutation();
     const [searchEvents, {data: events}] = useSearchDailyTradeEventsMutation();
-
     const setContracts = useContractsStore((state) => state.setContracts);
     const setScenarios = useScenarioStore((state: ScenarioState) => state.setScenarios);
     const setTrades = useTradeStore((state: TradeState) => state.setTrades);
