@@ -316,53 +316,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/daily_trade_limit/search": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Search daily trade limit
-         * @description Search daily trade limit based on filters.
-         *
-         *     :param page: Page number.
-         *     :param page_size: Page size.
-         *     :param filters: Filters for searching daily trade limit.
-         *     :param db: Database session.
-         *     :param settings: Application settings.
-         *     :return: List of daily trade limit.
-         */
-        post: operations["search_daily_trade_limit_daily_trade_limit_search_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/daily_trade_limit/create": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Create daily trade limit
-         * @description Create a new daily trade limit.
-         */
-        post: operations["create_daily_trade_limit_daily_trade_limit_create_post"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/daily-trade-events/search": {
         parameters: {
             query?: never;
@@ -512,6 +465,11 @@ export interface components {
             /** Last Trade Date Or Contract Month */
             last_trade_date_or_contract_month?: string | null;
         };
+        /**
+         * DailyTradeEventType
+         * @enum {string}
+         */
+        DailyTradeEventType: "daily_trade_limit" | "event_trade_limit";
         /** DailyTradeEventsCreateSchema */
         DailyTradeEventsCreateSchema: {
             /**
@@ -529,6 +487,13 @@ export interface components {
              * Format: date-time
              */
             end_date: string;
+            /** @default daily_trade_limit */
+            type: components["schemas"]["DailyTradeEventType"] | null;
+            /**
+             * Value
+             * @default
+             */
+            value: string | null;
         };
         /** DailyTradeEventsSchema */
         DailyTradeEventsSchema: {
@@ -537,11 +502,8 @@ export interface components {
              * Format: uuid
              */
             id: string;
-            /**
-             * Title
-             * @default Daily Trade Limit
-             */
-            title: string | null;
+            /** Title */
+            title: string;
             /**
              * Start Date
              * Format: date-time
@@ -552,6 +514,12 @@ export interface components {
              * Format: date-time
              */
             end_date: string;
+            type: components["schemas"]["DailyTradeEventType"];
+            /**
+             * Value
+             * @default
+             */
+            value: string | null;
         };
         /** DailyTradeEventsSearchSchema */
         DailyTradeEventsSearchSchema: {
@@ -561,38 +529,7 @@ export interface components {
             start_date?: string | null;
             /** End Date */
             end_date?: string | null;
-        };
-        /** DailyTradeLimitCreateSchema */
-        DailyTradeLimitCreateSchema: {
-            /** Date */
-            date?: null;
-            /**
-             * Max Trades
-             * @default 2
-             */
-            max_trades: number;
-        };
-        /** DailyTradeLimitSchema */
-        DailyTradeLimitSchema: {
-            /**
-             * Id
-             * Format: uuid
-             */
-            id: string;
-            /** Date */
-            date?: null;
-            /**
-             * Max Trades
-             * @default 2
-             */
-            max_trades: number;
-        };
-        /** DailyTradeLimitSearchSchema */
-        DailyTradeLimitSearchSchema: {
-            /** Date */
-            date?: null;
-            /** Max Trades */
-            max_trades?: number | null;
+            type?: components["schemas"]["DailyTradeEventType"] | null;
         };
         /**
          * FutureContracts
@@ -688,7 +625,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-04-04T19:08:54.101613"
+             *         "time": "2025-04-05T16:37:09.711131"
              *       }
              *     ]
              */
@@ -1376,89 +1313,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ContractSchema"];
-                };
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    search_daily_trade_limit_daily_trade_limit_search_post: {
-        parameters: {
-            query?: {
-                page?: number;
-                page_size?: number | null;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: {
-            content: {
-                "application/json": components["schemas"]["DailyTradeLimitSearchSchema"] | null;
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DailyTradeLimitSchema"][];
-                };
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
-    create_daily_trade_limit_daily_trade_limit_create_post: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["DailyTradeLimitCreateSchema"];
-            };
-        };
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DailyTradeLimitSchema"];
                 };
             };
             /** @description Not found */

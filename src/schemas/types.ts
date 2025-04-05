@@ -16,8 +16,6 @@ export type OperationalStateType = components["schemas"]["OperationalState"];
 export type TradeSchema = components["schemas"]["TradeSchema"];
 export type TradeSearchSchema = components["schemas"]["TradeSearchSchema"];
 export type ProgressStateSchema = components["schemas"]["ProgressStateSchema"];
-export type ProgressStateOptions = ProgressStateSchema["state"]
-export type DailyTradeLimitSchema = components["schemas"]["DailyTradeLimitSchema"];
 export type DailyTradeEventsSchema = components["schemas"]["DailyTradeEventsSchema"];
 export type DailyTradeEventsCreateSchema =components["schemas"]["DailyTradeEventsCreateSchema"];
 export type DailyTradeEventsSearchSchema =components["schemas"]["DailyTradeEventsSearchSchema"];
@@ -68,4 +66,9 @@ export enum OrderStatusOptions {
     FILLED = "filled",
     CANCELLED = "cancelled",
     ERROR = "error"
+}
+
+export enum DailyTradeEventType {
+    DAILY_TRADE_LIMIT = "daily_trade_limit",
+    EVENT_TRADE_LIMIT = "event_trade_limit",
 }

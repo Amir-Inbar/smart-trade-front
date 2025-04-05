@@ -8,7 +8,7 @@ import {
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
 import {Link} from "react-router-dom";
-import FullCalendar from "@/components/ui/full-calendar";
+import FullCalendar from "src/components/ui/full-calendar";
 
 
 const Breadcrumbs = () => (

@@ -5,7 +5,6 @@ import {contractApi} from "./api/contractApi";
 import {accountApi} from "./api/accountApi";
 import {tradeApi} from "./api/tradeApi";
 import {dailyTradeEventsApi} from "@/store/api/dailyTradeEventsApi";
-import {dailyTradeLimitApi} from "@/store/api/dailyTradeLimitApi";
 
 const rootReducer = combineReducers({
     [scenarioApi.reducerPath]: scenarioApi.reducer,
@@ -13,7 +12,6 @@ const rootReducer = combineReducers({
     [contractApi.reducerPath]: contractApi.reducer,
     [tradeApi.reducerPath]: tradeApi.reducer,
     [dailyTradeEventsApi.reducerPath]: dailyTradeEventsApi.reducer,
-    [dailyTradeLimitApi.reducerPath]: dailyTradeLimitApi.reducer
 });
 
 export const store = configureStore({
@@ -25,7 +23,6 @@ export const store = configureStore({
             contractApi.middleware,
             tradeApi.middleware,
             dailyTradeEventsApi.middleware,
-            dailyTradeLimitApi.middleware
         )
 });
 
