@@ -13,7 +13,7 @@ import classNames from "classnames";
 
 interface DialogWrapperProps {
     title: string;
-    description: string;
+    description?: string;
     dialogWidth?: string;
     children: ReactNode;
     openDialogText?: string;

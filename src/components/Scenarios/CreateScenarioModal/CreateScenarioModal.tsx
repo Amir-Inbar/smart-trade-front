@@ -25,8 +25,6 @@ const CreateScenarioModal = () => {
     return (
         <DialogWrapper
             title="Create Scenario"
-            description="The bracket order is a complex order type that allows you to set a stop loss and take profit
-                        order at the same time."
             openDialogText="Create Scenario"
             open={isCreateScenarioModalOpen}
             onOpenChange={onToggleCreateScenarioModal}

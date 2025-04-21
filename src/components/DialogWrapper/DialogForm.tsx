@@ -41,7 +41,7 @@ export const DialogForm = <T, >(
                         {error as string || ""}
                     </div>
                 ))}
-                <DialogFooter>
+                <DialogFooter className='pb-3'>
                     <DialogClose asChild>
                         <Button type="button" variant="outline" color="red" onClick={onClose}>
                             Cancel
