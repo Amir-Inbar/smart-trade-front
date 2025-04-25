@@ -388,26 +388,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/services/vault-status": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Vault Status
-         * @description Vault status endpoint.
-         */
-        get: operations["vault_status_services_vault_status_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/services/ib-gateway": {
         parameters: {
             query?: never;
@@ -423,6 +403,30 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/services/test-container": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Test Ib Container
+         * @description Test endpoint to create and verify IB Gateway container
+         */
+        get: operations["test_ib_container_services_test_container_get"];
+        put?: never;
+        post?: never;
+        /**
+         * Remove Test Container
+         * @description Remove the test IB Gateway container
+         */
+        delete: operations["remove_test_container_services_test_container_delete"];
         options?: never;
         head?: never;
         patch?: never;
@@ -666,7 +670,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-04-23T16:10:30.066077"
+             *         "time": "2025-04-25T11:59:56.525164"
              *       }
              *     ]
              */
@@ -1537,7 +1541,7 @@ export interface operations {
             };
         };
     };
-    vault_status_services_vault_status_get: {
+    ib_gateway_status_services_ib_gateway_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -1564,7 +1568,34 @@ export interface operations {
             };
         };
     };
-    ib_gateway_status_services_ib_gateway_get: {
+    test_ib_container_services_test_container_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    remove_test_container_services_test_container_delete: {
         parameters: {
             query?: never;
             header?: never;
