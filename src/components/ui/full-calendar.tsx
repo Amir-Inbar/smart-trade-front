@@ -69,7 +69,6 @@ export default function FullCalendar() {
             type: event.type,
             value: event.value ?? "",
         };
-        console.log(event)
         setNewEvent(formattedEvent);
         setSelectedEvent(event);
         setIsEditing(true);
