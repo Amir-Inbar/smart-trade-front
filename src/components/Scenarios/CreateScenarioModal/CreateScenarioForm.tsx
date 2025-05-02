@@ -67,6 +67,7 @@ const CreateScenarioForm: React.FC<CreateScenarioFormProps> = (
             ? StopPriceModeChoices.MANUAL
             : StopPriceModeChoices.AUTOMATIC;
         form.setValue("stop_price_mode", mode);
+        form.setValue("date_trade", new Date().toISOString().split("T")[0]);
     }, [stopPrice, form]);
 
     const onSubmit: SubmitHandler<ScenarioSchemaCreateSchema> = async (data) => {
