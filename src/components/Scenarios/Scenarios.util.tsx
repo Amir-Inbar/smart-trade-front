@@ -44,21 +44,25 @@ const TakeProfitLevelCreateSchema = object({
 
 export const ScenarioSchemaCreate = object().shape({
     contract_id: string().required("Contract Name is required"),
-    date_trade: string().required("Date Trade is required").optional(),
+    date_trade: string().optional(),
     action: string().required("Action is required"),
     strategy: string().required("Select Strategy is required"),
     break_down_price: number().required("Break down price is required"),
-    stop_price:
-        number()
-            .positive("Stop price must be positive")
-            .required("Stop price is required")
-            .default(0),
-    stop_price_mode: string()
-        .required("Stop price mode is required"),
-    description: string().required("Description is required"),
-    is_quality_scenario: boolean().default(false).optional(),
-    take_profit_levels: array().of(TakeProfitLevelCreateSchema).default([]).required("Take Profit Levels are required")
+    stop_price: number()
+        .positive("Stop price must be positive")
+        .required("Stop price is required")
+        .default(0),
+    stop_price_mode: string().required("Stop price mode is required"),
+    description: string().optional(),
+    is_quality_scenario: boolean()
+        .required("Quality Scenario flag is required")
+        .default(false),
+    take_profit_levels: array()
+        .of(TakeProfitLevelCreateSchema)
+        .required("Take Profit Levels are required")
+        .default([]),
 });
+
 
 export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputItem[] => [
     {
@@ -152,7 +156,7 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         name: "description",
         label: "Description",
         placeholder: "Describe why you chose the break point level",
-        required: true,
+        required: false,
         type: "textarea",
         default: ""
     }

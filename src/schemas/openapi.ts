@@ -670,7 +670,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-04-25T12:17:26.898473"
+             *         "time": "2025-05-02T19:19:42.407348"
              *       }
              *     ]
              */
@@ -700,8 +700,11 @@ export interface components {
             /** Stop Price Mode */
             stop_price_mode: string;
             /** Description */
-            description: string;
-            /** Is Quality Scenario */
+            description?: string;
+            /**
+             * Is Quality Scenario
+             * @default false
+             */
             is_quality_scenario: boolean;
             /**
              * Take Profit Levels
