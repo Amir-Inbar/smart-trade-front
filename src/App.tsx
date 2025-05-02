@@ -23,7 +23,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
 
 const App = () => {
   const { isSignedIn } = useAuth();
-  const location = useLocation();
 
   return (
     <ErrorBoundary>
