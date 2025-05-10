@@ -56,6 +56,7 @@ const CreateScenarioForm: React.FC<CreateScenarioFormProps> = (
     } = form;
 
     const stopPrice = watch("stop_price");
+    const date_trade = watch("date_trade");
 
     const {fields, append, remove} = useFieldArray({
         control,
@@ -67,8 +68,8 @@ const CreateScenarioForm: React.FC<CreateScenarioFormProps> = (
             ? StopPriceModeChoices.MANUAL
             : StopPriceModeChoices.AUTOMATIC;
         form.setValue("stop_price_mode", mode);
-        form.setValue("date_trade", new Date().toISOString().split("T")[0]);
-    }, [stopPrice, form]);
+        form.setValue("date_trade", date_trade || new Date().toISOString().split("T")[0])
+    }, [stopPrice, form, date_trade]);
 
     const onSubmit: SubmitHandler<ScenarioSchemaCreateSchema> = async (data) => {
         try {
