@@ -8,7 +8,6 @@ import {
   useGetTotalStatisticsQuery,
   useGetOperationalStateDistributionQuery,
   useGetStateDurationsQuery,
-  useGetBreakoutSuccessRateByHourQuery,
   useGetStateTimesQuery,
 } from '@/store/api/statisticsApi';
 
@@ -21,10 +20,6 @@ const DashboardPage = () => {
   } = useGetOperationalStateDistributionQuery();
   const { data: stateDurations, isLoading: isLoadingStateDurations } =
     useGetStateDurationsQuery();
-  const {
-    data: breakoutSuccessRateByHour,
-    isLoading: isLoadingBreakoutSuccessRateByHour,
-  } = useGetBreakoutSuccessRateByHourQuery();
   const { data: stateTimes, isLoading: isLoadingStateTimes } =
     useGetStateTimesQuery();
 
@@ -32,8 +27,7 @@ const DashboardPage = () => {
     isLoadingTotal ||
     isLoadingOperational ||
     isLoadingStateDurations ||
-    isLoadingBreakoutSuccessRateByHour ||
-    isLoadingStateTimes;
+    isLoadingStateTimes
 
   return (
     <Container className='p-4 space-y-6 flex flex-col'>

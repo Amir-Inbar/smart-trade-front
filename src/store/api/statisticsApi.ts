@@ -1,57 +1,43 @@
-import { API_HOST } from '@/config/consts';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {API_HOST} from '@/config/consts';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import {
-  TotalStatistics,
-  DistributionStatistics,
-  StateDurations,
-  BreakoutSuccessRateByHour,
-  StateAverageTimes,
+    TotalStatistics,
+    DistributionStatistics,
+    StateDurations,
 } from '@/types/statistics';
 
 export const statisticsApi = createApi({
-  reducerPath: 'statisticsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: API_HOST,
-  }),
-  tagTypes: ['statistics'],
-  endpoints: (builder) => ({
-    getTotalStatistics: builder.query<TotalStatistics, void>({
-      query: () => 'statistics/total',
-      providesTags: ['statistics'],
+    reducerPath: 'statisticsApi',
+    baseQuery: fetchBaseQuery({
+        baseUrl: API_HOST,
     }),
-
-    getOperationalStateDistribution: builder.query<
-      DistributionStatistics,
-      void
-    >({
-      query: () => 'statistics/operational-state',
-      providesTags: ['statistics'],
+    tagTypes: ['statistics'],
+    endpoints: (builder) => ({
+        getTotalStatistics: builder.query<TotalStatistics, void>({
+            query: () => 'statistics/total',
+            providesTags: ['statistics'],
+        }),
+        getOperationalStateDistribution: builder.query<
+            DistributionStatistics,
+            void
+        >({
+            query: () => 'statistics/operational-state',
+            providesTags: ['statistics'],
+        }),
+        getStateDurations: builder.query<StateDurations, void>({
+            query: () => 'statistics/state-durations',
+            providesTags: ['statistics'],
+        }),
+        getStateTimes: builder.query<any, void>({
+            query: () => 'statistics/state-times',
+            providesTags: ['statistics'],
+        }),
     }),
-
-    getStateDurations: builder.query<StateDurations, void>({
-      query: () => 'statistics/state-durations',
-      providesTags: ['statistics'],
-    }),
-
-    getBreakoutSuccessRateByHour: builder.query<
-      BreakoutSuccessRateByHour,
-      void
-    >({
-      query: () => 'statistics/state-transitions',
-      providesTags: ['statistics'],
-    }),
-
-    getStateTimes: builder.query<any, void>({
-      query: () => 'statistics/state-times',
-      providesTags: ['statistics'],
-    }),
-  }),
 });
 
 export const {
-  useGetTotalStatisticsQuery,
-  useGetOperationalStateDistributionQuery,
-  useGetStateDurationsQuery,
-  useGetBreakoutSuccessRateByHourQuery,
-  useGetStateTimesQuery,
+    useGetTotalStatisticsQuery,
+    useGetOperationalStateDistributionQuery,
+    useGetStateDurationsQuery,
+    useGetStateTimesQuery,
 } = statisticsApi;
