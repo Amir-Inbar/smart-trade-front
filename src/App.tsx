@@ -9,6 +9,7 @@ import { SignInPage } from '@/pages/SignInPage';
 const ScenariosPage = lazy(() => import('./pages/ScenariosPage/ScenariosPage'));
 const TradesPage = lazy(() => import('./pages/TradesPage/TradesPage'));
 const CalendarPage = lazy(() => import('./pages/CalendarPage/CalendarPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage/DashboardPage'));
 
 const ProtectedRoute = ({ children }: { children: React.ReactElement }) => {
   const { isSignedIn } = useAuth();
@@ -68,6 +69,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <CalendarPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/dashboard'
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
               </ProtectedRoute>
             }
           />

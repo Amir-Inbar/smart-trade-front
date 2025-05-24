@@ -47,6 +47,13 @@ export function getMenuList(pathname: string): Group[] {
                     active: pathname.includes("/calendar"),
                     icon: Calendar,
                     submenus: []
+                },
+                {
+                    href: "/dashboard",
+                    label: "Dashboard",
+                    active: pathname.includes("/dashboard"),
+                    icon: BarChart2,
+                    submenus: []
                 }
             ]
         }
