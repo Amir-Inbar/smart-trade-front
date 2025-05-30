@@ -1,9 +1,9 @@
 import { Container } from '@/components/ui/container';
 import { Typography } from '@/components/ui/typography';
-import { BarChartComponent } from '@/components/charts/BarChartComponent';
 import { StatsCard } from '@/components/charts/StatsCard';
 import { StateDurationChart } from '@/components/charts/StateDurationChart';
-import { BreakoutSuccessRateByHourChart } from '@/components/charts/BreakoutSuccessRateByHourChart';
+import { StateOccurrencesByHourChart } from '@/components/charts/StateOccurrencesByHourChart';
+import { StateDistributionFunnelChart } from '@/components/charts/StateDistributionFunnelChart';
 import {
   useGetTotalStatisticsQuery,
   useGetOperationalStateDistributionQuery,
@@ -27,7 +27,7 @@ const DashboardPage = () => {
     isLoadingTotal ||
     isLoadingOperational ||
     isLoadingStateDurations ||
-    isLoadingStateTimes
+    isLoadingStateTimes;
 
   return (
     <Container className='p-4 space-y-6 flex flex-col'>
@@ -52,25 +52,25 @@ const DashboardPage = () => {
             suffix: '%',
           },
         ]}
-        isLoading={isLoading}
+        isLoading={isLoadingTotal}
       />
-      <BarChartComponent
-        title='Operational State Distribution'
-        description='Current state of all scenarios'
+      <StateDistributionFunnelChart
+        title='Scenario Drop-off Funnel'
+        description='Count of scenarios in each operational state (simulated funnel)'
         data={operationalStateDistribution || {}}
-        isLoading={isLoading}
+        isLoading={isLoadingOperational}
       />
       <StateDurationChart
         title='State Durations'
         description='Average duration for each state'
         data={stateDurations || {}}
-        isLoading={isLoading}
+        isLoading={isLoadingStateDurations}
       />
-      <BreakoutSuccessRateByHourChart
+      <StateOccurrencesByHourChart
         title='State Occurrences by Hour'
         description='How often each scenario state occurs at each hour of the day'
         data={stateTimes || []}
-        isLoading={isLoading}
+        isLoading={isLoadingStateTimes}
       />
     </Container>
   );

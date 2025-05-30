@@ -5,7 +5,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from 'recharts';
 import {
@@ -18,27 +17,30 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 
 
-interface StateDurationChartProps {
+interface StateDistributionFunnelChartProps {
+  /**
+   * Data for the funnel, mapping state names to the CUMULATIVE number of scenarios that reached that state.
+   * Example: { "initial": 100, "breakout_occurred": 80, ... }
+   */
   data: Record<string, number>;
   title: string;
   description: string;
   isLoading?: boolean;
 }
 
-// Define the desired order of operational states
+// Define the desired order of operational states for the funnel visualization
+// Using uppercase here internally for consistency, but we'll format for display
 const STATE_ORDER = [
+  'INITIAL',
   'BREAKOUT_OCCURRED',
   'MINIMUM_BREAKOUT_POINTS_ACHIEVED',
   'PRICE_RETURNED_TO_SIGNIFICANT_LEVEL',
   'FIRST_15_MIN_CANDLE_CLOSED',
   'TWO_5_MIN_CANDLES_CLOSED',
-  // COMPLETED and CANCELLED can also have durations, decide if you want to include them
+  // COMPLETED and CANCELLED might not fit a cumulative flow easily, depending on backend logic
 ];
 
-// New default color
-const DEFAULT_COLOR = '#76b7b2';
-
-// Helper function to format state names for display (duplicated from Funnel chart)
+// Helper function to format state names for display
 function formatStateName(name: string): string {
   // Replace underscores with spaces and capitalize each word
   return name
@@ -48,20 +50,20 @@ function formatStateName(name: string): string {
     .join(' ');
 }
 
-export function StateDurationChart({
+export function StateDistributionFunnelChart({
   data,
   title,
   description,
   isLoading = false,
-}: StateDurationChartProps) {
-  // Create chart data based on STATE_ORDER, providing 0 for missing states
+}: StateDistributionFunnelChartProps) {
+  // Filter and sort the data based on the defined order, providing 0 for missing states
   const chartData = STATE_ORDER.map((stateName) => {
     // Look up data using the lowercase version of the state name from the backend
-    const duration = data[stateName.toLowerCase()];
-    // If duration is undefined, use 0; otherwise, use the provided value
+    const value = data[stateName.toLowerCase()];
+    // If value is undefined, use 0; otherwise, use the provided value
     return {
       name: formatStateName(stateName),
-      value: duration !== undefined ? Number(duration.toFixed(2)) : 0, // Use value for chart dataKey
+      value: value !== undefined ? value : 0,
     };
   });
 
@@ -75,37 +77,28 @@ export function StateDurationChart({
         {isLoading ? (
           <Skeleton className='h-64' />
         ) : (
-          <ResponsiveContainer width='100%' height={300}>
+          <ResponsiveContainer width='100%' height={450}>
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray='3 3' />
-              {/* X-axis now shows state names in defined order */}
               <XAxis
-                dataKey='name' // Use 'name' which contains formatted state names
+                dataKey='name'
                 type='category'
                 label={{ value: 'State', position: 'insideBottom', offset: -5 }}
-                angle={30}
-                textAnchor='start'
+                angle={-45}
+                textAnchor='end'
                 interval={0}
-                height={60}
+                height={150}
               />
-              {/* Y-axis shows duration values */}
               <YAxis
                 type='number'
-                label={{
-                  value: 'Duration (minutes)',
-                  angle: -90,
-                  position: 'insideLeft',
-                }}
+                label={{ value: 'Count', angle: -90, position: 'insideLeft' }}
+                allowDecimals={false}
               />
-              <Tooltip
-                formatter={(value: number) => [`${value} minutes`, 'Duration']}
-              />
-              <Legend />
-              {/* Use value as dataKey */}
+              <Tooltip />
               <Bar
                 dataKey='value'
-                fill={DEFAULT_COLOR}
-                name='Average Duration'
+                fill='#4e79a7'
+                name='Number of Scenarios'
                 barSize={30}
               />
             </BarChart>
