@@ -75,7 +75,7 @@ export function StateDurationChart({
         {isLoading ? (
           <Skeleton className='h-64' />
         ) : (
-          <ResponsiveContainer width='100%' height={300}>
+          <ResponsiveContainer width='100%' height={450}>
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray='3 3' />
               {/* X-axis now shows state names in defined order */}
@@ -86,7 +86,7 @@ export function StateDurationChart({
                 angle={30}
                 textAnchor='start'
                 interval={0}
-                height={60}
+                height={150}
               />
               {/* Y-axis shows duration values */}
               <YAxis
