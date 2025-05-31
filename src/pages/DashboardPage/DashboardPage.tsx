@@ -4,11 +4,13 @@ import { StatsCard } from '@/components/charts/StatsCard';
 import { StateDurationChart } from '@/components/charts/StateDurationChart';
 import { StateOccurrencesByHourChart } from '@/components/charts/StateOccurrencesByHourChart';
 import { StateDistributionFunnelChart } from '@/components/charts/StateDistributionFunnelChart';
+import { PerformanceByDayOfWeekChart } from '@/components/charts/PerformanceByDayOfWeekChart';
 import {
   useGetTotalStatisticsQuery,
   useGetOperationalStateDistributionQuery,
   useGetStateDurationsQuery,
   useGetStateTimesQuery,
+  useGetPerformanceByDayOfWeekQuery,
 } from '@/store/api/statisticsApi';
 
 const DashboardPage = () => {
@@ -22,12 +24,17 @@ const DashboardPage = () => {
     useGetStateDurationsQuery();
   const { data: stateTimes, isLoading: isLoadingStateTimes } =
     useGetStateTimesQuery();
+  const {
+    data: performanceByDayOfWeekData,
+    isLoading: isLoadingPerformanceByDayOfWeek,
+  } = useGetPerformanceByDayOfWeekQuery();
 
   const isLoading =
     isLoadingTotal ||
     isLoadingOperational ||
     isLoadingStateDurations ||
-    isLoadingStateTimes;
+    isLoadingStateTimes ||
+    isLoadingPerformanceByDayOfWeek;
 
   return (
     <Container className='p-4 space-y-6 flex flex-col'>
@@ -54,24 +61,30 @@ const DashboardPage = () => {
         ]}
         isLoading={isLoadingTotal}
       />
-      <StateDistributionFunnelChart
-        title='Scenario Drop-off Funnel'
-        description='Count of scenarios in each operational state (simulated funnel)'
-        data={operationalStateDistribution || {}}
-        isLoading={isLoadingOperational}
-      />
-      <StateDurationChart
-        title='State Durations'
-        description='Average duration for each state'
-        data={stateDurations || {}}
-        isLoading={isLoadingStateDurations}
-      />
-      <StateOccurrencesByHourChart
-        title='State Occurrences by Hour'
-        description='How often each scenario state occurs at each hour of the day'
-        data={stateTimes || []}
-        isLoading={isLoadingStateTimes}
-      />
+      <Container className='grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow min-h-[400px]'>
+        <StateDistributionFunnelChart
+          title='Scenario Drop-off Funnel'
+          description='Count of scenarios in each operational state (simulated funnel)'
+          data={operationalStateDistribution || {}}
+          isLoading={isLoadingOperational}
+        />
+        <StateDurationChart
+          title='State Durations'
+          description='Average duration for each state'
+          data={stateDurations || {}}
+          isLoading={isLoadingStateDurations}
+        />
+        <StateOccurrencesByHourChart
+          title='State Occurrences by Hour'
+          description='How often each scenario state occurs at each hour of the day'
+          data={stateTimes || []}
+          isLoading={isLoadingStateTimes}
+        />
+        <PerformanceByDayOfWeekChart
+          data={performanceByDayOfWeekData}
+          isLoading={isLoadingPerformanceByDayOfWeek}
+        />
+      </Container>
     </Container>
   );
 };
