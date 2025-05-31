@@ -5,6 +5,7 @@ import {StateDurationChart} from '@/components/charts/StateDurationChart';
 import {StateOccurrencesByHourChart} from '@/components/charts/StateOccurrencesByHourChart';
 import {StateDistributionFunnelChart} from '@/components/charts/StateDistributionFunnelChart';
 import {PerformanceByDayOfWeekChart} from '@/components/charts/PerformanceByDayOfWeekChart';
+import {StateLegend} from '@/components/charts/StateLegend';
 import {
     useGetTotalStatisticsQuery,
     useGetOperationalStateDistributionQuery,
@@ -54,7 +55,8 @@ const DashboardPage = () => {
                 ]}
                 isLoading={isLoadingTotal}
             />
-            <Container className='grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow min-h-[400px]'>
+            <StateLegend/>
+            <Container className='grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow min-h-[400px] p-0 m-0'>
                 <StateDistributionFunnelChart
                     title='Scenario Drop-off Funnel'
                     description='Count of scenarios in each operational state (simulated funnel)'

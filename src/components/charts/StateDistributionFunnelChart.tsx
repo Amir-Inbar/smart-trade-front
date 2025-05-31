@@ -1,110 +1,129 @@
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Cell,
 } from 'recharts';
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import {Skeleton} from '@/components/ui/skeleton';
 
+interface StateDistributionData {
+    name: string;
+    value: number;
+    color: string;
+}
 
 interface StateDistributionFunnelChartProps {
-  /**
-   * Data for the funnel, mapping state names to the CUMULATIVE number of scenarios that reached that state.
-   * Example: { "initial": 100, "breakout_occurred": 80, ... }
-   */
-  data: Record<string, number>;
-  title: string;
-  description: string;
-  isLoading?: boolean;
+    data: Record<string, number> | undefined;
+    title: string;
+    description: string;
+    isLoading?: boolean;
 }
 
-// Define the desired order of operational states for the funnel visualization
-// Using uppercase here internally for consistency, but we'll format for display
 const STATE_ORDER = [
-  'INITIAL',
-  'BREAKOUT_OCCURRED',
-  'MINIMUM_BREAKOUT_POINTS_ACHIEVED',
-  'PRICE_RETURNED_TO_SIGNIFICANT_LEVEL',
-  'FIRST_15_MIN_CANDLE_CLOSED',
-  'TWO_5_MIN_CANDLES_CLOSED',
-  // COMPLETED and CANCELLED might not fit a cumulative flow easily, depending on backend logic
+    'INITIAL',
+    'BREAKOUT OCCURRED',
+    'MINIMUM BREAKOUT POINTS ACHIEVED',
+    'PRICE RETURNED TO SIGNIFICANT LEVEL',
+    'FIRST 15 MIN CANDLE CLOSED',
+    'TWO 5 MIN CANDLES CLOSED',
 ];
 
-// Helper function to format state names for display
-function formatStateName(name: string): string {
-  // Replace underscores with spaces and capitalize each word
-  return name
-    .toLowerCase()
-    .split('_')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+const STATE_COLORS: Record<string, string> = {
+    INITIAL: '#3B82F6',
+    'BREAKOUT OCCURRED': '#F59E0B',
+    'MINIMUM BREAKOUT POINTS ACHIEVED': '#EF4444',
+    'PRICE RETURNED TO SIGNIFICANT LEVEL': '#06B6D4',
+    'FIRST 15 MIN CANDLE CLOSED': '#22C55E',
+    'TWO 5 MIN CANDLES CLOSED': '#FACC15',
+};
+
+function formatXAxisLabel(label: string) {
+    return label
+        .replace('MINIMUM BREAKOUT POINTS ACHIEVED', 'MIN BREAKOUT')
+        .replace('PRICE RETURNED TO SIGNIFICANT LEVEL', 'PRICE RETURNED')
+        .replace('FIRST 15 MIN CANDLE CLOSED', '15-MIN CLOSED')
+        .replace('TWO 5 MIN CANDLES CLOSED', '2×5-MIN CLOSED')
+        .replace('BREAKOUT OCCURRED', 'BREAKOUT')
+        .replace('INITIAL', 'INITIAL')
+        .toLowerCase();
 }
 
-export function StateDistributionFunnelChart({
-  data,
-  title,
-  description,
-  isLoading = false,
-}: StateDistributionFunnelChartProps) {
-  // Filter and sort the data based on the defined order, providing 0 for missing states
-  const chartData = STATE_ORDER.map((stateName) => {
-    // Look up data using the lowercase version of the state name from the backend
-    const value = data[stateName.toLowerCase()];
-    // If value is undefined, use 0; otherwise, use the provided value
-    return {
-      name: formatStateName(stateName),
-      value: value !== undefined ? value : 0,
-    };
-  });
+const formatStateName = (name: string): string => {
+    return name;
+};
 
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {isLoading ? (
-          <Skeleton className='h-64' />
-        ) : (
-          <ResponsiveContainer width='100%' height={450}>
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray='3 3' />
-              <XAxis
-                dataKey='name'
-                type='category'
-                label={{ value: 'State', position: 'insideBottom', offset: -5 }}
-                angle={-45}
-                textAnchor='end'
-                interval={0}
-                height={150}
-              />
-              <YAxis
-                type='number'
-                label={{ value: 'Count', angle: -90, position: 'insideLeft' }}
-                allowDecimals={false}
-              />
-              <Tooltip />
-              <Bar
-                dataKey='value'
-                fill='#4e79a7'
-                name='Number of Scenarios'
-                barSize={30}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        )}
-      </CardContent>
-    </Card>
-  );
+export function StateDistributionFunnelChart({
+                                                 data,
+                                                 title,
+                                                 description,
+                                                 isLoading = false,
+                                             }: StateDistributionFunnelChartProps) {
+    const chartData: StateDistributionData[] = STATE_ORDER.map((state) => ({
+        name: formatStateName(state),
+        value: data?.[state.toLowerCase().replace(/\s+/g, '_')] || 0,
+        color: STATE_COLORS[state] || '#ccc',
+    }));
+
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>{title}</CardTitle>
+                <CardDescription>{description}</CardDescription>
+            </CardHeader>
+            <CardContent className='flex-grow'>
+                {isLoading ? (
+                    <Skeleton className='h-64 w-full'/>
+                ) : (
+                    <ResponsiveContainer width='100%' height={400}>
+                        <BarChart
+                            data={chartData}
+                            margin={{
+                                top: 20,
+                                right: 30,
+                                left: 20,
+                                bottom: 60,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray='3 3'/>
+                            <XAxis
+                                dataKey='name'
+                                tickFormatter={formatXAxisLabel}
+                                angle={-30}
+                                textAnchor='end'
+                                interval={0}
+                                height={60}
+                            />
+                            <YAxis
+                                type='number'
+                                label={{value: 'Count', angle: -90, position: 'insideLeft'}}
+                                allowDecimals={false} // Ensure only whole numbers for count
+                            />
+                            <Tooltip
+                                formatter={(value: number, name: string, props) => [
+                                    `${value}`,
+                                    props.payload.name.toLowerCase(),
+                                ]}
+                            />{' '}
+                            <Bar dataKey='value' name='Number of Scenarios' barSize={30}>
+                                {chartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.color}/>
+                                ))}
+                            </Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
+                )}
+            </CardContent>
+        </Card>
+    );
 }

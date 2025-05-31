@@ -18,10 +18,9 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface PerformanceByDayOfWeekData {
-  day: string;
+  day: string; // e.g., 'Monday'
   completed_count: number;
   canceled_count: number;
-  pending_count: number;
 }
 
 interface PerformanceByDayOfWeekChartProps {
@@ -29,18 +28,18 @@ interface PerformanceByDayOfWeekChartProps {
   isLoading: boolean;
 }
 
-// Define the desired order of days of the week
-const DAY_ORDER: string[] = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
+const DAY_NAME_MAP: Record<string, string> = {
+  Monday: 'Mon',
+  Tuesday: 'Tue',
+  Wednesday: 'Wed',
+  Thursday: 'Thu',
+  Friday: 'Fri',
+  Saturday: 'Sat',
+  Sunday: 'Sun',
+};
 
-// Define colors for the stacked bars
+const DAY_ORDER: string[] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
 const STATUS_COLORS: Record<string, string> = {
   completed_count: '#4CAF50', // Green
   canceled_count: '#F44336', // Red
@@ -50,11 +49,19 @@ export function PerformanceByDayOfWeekChart({
   data,
   isLoading,
 }: PerformanceByDayOfWeekChartProps) {
-  // Sort data according to DAY_ORDER and ensure all days are present (with 0 if no data)
+  // Normalize input data to use short day labels
+  const normalizedData =
+    data?.map((d) => ({
+      day: DAY_NAME_MAP[d.day] || d.day,
+      completed_count: d.completed_count,
+      canceled_count: d.canceled_count,
+    })) || [];
+
+  // Build chart data with all days ensured
   const chartData = DAY_ORDER.map((day) => {
-    const dayData = data?.find((d) => d.day === day);
+    const dayData = normalizedData.find((d) => d.day === day);
     return {
-      day: day,
+      day,
       completed_count: dayData?.completed_count || 0,
       canceled_count: dayData?.canceled_count || 0,
     };
@@ -86,7 +93,7 @@ export function PerformanceByDayOfWeekChart({
                 label={{
                   value: 'Day of Week',
                   position: 'insideBottom',
-                  offset: -5,
+                  offset: -40,
                 }}
               />
               <YAxis
