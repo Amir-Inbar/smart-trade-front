@@ -72,3 +72,9 @@ export enum DailyTradeEventType {
     DAILY_TRADE_LIMIT = "daily_trade_limit",
     EVENT_TRADE_LIMIT = "event_trade_limit",
 }
+
+export enum TradeResultsType {
+    PROFIT = "profit",
+    LOSS = "loss",
+    CANCELLED = "cancelled",
+}

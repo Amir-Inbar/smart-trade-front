@@ -1,21 +1,26 @@
-import { SmartTable } from "@/components/SmartTable/SmartTable";
-import { useEffect, useMemo } from "react";
-import useScenarioStore from "@/store/actions/scenario";
+import { SmartTable } from '@/components/SmartTable/SmartTable';
+import { useEffect, useMemo } from 'react';
+import useScenarioStore from '@/store/actions/scenario';
 import {
   useDeleteScenarioMutation,
   useSearchScenariosMutation,
-  useUpdateScenarioMutation
-} from "@/store/api/scenarioApi";
+  useUpdateScenarioMutation,
+} from '@/store/api/scenarioApi';
 import {
   getScenarioColumns,
-  ScenariosOverviewDataInitialState
-} from "@/components/Scenarios/ScenariosOverview/ScenariosOverview.util";
-import { OperationalStateType, ScenarioSchema } from "@/schemas/types";
-import {type MRT_ColumnDef} from "mantine-react-table";
+  ScenariosOverviewDataInitialState,
+} from '@/components/Scenarios/ScenariosOverview/ScenariosOverview.util';
+import {
+  OperationalStateType,
+  ScenarioSchema,
+  TradeResultsType,
+} from '@/schemas/types';
+import { type MRT_ColumnDef } from 'mantine-react-table';
 
 const ScenariosOverview = () => {
   const [searchScenarios, { data }] = useSearchScenariosMutation();
-  const [updateScenario, { isLoading: isUpdatingScenario, originalArgs }] = useUpdateScenarioMutation();
+  const [updateScenario, { isLoading: isUpdatingScenario, originalArgs }] =
+    useUpdateScenarioMutation();
   const { setScenarios, scenarios } = useScenarioStore();
   const [deleteScenario] = useDeleteScenarioMutation();
 
@@ -32,15 +37,18 @@ const ScenariosOverview = () => {
     }
   }, [data, setScenarios]);
 
-  const onUpdateScenarioState = async (scenario: ScenarioSchema, state: OperationalStateType) => {
-    await updateScenario(
-      {
-        scenarioId: scenario.id,
-        fields: {
-          operational_state: state
-        }
-      }
-    ).unwrap();
+  const onUpdateScenarioState = async (
+    scenario: ScenarioSchema,
+    state: OperationalStateType,
+    tradeResult?: TradeResultsType
+  ) => {
+    await updateScenario({
+      scenarioId: scenario.id,
+      fields: {
+        operational_state: state,
+        trade_result: tradeResult,
+      },
+    }).unwrap();
     fetchScenarios();
   };
 
@@ -51,24 +59,27 @@ const ScenariosOverview = () => {
 
   const { scenarioId: updatingScenarioId } = originalArgs || {};
 
-  const columns = useMemo<MRT_ColumnDef<ScenarioSchema>[]>(() => getScenarioColumns({
-    onUpdateScenarioState,
-    isUpdatingScenario,
-    updatingScenarioId,
-    onDeleteScenario
-  }), [isUpdatingScenario]);
+  const columns = useMemo<MRT_ColumnDef<ScenarioSchema>[]>(
+    () =>
+      getScenarioColumns({
+        onUpdateScenarioState,
+        isUpdatingScenario,
+        updatingScenarioId,
+        onDeleteScenario,
+      }),
+    [isUpdatingScenario]
+  );
 
   const config = ScenariosOverviewDataInitialState();
 
   return (
     <SmartTable
-      className="w-full"
+      className='w-full'
       columns={columns}
       data={scenarios || []}
       config={config}
     />
   );
 };
-
 
 export default ScenariosOverview;

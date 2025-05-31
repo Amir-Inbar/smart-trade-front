@@ -441,18 +441,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/statistics/state-transitions": {
+    "/statistics/state-times": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /**
-         * Get Success Rate By Hour
-         * @description Get success rate by hour.
-         */
-        get: operations["get_success_rate_by_hour_statistics_state_transitions_get"];
+        /** Get State Average Times */
+        get: operations["get_state_average_times_statistics_state_times_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/statistics/performance-by-day": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Completions By Day */
+        get: operations["get_completions_by_day_statistics_performance_by_day_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -598,6 +612,15 @@ export interface components {
             end_date?: string | null;
             type?: components["schemas"]["DailyTradeEventType"] | null;
         };
+        /** DayPerformance */
+        DayPerformance: {
+            /** Day */
+            day: string;
+            /** Completed Count */
+            completed_count: number;
+            /** Canceled Count */
+            canceled_count: number;
+        };
         /**
          * FutureContracts
          * @enum {string}
@@ -692,11 +715,12 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-05-23T10:40:44.111385"
+             *         "time": "2025-05-31T13:29:48.573087"
              *       }
              *     ]
              */
             progress_state: components["schemas"]["ProgressStateSchema"][];
+            trade_result?: components["schemas"]["TradeResultEnum"] | null;
         };
         /** ScenarioSchemaCreate */
         ScenarioSchemaCreate: {
@@ -738,6 +762,12 @@ export interface components {
              * Format: date-time
              */
             date_trade?: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at?: string;
+            trade_result?: components["schemas"]["TradeResultEnum"];
         };
         /** ScenarioSchemaSearch */
         ScenarioSchemaSearch: Record<string, never>;
@@ -762,6 +792,7 @@ export interface components {
             /** Date Trade */
             date_trade?: string | null;
             operational_state?: components["schemas"]["OperationalState"] | null;
+            trade_result?: components["schemas"]["TradeResultEnum"] | null;
         };
         /**
          * StopPriceMode
@@ -802,6 +833,11 @@ export interface components {
             /** Execution At */
             execution_at?: string | null;
         };
+        /**
+         * TradeResultEnum
+         * @enum {string}
+         */
+        TradeResultEnum: "profit" | "loss" | "cancelled";
         /** TradeSchema */
         TradeSchema: {
             /**
@@ -1584,6 +1620,13 @@ export interface operations {
                     "application/json": unknown;
                 };
             };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     get_operational_state_statistics_statistics_operational_state_get: {
@@ -1603,6 +1646,13 @@ export interface operations {
                 content: {
                     "application/json": unknown;
                 };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -1624,9 +1674,16 @@ export interface operations {
                     "application/json": unknown;
                 };
             };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
-    get_success_rate_by_hour_statistics_state_transitions_get: {
+    get_state_average_times_statistics_state_times_get: {
         parameters: {
             query?: never;
             header?: never;
@@ -1641,8 +1698,44 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": {
+                        [key: string]: number;
+                    }[];
                 };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_completions_by_day_statistics_performance_by_day_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DayPerformance"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
