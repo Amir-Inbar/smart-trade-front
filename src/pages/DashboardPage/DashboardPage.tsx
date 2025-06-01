@@ -1,17 +1,18 @@
-import { Container } from '@/components/ui/container';
-import { Typography } from '@/components/ui/typography';
+import React from 'react';
 import { StatsCard } from '@/components/charts/StatsCard';
 import { StateDurationChart } from '@/components/charts/StateDurationChart';
 import { StateOccurrencesByHourChart } from '@/components/charts/StateOccurrencesByHourChart';
 import { StateDistributionFunnelChart } from '@/components/charts/StateDistributionFunnelChart';
 import { PerformanceByDayOfWeekChart } from '@/components/charts/PerformanceByDayOfWeekChart';
 import { StateLegend } from '@/components/charts/StateLegend';
+import { TradeExecutionTimeHeatmapChart } from '@/components/charts/TradeExecutionTimeHeatmapChart';
 import {
   useGetTotalStatisticsQuery,
   useGetOperationalStateDistributionQuery,
   useGetStateDurationsQuery,
   useGetStateTimesQuery,
   useGetPerformanceByDayOfWeekQuery,
+  useGetTradeExecutionTimestampsQuery,
 } from '@/store/api/statisticsApi';
 
 const DashboardPage = () => {
@@ -30,11 +31,14 @@ const DashboardPage = () => {
     isLoading: isLoadingPerformanceByDayOfWeek,
   } = useGetPerformanceByDayOfWeekQuery();
 
+  const {
+    data: tradeExecutionTimestamps,
+    isLoading: isLoadingTradeExecutionTimestamps,
+  } = useGetTradeExecutionTimestampsQuery();
+
   return (
-    <Container className='p-4 space-y-6 flex flex-col'>
-      <Typography variant='h1' className='mb-6'>
-        Dashboard
-      </Typography>
+    <div className='p-4 space-y-6 flex flex-col'>
+      <h1 className='mb-6 text-2xl font-bold'>Dashboard</h1>
       <StatsCard
         title='Total Statistics'
         description='Overview of scenario statistics'
@@ -56,7 +60,7 @@ const DashboardPage = () => {
         isLoading={isLoadingTotal}
       />
       <StateLegend />
-      <Container className='grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow min-h-[400px] p-0 m-0'>
+      <div className='grid grid-cols-1 md:grid-cols-2 gap-4 flex-grow min-h-[400px] p-0 m-0'>
         <StateDistributionFunnelChart
           title='Scenario Drop-off Funnel'
           description='Count of scenarios in each operational state (simulated funnel)'
@@ -79,8 +83,14 @@ const DashboardPage = () => {
           data={performanceByDayOfWeekData}
           isLoading={isLoadingPerformanceByDayOfWeek}
         />
-      </Container>
-    </Container>
+        <TradeExecutionTimeHeatmapChart
+          title='Trade Execution Time Distribution'
+          description='Heatmap showing the distribution of trade execution times by hour'
+          data={tradeExecutionTimestamps}
+          isLoading={isLoadingTradeExecutionTimestamps}
+        />
+      </div>
+    </div>
   );
 };
 

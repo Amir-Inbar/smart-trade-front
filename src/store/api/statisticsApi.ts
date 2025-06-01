@@ -14,6 +14,9 @@ interface PerformanceByDayOfWeekData {
   pending_count: number;
 }
 
+// Define the type for the trade execution timestamps
+type TradeExecutionTimestamps = string[];
+
 export const statisticsApi = createApi({
   reducerPath: 'statisticsApi',
   baseQuery: fetchBaseQuery({
@@ -40,12 +43,15 @@ export const statisticsApi = createApi({
       query: () => 'statistics/state-times',
       providesTags: ['statistics'],
     }),
-    // Update endpoint for performance by day of week
     getPerformanceByDayOfWeek: builder.query<
       PerformanceByDayOfWeekData[],
       void
     >({
-      query: () => 'statistics/performance-by-day', // Assuming this endpoint exists on the backend
+      query: () => 'statistics/performance-by-day',
+      providesTags: ['statistics'],
+    }),
+    getTradeExecutionTimestamps: builder.query<TradeExecutionTimestamps, void>({
+      query: () => 'statistics/trade-execution-time',
       providesTags: ['statistics'],
     }),
   }),
@@ -56,6 +62,6 @@ export const {
   useGetOperationalStateDistributionQuery,
   useGetStateDurationsQuery,
   useGetStateTimesQuery,
-  // Export the new hook
   useGetPerformanceByDayOfWeekQuery,
+  useGetTradeExecutionTimestampsQuery,
 } = statisticsApi;
