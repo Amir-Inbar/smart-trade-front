@@ -1,3 +1,4 @@
+import {PureComponent} from 'react';
 import {Treemap, ResponsiveContainer, Tooltip} from 'recharts';
 import {
     Card,
@@ -20,6 +21,16 @@ interface HeatmapData {
     size: number;
     children?: HeatmapData[];
 }
+
+// Red gradient from dark to light
+const COLORS = [
+    '#7f1d1d', // dark red
+    '#b91c1c',
+    '#dc2626',
+    '#ef4444',
+    '#f87171',
+    '#fee2e2', // light red
+];
 
 const processDataForTreemap = (
     timestamps: string[] | undefined
@@ -48,7 +59,6 @@ const processDataForTreemap = (
             size: count,
         }));
 
-
     return [
         {
             name: 'Trade Execution Hours',
@@ -58,54 +68,53 @@ const processDataForTreemap = (
     ];
 };
 
-import type {TreemapNode} from 'recharts/types/chart/Treemap';
-import {ReactElement} from 'react';
-
-const TreemapCell = (
-    props: TreemapNode & { root: TreemapNode }
-): ReactElement => {
-    const {depth, x, y, width, height, name, size} = props;
-
-    if (width <= 0 || height <= 0) return <></>;
-
-    const maxSize = Math.max(...props.root.children.map((c: any) => c.size));
-    const lightness = 80 - (size / maxSize) * 50;
-    const fill = `hsl(0, 100%, ${lightness}%)`;
-
-    return (
-        <g>
-            <rect
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                style={{fill, stroke: '#fff', strokeWidth: 1}}
-            />
-            {depth === 1 && (
-                <>
-                    <text
-                        x={x + width / 2}
-                        y={y + height / 2 - 6}
-                        textAnchor='middle'
-                        fill='#fff'
-                        fontSize={12}
-                    >
-                        {name}
-                    </text>
-                    <text
-                        x={x + width / 2}
-                        y={y + height / 2 + 10}
-                        textAnchor='middle'
-                        fill='#fff'
-                        fontSize={12}
-                    >
-                        Count: {size}
-                    </text>
-                </>
-            )}
-        </g>
-    );
-};
+class CustomizedContent extends PureComponent<any> {
+    render() {
+        const {root, depth, x, y, width, height, index, name, size} = this.props;
+        const color =
+            depth < 2
+                ? COLORS[Math.floor((index / root.children.length) * COLORS.length)]
+                : '#ffffff00';
+        return (
+            <g>
+                <rect
+                    x={x}
+                    y={y}
+                    width={width}
+                    height={height}
+                    style={{
+                        fill: color,
+                        stroke: '#fff',
+                        strokeWidth: 2 / (depth + 1e-10),
+                        strokeOpacity: 1 / (depth + 1e-10),
+                    }}
+                />
+                {depth === 1 ? (
+                    <>
+                        <text
+                            x={x + width / 2}
+                            y={y + height / 2 + 7}
+                            textAnchor='middle'
+                            fill='#fff'
+                            fontSize={14}
+                        >
+                            {name}
+                        </text>
+                        <text
+                            x={x + width / 2}
+                            y={y + height / 2 + 24}
+                            textAnchor='middle'
+                            fill='#fff'
+                            fontSize={12}
+                        >
+                            Count: {size}
+                        </text>
+                    </>
+                ) : null}
+            </g>
+        );
+    }
+}
 
 export function TradeExecutionTimeHeatmapChart({
                                                    data,
@@ -129,20 +138,19 @@ export function TradeExecutionTimeHeatmapChart({
                     <ResponsiveContainer width='100%' height={300}>
                         <Treemap
                             data={treemapData[0].children}
-                            dataKey="size"
-                            stroke="#fff"
-                            fill="#8884d8"
-                            content={TreemapCell}
-                            nameKey="name"
+                            dataKey='size'
+                            stroke='#fff'
+                            fill='#8884d8'
+                            content={<CustomizedContent colors={COLORS}/>}
+                            nameKey='name'
                         >
                             <Tooltip
-                                formatter={(value: number, name: string, props: any) => [
+                                formatter={(value: number, name: string) => [
                                     `Count: ${value}`,
-                                    props.payload.name, // name = Hour X
+                                    name,
                                 ]}
                             />
                         </Treemap>
-
                     </ResponsiveContainer>
                 ) : (
                     <div className='flex items-center justify-center h-full text-muted-foreground'>

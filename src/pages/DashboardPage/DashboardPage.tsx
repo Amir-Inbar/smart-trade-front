@@ -1,4 +1,3 @@
-import React from 'react';
 import { StatsCard } from '@/components/charts/StatsCard';
 import { StateDurationChart } from '@/components/charts/StateDurationChart';
 import { StateOccurrencesByHourChart } from '@/components/charts/StateOccurrencesByHourChart';
