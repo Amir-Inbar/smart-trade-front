@@ -91,6 +91,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/trades/cancel_by_scenario": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cancel trades by scenario ID for all users
+         * @description Cancel trades by scenario ID for all users.
+         *
+         *     :param scenario_id: Scenario ID to cancel trades for.
+         *     :param db: Database session.
+         *     :return: Success message.
+         */
+        post: operations["cancel_trades_by_scenario_trades_cancel_by_scenario_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/scenarios/search": {
         parameters: {
             query?: never;
@@ -337,50 +361,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/services/ib-gateway": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Ib Gateway Status
-         * @description IB Gateway status endpoint.
-         */
-        get: operations["ib_gateway_status_services_ib_gateway_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/services/test-container": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Test Ib Container
-         * @description Test endpoint to create and verify IB Gateway container
-         */
-        get: operations["test_ib_container_services_test_container_get"];
-        put?: never;
-        post?: never;
-        /**
-         * Remove Test Container
-         * @description Remove the test IB Gateway container
-         */
-        delete: operations["remove_test_container_services_test_container_delete"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/statistics/total": {
         parameters: {
             query?: never;
@@ -467,6 +447,35 @@ export interface paths {
         };
         /** Get Completions By Day */
         get: operations["get_completions_by_day_statistics_performance_by_day_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/statistics/trade-execution-time": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Trade Execution Times
+         * @description Get timestamps of when scenarios reached their final trade state.
+         *
+         *     Returns:
+         *         List[str]: List of ISO 8601 formatted timestamps when scenarios reached their final state.
+         *         Example:
+         *         [
+         *             "2024-03-20T14:30:00Z",
+         *             "2024-03-20T15:45:00Z",
+         *             ...
+         *         ]
+         */
+        get: operations["get_trade_execution_times_statistics_trade_execution_time_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -715,7 +724,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-05-31T13:29:48.573087"
+             *         "time": "2025-07-19T16:28:45.437616"
              *       }
              *     ]
              */
@@ -974,6 +983,44 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TradeSchema"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_trades_by_scenario_trades_cancel_by_scenario_post: {
+        parameters: {
+            query: {
+                scenario_id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
                 };
             };
             /** @description Not found */
@@ -1521,87 +1568,6 @@ export interface operations {
             };
         };
     };
-    ib_gateway_status_services_ib_gateway_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    test_ib_container_services_test_container_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
-    remove_test_container_services_test_container_delete: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Not found */
-            404: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
-    };
     get_total_statistics_statistics_total_get: {
         parameters: {
             query?: never;
@@ -1728,6 +1694,33 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DayPerformance"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    get_trade_execution_times_statistics_trade_execution_time_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string[];
                 };
             };
             /** @description Not found */

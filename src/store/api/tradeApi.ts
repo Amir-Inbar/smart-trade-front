@@ -17,10 +17,19 @@ export const tradeApi = createApi({
                 body
             }),
             invalidatesTags: ["trades"]
+        }),
+        cancelTradesByScenario: builder.mutation<void, { scenarioId: string }>({
+            query: ({scenarioId}) => ({
+                url: `trades/cancel_by_scenario`,
+                method: "POST",
+                body: {scenario_id: scenarioId},
+            }),
+            invalidatesTags: ["trades"],
         })
     })
 });
 
 export const {
-    useSearchTradesMutation
+    useSearchTradesMutation,
+    useCancelTradesByScenarioMutation
 } = tradeApi;
