@@ -7,7 +7,6 @@ import {
     StrategyTypeEnum,
     TakeProfitLevelCreateSchema,
 } from '@/schemas/types';
-import {Button} from '@/components/ui/button';
 import {
     IconAlertTriangle,
     IconArrowRight,
@@ -15,13 +14,9 @@ import {
     IconClock,
     IconTrendingUp,
     IconX,
-    IconPlayerPause,
-    IconPlayerPlay,
-    IconTrash,
-    IconPlayerStop,
 } from '@tabler/icons-react';
-import {ScenarioStateUtil} from '@/lib/scenario.state.util';
-import {Tooltip} from '@mantine/core';
+import {ScenarioActionButtons} from './ScenarioActionButtons';
+import {ScenarioTradeResultButtons} from './ScenarioTradeResultButtons';
 
 interface getScenarioColumnsProps {
     isUpdatingScenario: boolean;
@@ -38,6 +33,7 @@ interface getScenarioColumnsProps {
     onCancelTradesByScenario(scenario: ScenarioSchema): Promise<void>;
 
     onOpenPendingModal: (scenario: ScenarioSchema) => void; // new
+    onSellMarketModal: (scenario: ScenarioSchema) => void; // new
 }
 
 export const ProgressStateToConfig: {
@@ -123,6 +119,7 @@ export const getScenarioColumns = ({
                                        updatingScenarioId,
                                        onDeleteScenario,
                                        onOpenPendingModal,
+                                       onSellMarketModal,
                                    }: getScenarioColumnsProps): MRT_ColumnDef<ScenarioSchema>[] => [
     {
         accessorKey: 'id',
@@ -280,190 +277,42 @@ export const getScenarioColumns = ({
         },
     },
     {
-        accessorKey: 'actions',
-        header: 'Actions',
+        accessorKey: 'main_actions',
+        header: 'Main Actions',
         Cell: ({row}: { row: MRT_Row<ScenarioSchema> }) => {
             const scenario = row.original;
-            const {operational_state, id, trade_result} = scenario;
 
-            const isDisabled = isUpdatingScenario && updatingScenarioId === id;
-
-            const isPauseResumeDisabled =
-                isDisabled ||
-                !operational_state ||
-                operational_state === OperationalState.COMPLETED ||
-                operational_state === OperationalState.CANCELLED;
-
-            const stateUtil = new ScenarioStateUtil(
-                operational_state as OperationalState
+            return (
+                <ScenarioActionButtons
+                    scenario={scenario}
+                    isUpdatingScenario={isUpdatingScenario}
+                    updatingScenarioId={updatingScenarioId}
+                    onUpdateScenarioState={onUpdateScenarioState}
+                    onOpenPendingModal={onOpenPendingModal}
+                    onSellMarketModal={onSellMarketModal}
+                    onDeleteScenario={onDeleteScenario}
+                />
             );
-            const buttonText = stateUtil.isPaused() ? 'Resume' : 'Pause';
-            const stateToSet = stateUtil.isPaused()
-                ? OperationalState.PENDING
-                : OperationalState.PAUSED;
+        },
+    },
+    {
+        accessorKey: 'trade_results',
+        header: 'Trade Results',
+        Cell: ({row}: { row: MRT_Row<ScenarioSchema> }) => {
+            const scenario = row.original;
+            const {operational_state} = scenario;
 
             const isCompleted = operational_state === OperationalState.COMPLETED;
 
-            // Check if date_trade is today
-            let isToday = false;
-            if (scenario.date_trade) {
-                const tradeDate = new Date(scenario.date_trade);
-                const now = new Date();
-                isToday =
-                    tradeDate.getFullYear() === now.getFullYear() &&
-                    tradeDate.getMonth() === now.getMonth() &&
-                    tradeDate.getDate() === now.getDate();
-            }
-
-            // Button is enabled only if completed AND today
-            const canRemovePending = isCompleted && isToday;
-
-            // Determine tooltip message for pending broker orders button
-            let pendingTooltip = 'Remove Pending Broker Orders';
-            if (!canRemovePending) {
-                const reasons = [];
-                if (!isCompleted) reasons.push('Scenario is not completed');
-                if (!isToday) reasons.push('Trade date is not today');
-                pendingTooltip = 'Cannot remove: ' + reasons.join(' and ');
-            }
-
-            return (
-                <div className='flex flex-col gap-2'>
-                    <div className='flex items-center justify-center gap-2'>
-                        <Tooltip label={`${buttonText} Scenario`} withinPortal>
-                            <Button
-                                disabled={isPauseResumeDisabled}
-                                onClick={() =>
-                                    onUpdateScenarioState(
-                                        scenario,
-                                        stateToSet,
-                                        trade_result ?? undefined
-                                    )
-                                }
-                                size='icon'
-                                variant='outline'
-                                color={stateUtil.isPaused() ? 'green' : 'yellow'}
-                            >
-                                {stateUtil.isPaused() ? (
-                                    <IconPlayerPlay size={16}/>
-                                ) : (
-                                    <IconPlayerPause size={16}/>
-                                )}
-                            </Button>
-                        </Tooltip>
-                        <Tooltip label={pendingTooltip} withinPortal>
-              <span>
-                <Button
-                    onClick={() => onOpenPendingModal(scenario)}
-                    className='ml-2'
-                    size='icon'
-                    variant='outline'
-                    color='red'
-                    disabled={!canRemovePending}
-                >
-                  <IconPlayerStop size={16}/>
-                </Button>
-              </span>
-                        </Tooltip>
-                        <Tooltip label='Delete Scenario' withinPortal>
-                            <Button
-                                onClick={() => onDeleteScenario(scenario)}
-                                className='ml-2'
-                                size='icon'
-                                variant='outline'
-                                color='red'
-                            >
-                                <IconTrash size={16}/>
-                            </Button>
-                        </Tooltip>
-                    </div>
-                    {isCompleted && (
-                        <div className='flex flex-col gap-2'>
-                            <div className='h-px bg-gray-300 w-full my-2'/>
-                            <div className='flex items-center justify-between gap-1 ml-2'>
-                                {/* Profit Button */}
-                                <Tooltip
-                                    label={
-                                        trade_result === 'profit'
-                                            ? 'Already set to Profit'
-                                            : 'Set as Profit'
-                                    }
-                                    withinPortal
-                                >
-                                    <div>
-                                        <Button
-                                            onClick={() =>
-                                                onUpdateScenarioState(
-                                                    scenario,
-                                                    operational_state as OperationalState,
-                                                    'profit'
-                                                )
-                                            }
-                                            size='icon'
-                                            variant='outline'
-                                            className='border-green-500 text-green-500 hover:bg-green-50 hover:text-green-600'
-                                            disabled={isDisabled || trade_result === 'profit'}
-                                        >
-                                            <IconCheck size={16}/>
-                                        </Button>
-                                    </div>
-                                </Tooltip>
-                                <Tooltip
-                                    label={
-                                        trade_result === 'loss'
-                                            ? 'Already set to Loss'
-                                            : 'Set as Loss'
-                                    }
-                                    withinPortal
-                                >
-                                    <div>
-                                        <Button
-                                            onClick={() =>
-                                                onUpdateScenarioState(
-                                                    scenario,
-                                                    operational_state as OperationalState,
-                                                    'loss'
-                                                )
-                                            }
-                                            size='icon'
-                                            variant='outline'
-                                            className='border-red-500 text-red-500 hover:bg-red-50 hover:text-red-600'
-                                            disabled={isDisabled || trade_result === 'loss'}
-                                        >
-                                            <IconX size={16}/>
-                                        </Button>
-                                    </div>
-                                </Tooltip>
-                                <Tooltip
-                                    label={
-                                        trade_result === 'cancelled'
-                                            ? 'Already set to Cancelled'
-                                            : 'Set as Cancelled (entry spike)'
-                                    }
-                                    withinPortal
-                                >
-                                    <div>
-                                        <Button
-                                            onClick={() =>
-                                                onUpdateScenarioState(
-                                                    scenario,
-                                                    operational_state as OperationalState,
-                                                    'cancelled'
-                                                )
-                                            }
-                                            size='icon'
-                                            variant='outline'
-                                            className='border-yellow-500 text-yellow-500 hover:bg-yellow-50 hover:text-yellow-600'
-                                            disabled={isDisabled || trade_result === 'cancelled'}
-                                        >
-                                            <IconAlertTriangle size={16}/>
-                                        </Button>
-                                    </div>
-                                </Tooltip>
-                            </div>
-                        </div>
-                    )}
-                </div>
+            return isCompleted ? (
+                <ScenarioTradeResultButtons
+                    scenario={scenario}
+                    isUpdatingScenario={isUpdatingScenario}
+                    updatingScenarioId={updatingScenarioId}
+                    onUpdateScenarioState={onUpdateScenarioState}
+                />
+            ) : (
+                <span className='text-gray-400 text-sm'>Not completed</span>
             );
         },
     },

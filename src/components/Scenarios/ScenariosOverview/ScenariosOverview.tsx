@@ -17,6 +17,7 @@ import {
 } from '@/schemas/types';
 import { type MRT_ColumnDef } from 'mantine-react-table';
 import { useCancelTradesByScenarioMutation } from '@/store/api/tradeApi';
+import { useSellMarketByScenarioMutation } from '@/store/api/tradeApi';
 import { Modal, Button as MantineButton } from '@mantine/core';
 
 const ScenariosOverview = () => {
@@ -26,12 +27,18 @@ const ScenariosOverview = () => {
   const { setScenarios, scenarios } = useScenarioStore();
   const [deleteScenario] = useDeleteScenarioMutation();
   const [cancelTradesByScenario] = useCancelTradesByScenarioMutation();
+  const [sellMarketByScenario] = useSellMarketByScenarioMutation();
 
   // Modal state for removing pending broker orders
   const [pendingModalOpen, setPendingModalOpen] = useState(false);
   const [pendingScenario, setPendingScenario] = useState<ScenarioSchema | null>(
     null
   );
+
+  // Modal state for selling market orders
+  const [sellMarketModalOpen, setSellMarketModalOpen] = useState(false);
+  const [sellMarketScenario, setSellMarketScenario] =
+    useState<ScenarioSchema | null>(null);
 
   const handleOpenPendingModal = (scenario: ScenarioSchema) => {
     setPendingScenario(scenario);
@@ -50,6 +57,23 @@ const ScenariosOverview = () => {
     }
   };
 
+  const handleOpenSellMarketModal = (scenario: ScenarioSchema) => {
+    setSellMarketScenario(scenario);
+    setSellMarketModalOpen(true);
+  };
+
+  const handleCloseSellMarketModal = () => {
+    setSellMarketModalOpen(false);
+    setSellMarketScenario(null);
+  };
+
+  const handleConfirmSellMarketModal = async () => {
+    if (sellMarketScenario) {
+      await onSellMarketByScenario(sellMarketScenario);
+      handleCloseSellMarketModal();
+    }
+  };
+
   const fetchScenarios = async () => {
     const scenarios = await searchScenarios({}).unwrap();
     setScenarios(scenarios);
@@ -65,6 +89,11 @@ const ScenariosOverview = () => {
 
   const onCancelTradesByScenario = async (scenario: ScenarioSchema) => {
     await cancelTradesByScenario({ scenarioId: scenario.id }).unwrap();
+    await fetchScenarios();
+  };
+
+  const onSellMarketByScenario = async (scenario: ScenarioSchema) => {
+    await sellMarketByScenario({ scenarioId: scenario.id }).unwrap();
     await fetchScenarios();
   };
 
@@ -99,6 +128,7 @@ const ScenariosOverview = () => {
         onDeleteScenario,
         onCancelTradesByScenario, // pass for legacy, but not used for modal
         onOpenPendingModal: handleOpenPendingModal, // new handler
+        onSellMarketModal: handleOpenSellMarketModal, // new handler
       }),
     [isUpdatingScenario]
   );
@@ -129,6 +159,24 @@ const ScenariosOverview = () => {
           </MantineButton>
           <MantineButton color='red' onClick={handleConfirmPendingModal}>
             Yes, Remove
+          </MantineButton>
+        </div>
+      </Modal>
+      <Modal
+        opened={sellMarketModalOpen}
+        onClose={handleCloseSellMarketModal}
+        title='Sell Market Orders?'
+        centered
+      >
+        <div>
+          Are you sure you want to sell market orders for this scenario?
+        </div>
+        <div className='flex justify-end gap-2 mt-4'>
+          <MantineButton variant='outline' onClick={handleCloseSellMarketModal}>
+            Cancel
+          </MantineButton>
+          <MantineButton color='blue' onClick={handleConfirmSellMarketModal}>
+            Yes, Sell Market
           </MantineButton>
         </div>
       </Modal>
