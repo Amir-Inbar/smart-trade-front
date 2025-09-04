@@ -11,13 +11,13 @@
         OneSignalDeferred.push(async (OneSignal) => {
             await OneSignal.init({appId: "7ef9119f-4743-46b5-b39c-8cd0b4465e81"});
             try {
-                const status = await OneSignal.Notifications.getPermissionStatus(); // 'granted' | 'denied' | 'default'
+                const status = await OneSignal.Notifications.getPermissionStatus();
                 console.info('[OneSignal] permission:', status);
                 if (status !== 'granted') {
-                    await OneSignal.Slidedown.promptPush(); // force prompt for testing
+                    await OneSignal.Slidedown.promptPush();
                 }
             } catch (e) {
-                console.error('[OneSignal] prompt error', e);
+                console.error('[On¬eSignal] prompt error', e);
             }
         });
     </script>
