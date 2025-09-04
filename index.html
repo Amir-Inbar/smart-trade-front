@@ -1,24 +1,24 @@
+<!doctype html>
+<html lang="en">
 <head>
     <meta charset="UTF-8"/>
     <link rel="icon" type="image/svg+xml" href="./src/icons/favicon.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Smart Trader</title>
 
-    <!-- OneSignal Page SDK -->
+    <!-- OneSignal Push SDK -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
         window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async (OneSignal) => {
-            await OneSignal.init({appId: "7ef9119f-4743-46b5-b39c-8cd0b4465e81"});
-            try {
-                const status = await OneSignal.Notifications.getPermissionStatus();
-                console.info('[OneSignal] permission:', status);
-                if (status !== 'granted') {
-                    await OneSignal.Slidedown.promptPush();
-                }
-            } catch (e) {
-                console.error('[On¬eSignal] prompt error', e);
-            }
+        OneSignalDeferred.push(async function (OneSignal) {
+            await OneSignal.init({
+                appId: "7ef9119f-4743-46b5-b39c-8cddb4465e81",
+            });
         });
     </script>
 </head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
