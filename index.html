@@ -1,29 +1,24 @@
-<!doctype html>
-<html lang="en">
 <head>
     <meta charset="UTF-8"/>
     <link rel="icon" type="image/svg+xml" href="./src/icons/favicon.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Smart Trader</title>
 
-    <!-- OneSignal Push SDK -->
+    <!-- OneSignal Page SDK -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
-        try {
-            window.OneSignalDeferred = window.OneSignalDeferred || [];
-            OneSignalDeferred.push(async function (OneSignal) {
-                await OneSignal.init({
-                    appId: "7ef9119f-4743-46b5-b39c-8cd0b4465e81",
-                });
-            });
-            console.log("OneSignal SDK loaded");
-        } catch (e) {
-            console.error("Error loading OneSignal SDK:", e);
-        }
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async (OneSignal) => {
+            await OneSignal.init({appId: "7ef9119f-4743-46b5-b39c-8cd0b4465e81"});
+            try {
+                const status = await OneSignal.Notifications.getPermissionStatus(); // 'granted' | 'denied' | 'default'
+                console.info('[OneSignal] permission:', status);
+                if (status !== 'granted') {
+                    await OneSignal.Slidedown.promptPush(); // force prompt for testing
+                }
+            } catch (e) {
+                console.error('[OneSignal] prompt error', e);
+            }
+        });
     </script>
 </head>
-<body>
-<div id="root"></div>
-<script type="module" src="/src/main.tsx"></script>
-</body>
-</html>
