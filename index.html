@@ -9,26 +9,17 @@
     <!-- OneSignal Push SDK -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
-        console.info('[OneSignal] Init script start');
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function (OneSignal) {
-            console.info('[OneSignal] Initializing...');
-            try {
+        try {
+            window.OneSignalDeferred = window.OneSignalDeferred || [];
+            OneSignalDeferred.push(async function (OneSignal) {
                 await OneSignal.init({
-                    appId: "7ef9119f-4743-46b5-b39c-8cddb4465e81"
+                    appId: "7ef9119f-4743-46b5-b39c-8cd0b4465e81",
                 });
-                console.info('[OneSignal] Initialized');
-                const status = await OneSignal.Notifications.getPermissionStatus();
-                console.info('[OneSignal] Permission status:', status);
-                if (status !== 'granted') {
-                    console.info('[OneSignal] Prompting for push permission...');
-                    await OneSignal.Slidedown.promptPush();
-                }
-            } catch (e) {
-                console.error('[OneSignal] Initialization error:', e);
-            }
-        });
-        console.info('[OneSignal] Init script end');
+            });
+            console.log("OneSignal SDK loaded");
+        } catch (e) {
+            console.error("Error loading OneSignal SDK:", e);
+        }
     </script>
 </head>
 <body>
