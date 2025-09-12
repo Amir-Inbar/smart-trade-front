@@ -5,7 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="./src/icons/favicon.png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Smart Trader</title>
-
+    <link rel="manifest" href="/manifest.json"/>
     <!-- OneSignal Push SDK -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
@@ -15,6 +15,7 @@
             await OneSignal.init({
                 appId: "7ef9119f-4743-46b5-b39c-8cd0b4465e81",
             });
+
         });
         console.log("OneSignal SDK loaded.");
     </script>
