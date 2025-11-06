@@ -100,15 +100,25 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /**
-         * Cancel trades by scenario ID for all users
-         * @description Cancel trades by scenario ID for all users.
-         *
-         *     :param scenario_id: Scenario ID to cancel trades for.
-         *     :param db: Database session.
-         *     :return: Success message.
-         */
+        /** Cancel trades by scenario ID for all users */
         post: operations["cancel_trades_by_scenario_trades_cancel_by_scenario_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/trades/sell_market_by_scenario": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sell market orders by scenario ID for all users */
+        post: operations["sell_market_by_scenario_trades_sell_market_by_scenario_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -484,6 +494,158 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/users/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Search users
+         * @description Search users based on filters.
+         *
+         *     :param page: Page number.
+         *     :param page_size: Page size.
+         *     :param filters: Filters for searching users.
+         *     :param db: Database session.
+         *     :param settings: Application settings.
+         *     :return: List of users.
+         */
+        post: operations["search_users_users_search_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a new user
+         * @description Create a new user.
+         *
+         *     :param user: User data to create.
+         *     :param db: Database session.
+         *     :return: The created user.
+         */
+        post: operations["create_user_users__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get a user by ID
+         * @description Read a user by ID.
+         *
+         *     :param user_id: ID of the user to retrieve.
+         *     :param db: Database session.
+         *     :return: The user details.
+         */
+        get: operations["read_user_users__user_id__get"];
+        /**
+         * Update a user
+         * @description Update a user by ID.
+         *
+         *     :param user_id: ID of the user to update.
+         *     :param user: Updated user data.
+         *     :param db: Database session.
+         *     :return: The updated user.
+         */
+        put: operations["update_user_users__user_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user-tp-level-defaults/search": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Search user TP level defaults */
+        post: operations["search_tp_defaults_user_tp_level_defaults_search_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user-tp-level-defaults/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create a TP level default row */
+        post: operations["create_tp_default_user_tp_level_defaults__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user-tp-level-defaults/{row_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get a TP level default row by ID */
+        get: operations["read_tp_default_user_tp_level_defaults__row_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/user-tp-level-defaults/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Bulk update TP level default rows (by id) */
+        put: operations["update_tp_default_user_tp_level_defaults__user_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/": {
         parameters: {
             query?: never;
@@ -505,6 +667,14 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** CancelScenarioRequest */
+        CancelScenarioRequest: {
+            /**
+             * Scenario Id
+             * Format: uuid
+             */
+            scenario_id: string;
+        };
         /** ContractSchema */
         ContractSchema: {
             /**
@@ -707,10 +877,10 @@ export interface components {
             /** Is Quality Scenario */
             is_quality_scenario?: boolean | null;
             /**
-             * Take Profit Levels
+             * Take Profit Prices
              * @default []
              */
-            take_profit_levels: components["schemas"]["TakeProfitLevelSchema"][];
+            take_profit_prices: number[];
             /** Date Trade */
             date_trade?: string | null;
             /** Created At */
@@ -724,7 +894,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-07-19T16:28:45.437616"
+             *         "time": "2025-11-01T13:43:52.348836"
              *       }
              *     ]
              */
@@ -762,10 +932,10 @@ export interface components {
              */
             is_quality_scenario: boolean;
             /**
-             * Take Profit Levels
+             * Take Profit Prices
              * @default []
              */
-            take_profit_levels: components["schemas"]["TakeProfitLevelCreateSchema"][];
+            take_profit_prices: number[];
             /**
              * Date Trade
              * Format: date-time
@@ -796,8 +966,8 @@ export interface components {
             description?: string | null;
             /** Is Quality Scenario */
             is_quality_scenario?: boolean | null;
-            /** Take Profit Levels */
-            take_profit_levels?: components["schemas"]["TakeProfitLevelCreateSchema"][] | null;
+            /** Take Profit Prices */
+            take_profit_prices?: number[] | null;
             /** Date Trade */
             date_trade?: string | null;
             operational_state?: components["schemas"]["OperationalState"] | null;
@@ -814,34 +984,6 @@ export interface components {
          * @enum {string}
          */
         StrategyType: "FALSE_BREAKOUT";
-        /** TakeProfitLevelCreateSchema */
-        TakeProfitLevelCreateSchema: {
-            /** Price */
-            price: number;
-            /** Quantity */
-            quantity: number;
-        };
-        /** TakeProfitLevelSchema */
-        TakeProfitLevelSchema: {
-            /**
-             * Id
-             * Format: uuid
-             */
-            id: string;
-            /**
-             * Scenario Id
-             * Format: uuid
-             */
-            scenario_id: string;
-            /** Price */
-            price: number;
-            /** Quantity */
-            quantity: number;
-            /** Level Of Execution */
-            level_of_execution: number;
-            /** Execution At */
-            execution_at?: string | null;
-        };
         /**
          * TradeResultEnum
          * @enum {string}
@@ -861,6 +1003,116 @@ export interface components {
         };
         /** TradeSearchSchema */
         TradeSearchSchema: Record<string, never>;
+        /**
+         * UserMode
+         * @enum {string}
+         */
+        UserMode: "paper" | "live";
+        /** UserSchema */
+        UserSchema: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Email */
+            email?: string;
+            /** @default paper */
+            mode: components["schemas"]["UserMode"] | null;
+            /**
+             * Is Enabled
+             * @default true
+             */
+            is_enabled: boolean | null;
+            /** Created At */
+            created_at?: string | null;
+            /** Updated At */
+            updated_at?: string | null;
+        };
+        /** UserSchemaCreate */
+        UserSchemaCreate: {
+            /** Tws Username */
+            tws_username: string;
+            /** Tws Password */
+            tws_password: string;
+            /** Email */
+            email?: string;
+            /** @default paper */
+            mode: components["schemas"]["UserMode"] | null;
+            /**
+             * Is Enabled
+             * @default true
+             */
+            is_enabled: boolean | null;
+        };
+        /** UserSchemaSearch */
+        UserSchemaSearch: {
+            /** Tws Username */
+            tws_username?: string | null;
+            /** Email */
+            email?: string;
+            mode?: components["schemas"]["UserMode"] | null;
+            /** Is Enabled */
+            is_enabled?: boolean | null;
+        };
+        /** UserSchemaUpdate */
+        UserSchemaUpdate: {
+            /** Tws Username */
+            tws_username?: string | null;
+            /** Tws Password */
+            tws_password?: string | null;
+            /** Email */
+            email?: string;
+            mode?: components["schemas"]["UserMode"] | null;
+            /** Is Enabled */
+            is_enabled?: boolean | null;
+        };
+        /** UserTPLevelDefaultCreateSchema */
+        UserTPLevelDefaultCreateSchema: {
+            /** Account */
+            account: string;
+            /** Level Index */
+            level_index: number;
+            /** Quantity */
+            quantity: number;
+        };
+        /** UserTPLevelDefaultSchema */
+        UserTPLevelDefaultSchema: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * User Id
+             * Format: uuid
+             */
+            user_id: string;
+            /** Account */
+            account: string;
+            /** Level Index */
+            level_index: number;
+            /** Quantity */
+            quantity: number;
+        };
+        /** UserTakeProfitLevelsDefaultSchemaSearch */
+        UserTakeProfitLevelsDefaultSchemaSearch: {
+            /** Account */
+            account?: string | null;
+            /** Level Index */
+            level_index?: number | null;
+            /** Quantity */
+            quantity?: number | null;
+        };
+        /** UserTakeProfitLevelsDefaultSchemaUpdate */
+        UserTakeProfitLevelsDefaultSchemaUpdate: {
+            /** Account */
+            account?: string | null;
+            /** Level Index */
+            level_index?: number | null;
+            /** Quantity */
+            quantity?: number | null;
+        };
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -1005,14 +1257,56 @@ export interface operations {
     };
     cancel_trades_by_scenario_trades_cancel_by_scenario_post: {
         parameters: {
-            query: {
-                scenario_id: string;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CancelScenarioRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sell_market_by_scenario_trades_sell_market_by_scenario_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CancelScenarioRequest"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {
@@ -1729,6 +2023,332 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    search_users_users_search_post: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["UserSchemaSearch"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSchema"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_user_users__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserSchemaCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_user_users__user_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_user_users__user_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserSchemaUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    search_tp_defaults_user_tp_level_defaults_search_post: {
+        parameters: {
+            query?: {
+                page?: number;
+                page_size?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["UserTakeProfitLevelsDefaultSchemaSearch"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserTPLevelDefaultSchema"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_tp_default_user_tp_level_defaults__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserTPLevelDefaultCreateSchema"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserTPLevelDefaultSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    read_tp_default_user_tp_level_defaults__row_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                row_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserTPLevelDefaultSchema"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_tp_default_user_tp_level_defaults__user_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserTakeProfitLevelsDefaultSchemaUpdate"][];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UserTPLevelDefaultSchema"][];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };

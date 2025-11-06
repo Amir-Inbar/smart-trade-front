@@ -4,8 +4,6 @@ export type OrderSchema = components["schemas"]["OrderSchema"];
 export type ScenarioSchema = components["schemas"]["ScenarioSchema"];
 export type ScenarioSchemaUpdateSchema =
     components["schemas"]["ScenarioSchemaUpdate"];
-export type TakeProfitLevelCreateSchema =
-    components["schemas"]["TakeProfitLevelCreateSchema"];
 export type ScenarioSchemaCreateSchema =
     components["schemas"]["ScenarioSchemaCreate"];
 export type ContractSchema = components["schemas"]["ContractSchema"];
@@ -17,20 +15,17 @@ export type TradeSchema = components["schemas"]["TradeSchema"];
 export type TradeSearchSchema = components["schemas"]["TradeSearchSchema"];
 export type ProgressStateSchema = components["schemas"]["ProgressStateSchema"];
 export type DailyTradeEventsSchema = components["schemas"]["DailyTradeEventsSchema"];
-export type DailyTradeEventsCreateSchema =components["schemas"]["DailyTradeEventsCreateSchema"];
-export type DailyTradeEventsSearchSchema =components["schemas"]["DailyTradeEventsSearchSchema"];
+export type DailyTradeEventsCreateSchema = components["schemas"]["DailyTradeEventsCreateSchema"];
+export type DailyTradeEventsSearchSchema = components["schemas"]["DailyTradeEventsSearchSchema"];
+export type UserSchema = components["schemas"]["UserSchema"];
+export type UserSearchSchema = components["schemas"]["UserSchemaSearch"];
+export type UserTPLevelDefaultSchema = components["schemas"]["UserTPLevelDefaultSchema"];
+export type UserTakeProfitLevelsDefaultSchemaUpdate = components["schemas"]["UserTakeProfitLevelsDefaultSchemaUpdate"];
+export type UserTakeProfitLevelsDefaultSchemaSearch = components["schemas"]["UserTakeProfitLevelsDefaultSchemaSearch"];
+export type UsersSchema = components["schemas"]["UserSchema"][];
 
 export enum StrategyTypeEnum {
     FALSE_BREAKOUT = "FALSE_BREAKOUT",
-}
-
-export interface AccountValueSchema {
-    account: string;
-    AccountType: string;
-    Cushion: string;
-    DayTradesRemaining: string;
-    AccruedCash: string;
-    AvailableFunds: string;
 }
 
 export enum Ticker {
