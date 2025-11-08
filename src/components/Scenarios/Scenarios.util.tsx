@@ -1,16 +1,10 @@
 import {
     ContractSchema,
-    ProgressStateSchema,
     ScenarioSchemaCreateSchema,
     StopPriceModeChoices,
-    StrategyTypeEnum
+    StrategyTypeEnum,
 } from "@/schemas/types";
 import {array, boolean, number, object, string} from "yup";
-
-export type TakeProfitLevel = {
-    price: number;
-    quantity: number;
-};
 
 export type InputItemOptions = {
     value: string;
@@ -23,24 +17,11 @@ export type InputItem = {
     label: string;
     placeholder?: string;
     required: boolean;
-    type?:
-        | "text"
-        | "number"
-        | "select"
-        | "array"
-        | "checkbox"
-        | "textarea"
-        | "date";
+    type?: "text" | "number" | "select" | "array" | "checkbox" | "textarea" | "date";
     default?: string | number | boolean;
     options?: InputItemOptions[];
     note?: string;
 };
-
-const TakeProfitLevelCreateSchema = object({
-    price: number().required("Price is required").positive("Price must be positive"),
-    quantity: number().required("Quantity is required").positive("Quantity must be positive")
-});
-
 
 export const ScenarioSchemaCreate = object().shape({
     contract_id: string().required("Contract Name is required"),
@@ -48,21 +29,22 @@ export const ScenarioSchemaCreate = object().shape({
     action: string().required("Action is required"),
     strategy: string().required("Select Strategy is required"),
     break_down_price: number().required("Break down price is required"),
-    stop_price: number()
-        .positive("Stop price must be positive")
-        .required("Stop price is required")
-        .default(0),
+    stop_price: number().positive("Stop price must be positive").required("Stop price is required").default(0),
     stop_price_mode: string().required("Stop price mode is required"),
     description: string().optional(),
-    is_quality_scenario: boolean()
-        .required("Quality Scenario flag is required")
-        .default(false),
-    take_profit_levels: array()
-        .of(TakeProfitLevelCreateSchema)
-        .required("Take Profit Levels are required")
+    is_quality_scenario: boolean().required("Quality Scenario flag is required").default(false),
+    take_profit_prices: array()
+        .of(
+            number()
+                .typeError("Price must be a number")
+                .positive("Price must be positive")
+                .required("Price is required")
+        )
+        .min(1, "At least one take profit price is required")
+        .required("Take Profit Prices are required")
+        .ensure() // ✅ This ensures it's always an array, never undefined
         .default([]),
 });
-
 
 export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputItem[] => [
     {
@@ -74,8 +56,8 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         default: contracts[0]?.id || "",
         options: contracts.map((contract) => ({
             value: contract.id,
-            label: contract.name || ""
-        }))
+            label: contract.name || "",
+        })),
     },
     {
         name: "date_trade",
@@ -83,7 +65,7 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         placeholder: "Select the trade date",
         required: true,
         type: "date",
-        note: "The date of the trade"
+        note: "The date of the trade",
     },
     {
         name: "action",
@@ -94,8 +76,8 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         default: "BUY",
         options: [
             {value: "BUY", label: "BUY"},
-            {value: "SELL", label: "SELL"}
-        ]
+            {value: "SELL", label: "SELL"},
+        ],
     },
     {
         name: "strategy",
@@ -104,9 +86,7 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         required: true,
         type: "select",
         default: StrategyTypeEnum.FALSE_BREAKOUT,
-        options: [
-            {value: StrategyTypeEnum.FALSE_BREAKOUT, label: "False Breakout"}
-        ]
+        options: [{value: StrategyTypeEnum.FALSE_BREAKOUT, label: "False Breakout"}],
     },
     {
         name: "break_down_price",
@@ -114,7 +94,7 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         placeholder: "Enter the break down price",
         required: true,
         type: "number",
-        default: 0
+        default: 0,
     },
     {
         name: "stop_price",
@@ -123,7 +103,7 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         required: true,
         type: "number",
         default: 0,
-        note: "If empty, the stop price will be 12 tick below the break down price"
+        note: "If empty, the stop price will be 12 tick below the break down price",
     },
     {
         name: "stop_price_mode",
@@ -134,15 +114,16 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         default: StopPriceModeChoices.AUTOMATIC,
         options: [
             {value: StopPriceModeChoices.MANUAL, label: "Manual"},
-            {value: StopPriceModeChoices.AUTOMATIC, label: "Automatic"}
-        ]
+            {value: StopPriceModeChoices.AUTOMATIC, label: "Automatic"},
+        ],
     },
+    // ✅ renamed section: now editing an array<number>
     {
-        name: "take_profit_levels",
-        label: "Take Profit Levels",
-        placeholder: "Enter take profit levels",
+        name: "take_profit_prices",
+        label: "Take Profit Prices",
+        placeholder: "Enter take profit prices",
         required: true,
-        type: "array"
+        type: "array",
     },
     {
         name: "is_quality_scenario",
@@ -150,7 +131,7 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         placeholder: "Is this a quality scenario?",
         required: false,
         type: "checkbox",
-        default: false
+        default: false,
     },
     {
         name: "description",
@@ -158,11 +139,6 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         placeholder: "Describe why you chose the break point level",
         required: false,
         type: "textarea",
-        default: ""
-    }
+        default: "",
+    },
 ];
-
-export const recentScenarioProgressState = (progressStates: ProgressStateSchema[]): ProgressStateSchema => {
-    return progressStates.reduce((latest, current) => new Date(current.time) > new Date(latest.time) ? current : latest);
-};
-

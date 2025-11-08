@@ -97,7 +97,6 @@ export const ScenarioActionButtons = ({
         .join(' and ')}`
     : 'Remove Pending Broker Orders';
 
-  // Determine tooltip message for sell market button
   const sellMarketTooltip = !canSellMarket
     ? `Cannot sell market: ${[
         !isCompleted && 'Scenario is not completed',

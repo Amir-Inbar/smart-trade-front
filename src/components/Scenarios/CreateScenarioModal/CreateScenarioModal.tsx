@@ -5,9 +5,12 @@ import useContractsStore from "@/store/actions/contract";
 import useScenarioStore from "@/store/actions/scenario";
 import {ScenarioSchema} from "@/schemas/types";
 import {ScenarioState} from "@/store/@types/scenario";
+import {UserState} from "@/store/@types/user";
+import useUserStore from "@/store/actions/user";
 
 const CreateScenarioModal = () => {
-    const addScenarios = useScenarioStore((state:ScenarioState) => state.addScenario);
+    const addScenarios = useScenarioStore((state: ScenarioState) => state.addScenario);
+    const users = useUserStore((state: UserState) => state.users);
     const [isCreateScenarioModalOpen, setIsCreateScenarioModalOpen] = useState(false);
 
     const onToggleCreateScenarioModal = () => {
@@ -33,6 +36,7 @@ const CreateScenarioModal = () => {
                 contracts={contracts}
                 onCloseCreateScenarioModal={onToggleCreateScenarioModal}
                 onAddScenario={onAddScenario}
+                users={users}
             />
         </DialogWrapper>
     );

@@ -5,7 +5,6 @@ import {
     ProgressStateSchema,
     ScenarioSchema,
     StrategyTypeEnum,
-    TakeProfitLevelCreateSchema,
 } from '@/schemas/types';
 import {
     IconAlertTriangle,
@@ -163,17 +162,15 @@ export const getScenarioColumns = ({
         header: 'Stop Price Mode',
     },
     {
-        accessorKey: 'take_profit_levels',
+        accessorKey: 'take_profit_prices',
         header: 'Take Profit Levels',
         Cell: ({row}: { row: MRT_Row<ScenarioSchema> }) => {
-            const levels = row.original.take_profit_levels;
-            return levels?.length ? (
+            const prices = row.original.take_profit_prices;
+            return prices?.length ? (
                 <span>
-          {levels.map((level: TakeProfitLevelCreateSchema, idx: number) => (
+          {prices.map((price: number, idx: number) => (
               <div key={idx}>
-                  <span className='mr-2'>{level.price}</span>
-                  <>/</>
-                  <span className='ml-2'>{level.quantity}</span>
+                  <span className='mr-2'>{price}</span>
               </div>
           ))}
         </span>
