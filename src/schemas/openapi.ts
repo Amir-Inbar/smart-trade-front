@@ -894,7 +894,7 @@ export interface components {
              * @default [
              *       {
              *         "state": "initial",
-             *         "time": "2025-11-01T13:43:52.348836"
+             *         "time": "2025-11-09T21:18:30.730243"
              *       }
              *     ]
              */
@@ -1028,6 +1028,8 @@ export interface components {
             created_at?: string | null;
             /** Updated At */
             updated_at?: string | null;
+            /** Account */
+            account?: string;
         };
         /** UserSchemaCreate */
         UserSchemaCreate: {
@@ -1044,6 +1046,8 @@ export interface components {
              * @default true
              */
             is_enabled: boolean | null;
+            /** Account */
+            account?: string;
         };
         /** UserSchemaSearch */
         UserSchemaSearch: {
@@ -1054,6 +1058,8 @@ export interface components {
             mode?: components["schemas"]["UserMode"] | null;
             /** Is Enabled */
             is_enabled?: boolean | null;
+            /** Account */
+            account?: string | null;
         };
         /** UserSchemaUpdate */
         UserSchemaUpdate: {
@@ -1066,6 +1072,8 @@ export interface components {
             mode?: components["schemas"]["UserMode"] | null;
             /** Is Enabled */
             is_enabled?: boolean | null;
+            /** Account */
+            account?: string | null;
         };
         /** UserTPLevelDefaultCreateSchema */
         UserTPLevelDefaultCreateSchema: {

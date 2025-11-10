@@ -13,6 +13,9 @@ import {DailyTradeEventsState} from "@/store/@types/dailyTradeEvents";
 import {convertToIsraelTime} from "@/utils/date.util";
 import useUserStore from "@/store/actions/user";
 import {useSearchUsersMutation} from "@/store/api/userApi";
+import {useSearchUserTPDefaultsMutation} from "@/store/api/userTakeProfitLevels";
+import {UserTPDefaultsState} from "@/store/@types/userTakeProfitLevels";
+import useUserTakeProfitLevelsStore from "@/store/actions/userTakeProfitLevels";
 
 export const FetchDataInBackground = () => {
     const [searchContracts, {data: contractsData}] = useSearchContractsMutation();
@@ -20,27 +23,33 @@ export const FetchDataInBackground = () => {
     const [searchTrades, {data: tradesData}] = useSearchTradesMutation();
     const [searchEvents, {data: events}] = useSearchDailyTradeEventsMutation();
     const [searchUsers, {data: users}] = useSearchUsersMutation();
+    const [searchTPDefaults, {data: userTPDefaultsData}] = useSearchUserTPDefaultsMutation();
+
 
     const setContracts = useContractsStore((state) => state.setContracts);
     const setScenarios = useScenarioStore((state: ScenarioState) => state.setScenarios);
     const setTrades = useTradeStore((state: TradeState) => state.setTrades);
     const setEvents = useDailyTradeEventsStore((state: DailyTradeEventsState) => state.setDailyTradeEvents);
     const setUsers = useUserStore((state) => state.setUsers);
+    const setUserTakeProfitLevels = useUserTakeProfitLevelsStore((state: UserTPDefaultsState) => state.setUserTakeProfitLevels);
 
     const fetchContractsAndScenarios = async () => {
         try {
-            const [contracts, scenarios, trades, events, users] = await Promise.all([
+            const [contracts, scenarios, trades, events, users, tpDefaults] = await Promise.all([
                 searchContracts({}).unwrap(),
                 searchScenarios({}).unwrap(),
                 searchTrades({}).unwrap(),
                 searchEvents({}).unwrap(),
                 searchUsers({}).unwrap(),
+                searchTPDefaults({}).unwrap(),
             ]);
 
             setContracts(contracts);
             setScenarios(scenarios);
             setTrades(trades);
             setUsers(users)
+            setUserTakeProfitLevels(tpDefaults);
+
 
             const convertedEvents = events.map(event => ({
                 ...event,
@@ -55,7 +64,7 @@ export const FetchDataInBackground = () => {
 
 
     useEffect(() => {
-        if (!contractsData || !scenariosData || !tradesData || !events || !users) {
+        if (!contractsData || !scenariosData || !tradesData || !events || !users || !userTPDefaultsData) {
             fetchContractsAndScenarios();
         } else {
             setContracts(contractsData);
@@ -63,6 +72,7 @@ export const FetchDataInBackground = () => {
             setTrades(tradesData);
             setEvents(events);
             setUsers(users)
+            setUserTakeProfitLevels(userTPDefaultsData);
         }
     }, []);
 

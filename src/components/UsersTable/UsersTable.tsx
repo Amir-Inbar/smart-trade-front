@@ -17,10 +17,10 @@ import UsersSettings from '@/components/UsersTable/UsersSettings';
 const UsersTable = () => {
     const {users} = useUserStore();
 
-    const [searchTPDefaults, {data: userTPDefaultsData}] = useSearchUserTPDefaultsMutation();
+    const [searchTPDefaults] = useSearchUserTPDefaultsMutation();
     const [updateTPDefault, {isLoading: isUpdating}] = useUpdateUserTPDefaultMutation();
 
-    const {setItems} = useUserTakeProfitLevelsStore();
+    const {setUserTakeProfitLevels,userTakeProfitLevels} = useUserTakeProfitLevelsStore();
 
     const [editLevelsModalOpen, setEditLevelsModalOpen] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
@@ -28,11 +28,12 @@ const UsersTable = () => {
     useEffect(() => {
         const getUserTPDefaults = async () => {
             const res = await searchTPDefaults({}).unwrap();
-            setItems(res);
+            console.log('Fetched User TP Defaults:', res);
+            setUserTakeProfitLevels(res);
         }
 
         getUserTPDefaults();
-    }, [searchTPDefaults, setItems]);
+    }, [searchTPDefaults, setUserTakeProfitLevels]);
 
     const onOpenAccountModal = useCallback((account: string) => {
         setSelectedAccount(account);
@@ -54,24 +55,24 @@ const UsersTable = () => {
 
     const getTotalQuantityForAccount = useCallback(
         (account: string) =>
-            (userTPDefaultsData ?? []).reduce<number>((sum, curr) => {
+            (userTakeProfitLevels ?? []).reduce<number>((sum, curr) => {
                 if (curr.account === account) {
                     const q = curr.quantity ?? 0;
                     return sum + q;
                 }
                 return sum;
             }, 0),
-        [userTPDefaultsData]
+        [userTakeProfitLevels]
     );
 
     const tableRows: UserTPLevelDefaultSchema[] = useMemo(
         () =>
             (users ?? []).map((u) => {
-                const totalQty = getTotalQuantityForAccount(u.email || '');
+                const totalQty = getTotalQuantityForAccount(u.account || '');
                 return {
-                    id: String(u.id ?? u.email),
+                    id: String(u.id ?? u.account),
                     user_id: String(u.id ?? ''),
-                    account: u.email || '',
+                    account: u.account || '',
                     level_index: 1,
                     quantity: totalQty,
                 };
@@ -81,13 +82,13 @@ const UsersTable = () => {
 
     const selectedUserId = useMemo(() => {
         if (!selectedAccount) return null;
-        const u = (users ?? []).find((x) => x.email === selectedAccount);
+        const u = (users ?? []).find((x) => x.account === selectedAccount);
         return u ? String(u.id ?? '') : null;
     }, [selectedAccount, users]);
 
     const initialLevelsForSelected: UserTPLevelDefaultSchema[] = useMemo(() => {
         if (!selectedAccount) return [];
-        return (userTPDefaultsData ?? [])
+        return (userTakeProfitLevels ?? [])
             .filter((x) => x.account === selectedAccount)
             .sort((a, b) => (a.level_index ?? 0) - (b.level_index ?? 0))
             .map((x) => ({
@@ -97,12 +98,12 @@ const UsersTable = () => {
                 level_index: x.level_index ?? 0,
                 quantity: x.quantity ?? 0,
             }));
-    }, [selectedAccount, userTPDefaultsData]);
+    }, [selectedAccount, userTakeProfitLevels]);
 
     const handleSubmitLevels = async (levels: UserTPLevelDefaultSchema[]) => {
         await updateTPDefault({userId: String(levels[0].user_id), data: levels}).unwrap();
         const refreshed = await searchTPDefaults({}).unwrap();
-        setItems(refreshed);
+        setUserTakeProfitLevels(refreshed);
         setEditLevelsModalOpen(false);
     }
 

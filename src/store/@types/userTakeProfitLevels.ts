@@ -2,15 +2,13 @@ import {UserTPLevelDefaultSchema} from "@/schemas/types";
 
 
 export interface UserTPDefaultsState {
-    items: UserTPLevelDefaultSchema[];
+    userTakeProfitLevels: UserTPLevelDefaultSchema[];
 
-    setItems: (items: UserTPLevelDefaultSchema[]) => void;
+    setUserTakeProfitLevels(levels: UserTPLevelDefaultSchema[]): void;
 
-    addItem: (item: UserTPLevelDefaultSchema) => void;
+    addUserTakeProfitLevel(level: UserTPLevelDefaultSchema): void;
 
-    updateItem: (item: UserTPLevelDefaultSchema) => void;
+    updateUserTakeProfitLevel(level: UserTPLevelDefaultSchema): void;
 
-    removeItem: (id: string) => void;
-
-    clear: () => void;
+    removeUserTakeProfitLevel(id: string): void;
 }

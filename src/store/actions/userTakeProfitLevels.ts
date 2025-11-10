@@ -2,16 +2,22 @@ import {create} from 'zustand';
 import {UserTPDefaultsState} from '../@types/userTakeProfitLevels';
 
 const useUserTakeProfitLevelsStore = create<UserTPDefaultsState>((set) => ({
-    items: [],
-    setItems: (items) => set({items}),
-    addItem: (item) => set((s) => ({items: [...s.items, item]})),
-    updateItem: (item) =>
-        set((s) => ({
-            items: s.items.map((x) => (x.id === item.id ? {...x, ...item} : x)),
+    userTakeProfitLevels: [],
+    setUserTakeProfitLevels: (levels) =>
+        set(() => ({userTakeProfitLevels: levels})),
+    addUserTakeProfitLevel: (level) =>
+        set((state) => ({userTakeProfitLevels: [...state.userTakeProfitLevels, level]})),
+    updateUserTakeProfitLevel: (level) =>
+        set((state) => ({
+            userTakeProfitLevels: state.userTakeProfitLevels.map((l) =>
+                l.id === level.id ? level : l
+            ),
         })),
-    removeItem: (id) =>
-        set((s) => ({items: s.items.filter((x) => x.id !== id)})),
-    clear: () => set({items: []}),
-}));
+    removeUserTakeProfitLevel: (id) =>
+        set((state) => ({
+            userTakeProfitLevels: state.userTakeProfitLevels.filter((l) => l.id !== id),
+        })),
+}))
+
 
 export default useUserTakeProfitLevelsStore;
