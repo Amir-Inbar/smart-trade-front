@@ -11,6 +11,8 @@ export interface TableToolbarActionsProps<T extends Record<string, any>> {
     data: T[];
     table: MRT_TableInstance<T>;
     fileNameOnExport?: string;
+    /** When set, the export toolbar shows From/To date pickers and filters exported rows by this date field (e.g. 'date_trade', 'created_at'). */
+    dateRangeField?: keyof T extends string ? keyof T : string;
 }
 
 interface OwnProps<T extends Record<string, any>> {
@@ -20,6 +22,7 @@ interface OwnProps<T extends Record<string, any>> {
     isLoading?: boolean;
     isError?: boolean;
     fileNameOnExport?: string;
+    dateRangeField?: keyof T extends string ? keyof T : string;
     data: T[];
     columns: MRT_ColumnDef<T>[];
 }
@@ -35,6 +38,7 @@ export const SmartTable = <T extends Record<string, any>, >(
         isLoading,
         isError,
         fileNameOnExport,
+        dateRangeField,
         columns
     }: OwnProps<T>) => {
 
@@ -63,7 +67,7 @@ export const SmartTable = <T extends Record<string, any>, >(
         },
         renderTopToolbarCustomActions: ({table}) =>
             TableToolbarActions ? (
-                <TableToolbarActions table={table} data={data} fileNameOnExport={fileNameOnExport}/>
+                <TableToolbarActions table={table} data={data} fileNameOnExport={fileNameOnExport} dateRangeField={dateRangeField}/>
             ) : null,
         mantinePaperProps: {sx: {borderRadius: "16px", borderBlockColor: "0"}},
         mantineTableProps: {sx: {tableLayout: "fixed"}},
