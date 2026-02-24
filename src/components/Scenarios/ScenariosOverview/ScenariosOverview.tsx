@@ -1,4 +1,5 @@
 import { SmartTable } from '@/components/SmartTable/SmartTable';
+import { ExportTableToCsvButton } from '@/components/SmartTable/ExportTableToCsvButton';
 import { useEffect, useMemo, useState } from 'react';
 import useScenarioStore from '@/store/actions/scenario';
 import {
@@ -32,7 +33,7 @@ const ScenariosOverview = () => {
   // Modal state for removing pending broker orders
   const [pendingModalOpen, setPendingModalOpen] = useState(false);
   const [pendingScenario, setPendingScenario] = useState<ScenarioSchema | null>(
-    null
+    null,
   );
 
   // Modal state for selling market orders
@@ -100,7 +101,7 @@ const ScenariosOverview = () => {
   const onUpdateScenarioState = async (
     scenario: ScenarioSchema,
     state: OperationalStateType,
-    tradeResult?: TradeResultsType
+    tradeResult?: TradeResultsType,
   ) => {
     await updateScenario({
       scenarioId: scenario.id,
@@ -130,7 +131,7 @@ const ScenariosOverview = () => {
         onOpenPendingModal: handleOpenPendingModal, // new handler
         onSellMarketModal: handleOpenSellMarketModal, // new handler
       }),
-    [isUpdatingScenario]
+    [isUpdatingScenario],
   );
 
   const config = ScenariosOverviewDataInitialState();
@@ -142,6 +143,9 @@ const ScenariosOverview = () => {
         columns={columns}
         data={scenarios || []}
         config={config}
+        TableToolbarActions={ExportTableToCsvButton}
+        fileNameOnExport='scenarios'
+        dateRangeField='date_trade'
       />
       <Modal
         opened={pendingModalOpen}
