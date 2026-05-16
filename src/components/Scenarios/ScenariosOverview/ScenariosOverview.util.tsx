@@ -72,10 +72,29 @@ export const ProgressStateToConfig: {
         color: 'text-red-500',
         icon: <IconCheck size={16} className='text-red-500'/>,
     },
+    [ProgressState.FAST_FIRST_5_MIN_CANDLE_CLOSED]: {
+        label: '5-Min Candle Confirmed',
+        color: 'text-amber-500',
+        icon: <IconCheck size={16} className='text-amber-500'/>,
+    },
+    [ProgressState.FAST_TWO_1_MIN_CANDLES_ABOVE]: {
+        label: '1-Min Candles Confirmed (×2)',
+        color: 'text-orange-500',
+        icon: <IconCheck size={16} className='text-orange-500'/>,
+    },
 };
 
-export const SelectStrategiesOptions = {
-    [StrategyTypeEnum.FALSE_BREAKOUT]: 'False Breakout',
+export const StrategyBadgeConfig: {
+    [key in StrategyTypeEnum]: { label: string; className: string };
+} = {
+    [StrategyTypeEnum.FALSE_BREAKOUT]: {
+        label: 'False Breakout',
+        className: 'bg-gray-100 text-gray-700 border border-gray-300',
+    },
+    [StrategyTypeEnum.FAST_BREAKOUT]: {
+        label: 'Fast Protocol',
+        className: 'bg-amber-100 text-amber-800 border border-amber-300',
+    },
 };
 
 export const OperationalStateToConfig: {
@@ -143,10 +162,14 @@ export const getScenarioColumns = ({
         accessorKey: 'select_strategy',
         header: 'Select Strategy',
         Cell: ({row}: { row: MRT_Row<ScenarioSchema> }) => {
-            const strategy = row.original.strategy;
-            const strategyLabel =
-                SelectStrategiesOptions[strategy as StrategyTypeEnum];
-            return strategy ? <span>{strategyLabel}</span> : <span/>;
+            const strategy = row.original.strategy as StrategyTypeEnum;
+            const config = StrategyBadgeConfig[strategy];
+            if (!config) return <span/>;
+            return (
+                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${config.className}`}>
+                    {config.label}
+                </span>
+            );
         },
     },
     {

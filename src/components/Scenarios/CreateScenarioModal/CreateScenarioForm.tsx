@@ -1,4 +1,4 @@
-import {FC, ReactElement, useEffect} from "react";
+import {FC, Fragment, ReactElement, useEffect} from "react";
 import {Button} from "@/components/ui/button";
 import {
     useForm,
@@ -21,7 +21,9 @@ import {
     ContractSchema,
     ScenarioSchema,
     ScenarioSchemaCreateSchema,
-    StopPriceModeChoices, UsersSchema,
+    StopPriceModeChoices,
+    StrategyTypeEnum,
+    UsersSchema,
 } from "@/schemas/types";
 import {Textarea} from "@/components/ui/textarea";
 import {TradeDatePicker} from "@/components/TradeUi/TradeDatePicker";
@@ -61,6 +63,7 @@ const CreateScenarioForm: FC<CreateScenarioFormProps> = ({
 
     const stopPrice = watch("stop_price");
     const date_trade = watch("date_trade");
+    const selectedStrategy = watch("strategy");
 
     const {fields, append, remove} = useFieldArray<ScenarioSchemaCreateSchema, "take_profit_prices">({
         control: control,
@@ -124,6 +127,18 @@ const CreateScenarioForm: FC<CreateScenarioFormProps> = ({
         resetCreateScenario();
     };
 
+    const FastProtocolInfoPanel = () => (
+        <div className="mb-4 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm">
+            <p className="mb-2 font-semibold text-amber-800">Fast Protocol Rules</p>
+            <ul className="space-y-1 text-amber-700">
+                <li><span className="font-medium">Entry:</span> Level + 6 points (limit order)</li>
+                <li><span className="font-medium">Stop Loss:</span> Level − 10 points</li>
+                <li><span className="font-medium">Profit Target:</span> TP2 of your scenario (second Take Profit Price)</li>
+                <li><span className="font-medium">Confirmation:</span> 5-min candle close above level, then 2 consecutive 1-min candles closing ≥ 5 pts above level</li>
+            </ul>
+        </div>
+    );
+
     const ProfitTakerPrices = ({item}: { item: InputItem }) => (
         <div className="mb-4 mr-4">
             {fields.map((f, index) => (
@@ -173,13 +188,19 @@ const CreateScenarioForm: FC<CreateScenarioFormProps> = ({
             submitText="Submit"
         >
             <div className="h-[600px] overflow-y-auto">
-                {bracketOrderSchemaInputData(contracts).map((item) =>
-                    item.name === "take_profit_prices" ? (
-                        <ProfitTakerPrices key={item.name} item={item}/>
-                    ) : (
-                        <TradeInputWrapper key={item.name} item={item} control={control} render={chooseInputToRender}/>
-                    )
-                )}
+                {bracketOrderSchemaInputData(contracts).map((item) => {
+                    if (item.name === "take_profit_prices") {
+                        return <ProfitTakerPrices key={item.name} item={item}/>;
+                    }
+                    return (
+                        <Fragment key={item.name}>
+                            <TradeInputWrapper item={item} control={control} render={chooseInputToRender}/>
+                            {item.name === "strategy" && selectedStrategy === StrategyTypeEnum.FAST_BREAKOUT && (
+                                <FastProtocolInfoPanel/>
+                            )}
+                        </Fragment>
+                    );
+                })}
                 {errors.root && <div className="text-red-500 mt-2">{String(errors.root.message)}</div>}
             </div>
         </DialogForm>

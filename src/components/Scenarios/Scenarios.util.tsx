@@ -86,7 +86,10 @@ export const bracketOrderSchemaInputData = (contracts: ContractSchema[]): InputI
         required: true,
         type: "select",
         default: StrategyTypeEnum.FALSE_BREAKOUT,
-        options: [{value: StrategyTypeEnum.FALSE_BREAKOUT, label: "False Breakout"}],
+        options: [
+            {value: StrategyTypeEnum.FALSE_BREAKOUT, label: "False Breakout"},
+            {value: StrategyTypeEnum.FAST_BREAKOUT, label: "Fast Protocol"},
+        ],
     },
     {
         name: "break_down_price",
