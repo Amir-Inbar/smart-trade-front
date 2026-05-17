@@ -36,14 +36,17 @@ const ScenariosOverview = () => {
   const [isFastProtocol, setIsFastProtocol] = useState(false);
   const [isBulkUpdating, setIsBulkUpdating] = useState(false);
 
+  const todayStr = new Date().toISOString().split('T')[0];
+
   const activeScenarios = useMemo(
     () =>
       (scenarios || []).filter(
         (s) =>
-          s.operational_state === OperationalState.PENDING ||
-          s.operational_state === OperationalState.PAUSED,
+          (s.operational_state === OperationalState.PENDING ||
+            s.operational_state === OperationalState.PAUSED) &&
+          s.date_trade?.startsWith(todayStr),
       ),
-    [scenarios],
+    [scenarios, todayStr],
   );
 
   useEffect(() => {
