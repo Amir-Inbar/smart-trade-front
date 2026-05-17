@@ -13,8 +13,8 @@ import {
   ScenariosOverviewDataInitialState,
 } from '@/components/Scenarios/ScenariosOverview/ScenariosOverview.util';
 import {
-  OperationalState,
   OperationalStateType,
+  ProgressState,
   ScenarioSchema,
   StrategyTypeEnum,
   TradeResultsType,
@@ -40,12 +40,14 @@ const ScenariosOverview = () => {
 
   const activeScenarios = useMemo(
     () =>
-      (scenarios || []).filter(
-        (s) =>
-          (s.operational_state === OperationalState.PENDING ||
-            s.operational_state === OperationalState.PAUSED) &&
-          s.date_trade?.startsWith(todayStr),
-      ),
+      (scenarios || []).filter((s) => {
+        const states = s.progress_state;
+        const currentState = states?.[states.length - 1]?.state;
+        return (
+          currentState === ProgressState.INITIAL &&
+          s.date_trade?.startsWith(todayStr)
+        );
+      }),
     [scenarios, todayStr],
   );
 
