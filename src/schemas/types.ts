@@ -26,6 +26,7 @@ export type UsersSchema = components["schemas"]["UserSchema"][];
 
 export enum StrategyTypeEnum {
     FALSE_BREAKOUT = "FALSE_BREAKOUT",
+    FAST_BREAKOUT = "FAST_BREAKOUT",
 }
 
 export enum Ticker {
@@ -45,7 +46,9 @@ export enum ProgressState {
     MINIMUM_BREAKOUT_POINTS_ACHIEVED = "minimum_breakout_points_achieved",
     PRICE_RETURNED_TO_SIGNIFICANT_LEVEL = "price_returned_to_significant_level",
     FIRST_15_MIN_CANDLE_CLOSED = "first_15_min_candle_closed",
-    TWO_5_MIN_CANDLES_CLOSED = "two_5_min_candles_closed"
+    TWO_5_MIN_CANDLES_CLOSED = "two_5_min_candles_closed",
+    FAST_FIRST_5_MIN_CANDLE_CLOSED = "fast_first_5_min_candle_closed",
+    FAST_TWO_1_MIN_CANDLES_ABOVE = "fast_two_1_min_candles_above",
 }
 
 export enum OperationalState {
