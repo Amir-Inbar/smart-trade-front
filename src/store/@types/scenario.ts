@@ -6,4 +6,6 @@ export interface ScenarioState {
     setScenarios(scenarios: ScenarioSchema[]): void;
 
     addScenario(scenario: ScenarioSchema): void;
+
+    updateScenarioInList(scenario: ScenarioSchema): void;
 }

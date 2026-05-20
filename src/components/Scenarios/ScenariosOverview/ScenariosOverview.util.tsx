@@ -16,6 +16,7 @@ import {
 } from '@tabler/icons-react';
 import {ScenarioActionButtons} from './ScenarioActionButtons';
 import {ScenarioTradeResultButtons} from './ScenarioTradeResultButtons';
+import ScenarioStrategyToggle from './ScenarioStrategyToggle';
 
 interface getScenarioColumnsProps {
     isUpdatingScenario: boolean;
@@ -160,17 +161,10 @@ export const getScenarioColumns = ({
     },
     {
         accessorKey: 'select_strategy',
-        header: 'Select Strategy',
-        Cell: ({row}: { row: MRT_Row<ScenarioSchema> }) => {
-            const strategy = row.original.strategy as StrategyTypeEnum;
-            const config = StrategyBadgeConfig[strategy];
-            if (!config) return <span/>;
-            return (
-                <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${config.className}`}>
-                    {config.label}
-                </span>
-            );
-        },
+        header: 'Protocol',
+        Cell: ({row}: { row: MRT_Row<ScenarioSchema> }) => (
+            <ScenarioStrategyToggle scenario={row.original}/>
+        ),
     },
     {
         accessorKey: 'break_down_price',
